@@ -35,6 +35,17 @@ import { twMerge } from 'tailwind-merge';
 import { format, differenceInDays, parseISO, startOfWeek, endOfWeek, isWithinInterval, addDays } from 'date-fns';
 import programmeData from './data/programme.json';
 import { seedHistory, mergeHistory, type HistorySession } from './data/seedHistory';
+import {
+  DAY_TO_SESSION,
+  MUSCLE_GROUPS,
+  WEEK_SCHEDULE,
+  getSessionExercises,
+  isCardioDay,
+  isRestDay,
+  getTodaySession,
+  getSessionPriorityOrder,
+  getWeeklyProgress,
+} from './exerciseSelection';
 import { Programme, Session, Exercise, SetEntry, SessionProgress } from './types';
 import {
   evaluateSession,
@@ -106,33 +117,6 @@ function MarqueeText({ text, className }: { text: string; className?: string }) 
       </motion.span>
     </div>
   );
-}
-
-/**
- * Returns a flat exercise list for any session type.
- * - Standard sessions: returns session.exercises
- * - Cardio day (structure): extracts exercises from core circuit block
- * - Day 7 (options): returns empty array (rest day, not trackable)
- */
-function getSessionExercises(session: Session): Exercise[] {
-  if (session.exercises) return session.exercises;
-  if (session.structure) {
-    // Pull trackable exercises from core circuit block
-    const coreCircuit = session.structure.block_3_core_circuit;
-    if (coreCircuit?.exercises) return coreCircuit.exercises;
-    return [];
-  }
-  return [];
-}
-
-/** Whether a session is a structured cardio day (intervals + steady state) */
-function isCardioDay(session: Session): boolean {
-  return !!session.structure && !session.exercises;
-}
-
-/** Whether a session is a rest/options day (day_7) */
-function isRestDay(session: Session): boolean {
-  return !!session.options && !session.exercises;
 }
 
 export default function App() {
@@ -790,94 +774,18 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen font-sans selection:bg-violet-500/30 selection:text-white relative">
+    <div className="min-h-screen font-sans selection:bg-blue-500/30 selection:text-white relative" style={{ background: '#000' }}>
       <div className="app-bg" />
 
       <div className="relative z-10">
       <AnimatePresence mode="wait">
         {screen === 'select' && (() => {
-          // Default day-of-week schedule (0=Sun, 1=Mon, ..., 6=Sat)
-          const DAY_TO_SESSION: Record<number, string> = {
-            1: 'push_b',     // Mon — Pump Push
-            2: 'pull_b',     // Tue — Pump Pull
-            3: 'cardio_day', // Wed — Cardio
-            4: 'day_7',      // Thu — Rest / Recovery
-            5: 'legs_core',  // Fri — Legs + Core
-            6: 'push_a',     // Sat — Heavy Push
-            0: 'pull_a',     // Sun — Heavy Pull
-          };
-
-          // Muscle group conflict detection — check what was trained recently
-          const MUSCLE_GROUPS: Record<string, string> = {
-            push_a: 'push', push_b: 'push',
-            pull_a: 'pull', pull_b: 'pull',
-            legs_core: 'legs', cardio_day: 'cardio', day_7: 'rest',
-          };
-
-          // Find the most recent session from history (within last 48h)
-          const recentSession = historyData.length > 0 ? historyData[0] : null;
-          const recentType = recentSession?.sessionType?.toLowerCase() || '';
-          const recentDateStr = recentSession?.date?.replace(/\s*\(.*\)/, '') || '';
-          const recentDate = recentDateStr ? new Date(recentDateStr) : null;
-          const hoursSinceLast = recentDate ? (Date.now() - recentDate.getTime()) / (1000 * 60 * 60) : 999;
-
-          const recentGroup = recentType.includes('push') ? 'push'
-            : recentType.includes('pull') ? 'pull'
-            : recentType.includes('leg') ? 'legs' : '';
-
-          const todayDow = new Date().getDay();
-          let todaySessionKey = DAY_TO_SESSION[todayDow];
-
-          // If same muscle group was trained within 36 hours, swap to next different session
-          if (hoursSinceLast < 36 && recentGroup && MUSCLE_GROUPS[todaySessionKey] === recentGroup) {
-            // Find the next session in the week that uses a different muscle group
-            const SWAP_ORDER: Record<string, string> = {
-              push_b: 'pull_b', push_a: 'pull_a',  // push conflict → do pull
-              pull_b: 'push_b', pull_a: 'push_a',  // pull conflict → do push (rare)
-            };
-            todaySessionKey = SWAP_ORDER[todaySessionKey] || todaySessionKey;
-          }
-
-          const todaySession = programme.sessions[todaySessionKey];
-
-          // Priority order: today removed, then upcoming days in order from tomorrow
-          const priorityOrder: string[] = [];
-          for (let i = 1; i <= 6; i++) {
-            const dow = (todayDow + i) % 7;
-            const key = DAY_TO_SESSION[dow];
-            if (key !== todaySessionKey) priorityOrder.push(key);
-          }
-          const otherSessions = priorityOrder
-            .filter((key, idx, arr) => arr.indexOf(key) === idx)
-            .map(key => [key, programme.sessions[key]] as [string, typeof programme.sessions[typeof key]]);
-
-          // Weekly completion dots
-          const weekStart = startOfWeek(new Date(), { weekStartsOn: 1 });
-          const weekEnd = endOfWeek(new Date(), { weekStartsOn: 1 });
-          const WEEK_SCHEDULE: { day: string; dow: number; sessionKey: string; label: string }[] = [
-            { day: 'Mon', dow: 1, sessionKey: 'push_b', label: 'Push B' },
-            { day: 'Tue', dow: 2, sessionKey: 'pull_b', label: 'Pull B' },
-            { day: 'Wed', dow: 3, sessionKey: 'cardio_day', label: 'Cardio' },
-            { day: 'Thu', dow: 4, sessionKey: 'day_7', label: 'Rest' },
-            { day: 'Fri', dow: 5, sessionKey: 'legs_core', label: 'Legs' },
-            { day: 'Sat', dow: 6, sessionKey: 'push_a', label: 'Push A' },
-            { day: 'Sun', dow: 0, sessionKey: 'pull_a', label: 'Pull A' },
-          ];
-          const completedThisWeek = new Set<number>();
-          for (const sess of historyData) {
-            const dateStr = sess.date.split(' ')[0];
-            const d = new Date(dateStr + 'T12:00:00');
-            if (isWithinInterval(d, { start: weekStart, end: weekEnd })) {
-              // mark by dow
-              completedThisWeek.add(d.getDay());
-            }
-          }
-          // Thu (rest) always counts as done
-          completedThisWeek.add(4);
+          const { sessionKey: todaySessionKey, session: todaySession } = getTodaySession(programme, historyData);
+          const otherSessions = getSessionPriorityOrder(programme, todaySessionKey);
+          const { schedule: weekSchedule, completedDows: completedThisWeek, completedCount, totalScheduled } = getWeeklyProgress(
+            historyData, startOfWeek, endOfWeek, isWithinInterval,
+          );
           const todayDow2 = new Date().getDay();
-          // Count non-rest sessions completed
-          const totalScheduled = 6; // 7 days - 1 rest
-          const completedCount = WEEK_SCHEDULE.filter(s => s.dow !== 4 && completedThisWeek.has(s.dow)).length;
 
           return (
           <motion.div
@@ -885,10 +793,11 @@ export default function App() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="max-w-2xl mx-auto px-5 py-10"
+            className="max-w-2xl mx-auto px-4 pt-14 pb-10"
           >
-            <header className="mb-6">
-              <p className="text-2xl font-bold text-white">{format(new Date(), 'EEEE, MMMM do')}</p>
+            <header className="mb-7">
+              <p className="text-[13px] font-semibold uppercase tracking-widest mb-1" style={{ color: 'var(--label-tertiary)' }}>{format(new Date(), 'EEEE')}</p>
+              <p className="text-[34px] font-bold text-white leading-tight tracking-tight">{format(new Date(), 'MMMM d')}</p>
             </header>
 
             {/* Restore session banner */}
@@ -906,42 +815,39 @@ export default function App() {
                     initial={{ opacity: 0, y: -8 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -8 }}
-                    className="mb-4 glass rounded-2xl px-4 py-3 border border-amber-500/25 bg-amber-500/5"
+                    className="mb-4 rounded-2xl px-4 py-3"
+                    style={{ background: '#1c1c1e', border: '1px solid rgba(255,159,10,0.25)' }}
                   >
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-amber-500/15 flex items-center justify-center shrink-0">
-                        <RotateCcw className="w-4 h-4 text-amber-400" />
+                      <div className="w-9 h-9 rounded-full flex items-center justify-center shrink-0" style={{ background: 'rgba(255,159,10,0.15)' }}>
+                        <RotateCcw className="w-4 h-4" style={{ color: 'var(--tint-orange)' }} />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-[12px] font-bold text-white/80 leading-snug">
-                          Session ended early
-                        </p>
-                        <p className="text-[11px] text-white/40 leading-snug truncate">
-                          {undoSessionInfo?.label?.split(' — ')[1] || undoSession.sessionKey} · {loggedCount} set{loggedCount !== 1 ? 's' : ''} logged · {timeLabel}
+                        <p className="text-[13px] font-semibold text-white leading-snug">Session ended early</p>
+                        <p className="text-[12px] leading-snug truncate" style={{ color: 'var(--label-secondary)' }}>
+                          {undoSessionInfo?.label?.split(' — ')[1] || undoSession.sessionKey} · {loggedCount} set{loggedCount !== 1 ? 's' : ''} · {timeLabel}
                         </p>
                       </div>
                       <div className="flex items-center gap-2 shrink-0">
                         <motion.button
                           whileTap={{ scale: 0.95 }}
                           onClick={() => {
-                            // Restore backup → liftoff_session, then resume
                             localStorage.setItem('liftoff_session', JSON.stringify(undoSession));
                             localStorage.removeItem('liftoff_session_undo');
                             setUndoSession(null);
                             startSession(undoSession.sessionKey, true);
                           }}
-                          className="px-3 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 text-[11px] font-bold transition-all"
+                          className="px-3 py-1.5 rounded-xl text-[13px] font-semibold transition-all"
+                          style={{ background: 'rgba(255,159,10,0.18)', color: 'var(--tint-orange)' }}
                         >
                           Restore
                         </motion.button>
                         <button
-                          onClick={() => {
-                            localStorage.removeItem('liftoff_session_undo');
-                            setUndoSession(null);
-                          }}
-                          className="p-1 text-white/30 hover:text-white/60 transition-colors"
+                          onClick={() => { localStorage.removeItem('liftoff_session_undo'); setUndoSession(null); }}
+                          className="p-1 transition-colors"
+                          style={{ color: 'var(--label-tertiary)' }}
                         >
-                          <X className="w-3.5 h-3.5" />
+                          <X className="w-4 h-4" />
                         </button>
                       </div>
                     </div>
@@ -950,41 +856,41 @@ export default function App() {
               })()}
             </AnimatePresence>
 
-            {/* Weekly completion dots */}
+            {/* Weekly activity rings row */}
             <motion.div
               initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mb-6 glass rounded-2xl px-4 py-3"
+              className="mb-6 rounded-2xl px-4 py-4"
+              style={{ background: '#1c1c1e', border: '1px solid rgba(255,255,255,0.08)' }}
             >
-              <div className="flex items-center justify-between mb-2.5">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-white/40">This Week</span>
-                <span className="text-[10px] font-semibold text-white/30">{completedCount}/{totalScheduled} sessions</span>
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-[13px] font-semibold text-white">This Week</span>
+                <span className="text-[13px]" style={{ color: 'var(--label-tertiary)' }}>{completedCount} of {totalScheduled}</span>
               </div>
-              <div className="flex justify-between">
-                {WEEK_SCHEDULE.map(({ day, dow, sessionKey: _sk, label: _lb }) => {
+              <div className="flex justify-between overflow-hidden">
+                {WEEK_SCHEDULE.map(({ day, dow }) => {
                   const isToday = dow === todayDow2;
                   const isDone = completedThisWeek.has(dow);
-                  const isRest = dow === 4;
+                  const isRest = dow === 1;
                   return (
-                    <div key={dow} className="flex flex-col items-center gap-1">
-                      <div className={cn(
-                        "w-7 h-7 rounded-full flex items-center justify-center transition-all",
-                        isToday ? "ring-2 ring-violet-400 ring-offset-1 ring-offset-transparent" : "",
-                        isDone && isRest ? "bg-white/10" :
-                        isDone ? "bg-emerald-500" :
-                        "border border-white/20"
-                      )}>
+                    <div key={dow} className="flex flex-col items-center gap-1" style={{ minWidth: 0, flex: '1 1 0' }}>
+                      <div
+                        className="w-7 h-7 rounded-full flex items-center justify-center transition-all"
+                        style={{
+                          background: isDone && !isRest ? 'var(--ring-exercise)' : isDone && isRest ? '#3a3a3c' : '#2c2c2e',
+                          ...(isToday ? { boxShadow: `0 0 0 2px #000, 0 0 0 3px ${isDone ? 'var(--ring-exercise)' : 'rgba(255,255,255,0.35)'}` } : {})
+                        }}
+                      >
                         {isDone && !isRest && (
-                          <svg className="w-3 h-3 text-white" viewBox="0 0 12 12" fill="none">
-                            <path d="M2 6l3 3 5-5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                          <svg className="w-3 h-3" viewBox="0 0 12 12" fill="none">
+                            <path d="M2 6l3 3 5-5" stroke="#000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                           </svg>
                         )}
-                        {isRest && <Moon className="w-3 h-3 text-white/30" />}
+                        {isRest && <Moon className="w-3 h-3" style={{ color: 'var(--label-tertiary)' }} />}
                       </div>
-                      <span className={cn(
-                        "text-[9px] font-bold uppercase tracking-tight",
-                        isToday ? "text-violet-400" : "text-white/30"
-                      )}>{day}</span>
+                      <span className="text-[9px] font-medium uppercase tracking-tight text-center"
+                        style={{ color: isToday ? 'white' : 'var(--label-tertiary)' }}
+                      >{day}</span>
                     </div>
                   );
                 })}
@@ -997,38 +903,53 @@ export default function App() {
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.05 }}
-                className="mb-6"
+                className="mb-4"
               >
-                <p className="text-[10px] font-bold uppercase tracking-widest text-white/40 mb-2 px-1">Today's Session</p>
-                <div className="glass rounded-3xl overflow-hidden">
-                  <div className="p-6">
-                    <span className="text-[10px] font-black uppercase tracking-widest text-emerald-400 mb-2 block">{todaySession.focus}</span>
-                    <h2 className="text-2xl font-extrabold text-white mb-1 leading-tight">
-                      {todaySession.label.split(' — ')[1] || todaySession.label}
-                    </h2>
-                    <p className="text-sm text-white/40 mb-5">{todaySession.label.split(' — ')[0]}</p>
-                    <div className="flex gap-2 mb-6">
-                      <span className="inline-flex items-center px-3 py-1.5 rounded-full bg-white/10 text-[12px] font-semibold text-white/60">
-                        <Timer className="w-3.5 h-3.5 mr-1.5" />
+                <p className="text-[13px] font-semibold mb-2 px-1" style={{ color: 'var(--label-tertiary)' }}>Today</p>
+                <div className="rounded-2xl overflow-hidden" style={{ background: '#1c1c1e', border: '1px solid rgba(255,255,255,0.08)' }}>
+                  {/* Accent stripe */}
+                  <div className="h-1 w-full" style={{ background: 'linear-gradient(90deg, var(--ring-move), var(--ring-exercise))' }} />
+                  <div className="p-5">
+                    <div className="flex items-start justify-between mb-1">
+                      <div className="flex-1 min-w-0 pr-4">
+                        <span className="text-[11px] font-semibold uppercase tracking-widest" style={{ color: 'var(--ring-exercise)' }}>{(todaySession.focus ?? '').split(',')[0].split('—')[0].trim()}</span>
+                        <h2 className="text-[22px] font-bold text-white mt-0.5 leading-tight tracking-tight">
+                          {todaySession.label.split(' — ')[1] || todaySession.label}
+                        </h2>
+                        <p className="text-[13px] mt-0.5" style={{ color: 'var(--label-tertiary)' }}>{todaySession.label.split(' — ')[0]}</p>
+                      </div>
+                      {/* Mini ring decoration */}
+                      <div className="shrink-0 w-14 h-14 relative">
+                        <svg className="w-full h-full -rotate-90" viewBox="0 0 44 44">
+                          <circle cx="22" cy="22" r="18" fill="none" stroke="rgba(250,62,93,0.18)" strokeWidth="4" />
+                          <circle cx="22" cy="22" r="18" fill="none" stroke="var(--ring-move)" strokeWidth="4" strokeLinecap="round"
+                            strokeDasharray={`${2 * Math.PI * 18 * 0.72} ${2 * Math.PI * 18 * 0.28}`} />
+                        </svg>
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <Dumbbell className="w-4 h-4 text-white/50" />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex gap-2 mt-3 mb-5">
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-medium" style={{ background: '#2c2c2e', color: 'var(--label-secondary)' }}>
+                        <Timer className="w-3 h-3" />
                         {todaySession.estimated_duration_minutes}m
                       </span>
-                      <span className="inline-flex items-center px-3 py-1.5 rounded-full bg-white/10 text-[12px] font-semibold text-white/60">
-                        <Dumbbell className="w-3.5 h-3.5 mr-1.5" />
-                        {isCardioDay(todaySession)
-                          ? 'Cardio'
-                          : isRestDay(todaySession)
-                          ? 'Rest Day'
-                          : `${getSessionExercises(todaySession).length} Exercises`}
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-medium" style={{ background: '#2c2c2e', color: 'var(--label-secondary)' }}>
+                        <Dumbbell className="w-3 h-3" />
+                        {isCardioDay(todaySession) ? 'Cardio' : isRestDay(todaySession) ? 'Rest Day' : `${getSessionExercises(todaySession).length} exercises`}
                       </span>
                     </div>
+
                     <motion.button
-                      whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.97 }}
                       onClick={() => startSession(todaySessionKey)}
-                      className="w-full flex items-center justify-center gap-3 bg-violet-600 hover:bg-violet-500 text-white font-bold py-4 rounded-2xl transition-all"
+                      className="w-full flex items-center justify-center gap-2 text-white font-semibold py-3.5 rounded-2xl transition-all text-[15px]"
+                      style={{ background: 'var(--ring-move)' }}
                     >
-                      Start Today's Workout
-                      <ArrowRight className="w-5 h-5" />
+                      Start Workout
+                      <ArrowRight className="w-4 h-4" />
                     </motion.button>
                   </div>
                 </div>
@@ -1042,97 +963,72 @@ export default function App() {
                   initial={{ opacity: 0, y: -6 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -6 }}
-                  className="mb-4 glass rounded-2xl px-4 py-3 border border-amber-500/20 bg-amber-500/5 flex items-center gap-3"
+                  className="mb-4 rounded-2xl px-4 py-3 flex items-center gap-3"
+                  style={{ background: '#1c1c1e', border: '1px solid rgba(255,159,10,0.2)' }}
                 >
-                  <TrendingUp className="w-4 h-4 text-amber-400 shrink-0" />
-                  <p className="flex-1 text-[12px] text-white/70 leading-snug">
-                    At this pace, <span className="text-amber-400 font-bold">{milestoneAlert.milestone}kg {milestoneAlert.exercise.replace('Barbell ', '')}</span> is ~{milestoneAlert.sessionsAway} session{milestoneAlert.sessionsAway !== 1 ? 's' : ''} away
+                  <TrendingUp className="w-4 h-4 shrink-0" style={{ color: 'var(--tint-orange)' }} />
+                  <p className="flex-1 text-[13px] leading-snug" style={{ color: 'var(--label-secondary)' }}>
+                    <span className="text-white font-semibold">{milestoneAlert.milestone}kg {milestoneAlert.exercise.replace('Barbell ', '')}</span> is ~{milestoneAlert.sessionsAway} session{milestoneAlert.sessionsAway !== 1 ? 's' : ''} away
                   </p>
-                  <button
-                    onClick={() => setMilestoneAlertDismissed(true)}
-                    className="text-white/30 hover:text-white/60 transition-colors shrink-0 p-1"
-                  >
-                    <X className="w-3.5 h-3.5" />
+                  <button onClick={() => setMilestoneAlertDismissed(true)} className="shrink-0 p-1" style={{ color: 'var(--label-tertiary)' }}>
+                    <X className="w-4 h-4" />
                   </button>
                 </motion.div>
               )}
             </AnimatePresence>
 
-            {/* Other Sessions — compact grid, ordered by upcoming day */}
+            {/* Other Sessions — grouped list iOS style */}
             <div className="mb-6">
-              <p className="text-[10px] font-bold uppercase tracking-widest text-white/30 mb-3 px-1">Upcoming</p>
-              <div className="grid grid-cols-2 gap-2.5">
-                {otherSessions.map(([key, session]) => {
+              <p className="text-[13px] font-semibold mb-2 px-1" style={{ color: 'var(--label-tertiary)' }}>Other Sessions</p>
+              <div className="rounded-2xl overflow-hidden" style={{ background: '#1c1c1e', border: '1px solid rgba(255,255,255,0.08)' }}>
+                {otherSessions.map(([key, session], i) => {
                   const SESSION_TO_DAY: Record<string, string> = {
                     push_b: 'Mon', pull_b: 'Tue', cardio_day: 'Wed',
                     day_7: 'Thu', legs_core: 'Fri', push_a: 'Sat', pull_a: 'Sun'
                   };
                   return (
-                  <motion.button
-                    key={key}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.97 }}
-                    onClick={() => startSession(key)}
-                    className="group relative flex flex-col items-start p-4 glass rounded-2xl hover:bg-white/10 transition-all text-left overflow-hidden"
-                  >
-                    <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <ArrowRight className="w-4 h-4 text-violet-400" />
-                    </div>
-                    <span className="text-[9px] font-black uppercase tracking-widest text-emerald-400 mb-1">{SESSION_TO_DAY[key] || ''} — {session.focus}</span>
-                    <h3 className="text-sm font-bold text-white mb-2.5 leading-snug pr-5">
-                      {session.label.split(' — ')[1] || session.label}
-                    </h3>
-                    <div className="flex flex-wrap gap-1.5">
-                      <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-white/10 text-[10px] font-semibold text-white/60">
-                        <Timer className="w-2.5 h-2.5 mr-1" />
-                        {session.estimated_duration_minutes}m
-                      </span>
-                      <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-white/10 text-[10px] font-semibold text-white/60">
-                        <Dumbbell className="w-2.5 h-2.5 mr-1" />
-                        {isCardioDay(session)
-                          ? 'Cardio'
-                          : isRestDay(session)
-                          ? 'Rest'
-                          : `${getSessionExercises(session).length}ex`}
-                      </span>
-                    </div>
-                  </motion.button>
+                    <motion.button
+                      key={key}
+                      whileTap={{ scale: 0.99 }}
+                      onClick={() => startSession(key)}
+                      className="w-full flex items-center px-4 py-3.5 text-left transition-colors list-row"
+                      style={{ borderTop: i > 0 ? '1px solid rgba(255,255,255,0.06)' : 'none' }}
+                    >
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-0.5">
+                          <span className="text-[11px] font-medium uppercase tracking-widest" style={{ color: 'var(--label-tertiary)' }}>
+                            {SESSION_TO_DAY[key] || ''} · {(session.focus ?? '').split(',')[0].split('—')[0].trim()}
+                          </span>
+                        </div>
+                        <h3 className="text-[15px] font-semibold text-white leading-snug">
+                          {session.label.split(' — ')[1] || session.label}
+                        </h3>
+                        <span className="text-[12px]" style={{ color: 'var(--label-tertiary)' }}>
+                          {session.estimated_duration_minutes}m · {isCardioDay(session) ? 'Cardio' : isRestDay(session) ? 'Rest' : `${getSessionExercises(session).length} exercises`}
+                        </span>
+                      </div>
+                      <ChevronRight className="w-4 h-4 shrink-0" style={{ color: 'var(--label-quaternary)' }} />
+                    </motion.button>
                   );
                 })}
               </div>
             </div>
 
-            {/* Past Workouts */}
+            {/* Past Workouts — grouped section */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="mt-2"
+              className="mb-6"
             >
-              <button
-                onClick={() => setHistoryOpen(!historyOpen)}
-                className="w-full flex flex-col items-start p-5 glass-pink rounded-2xl hover:bg-pink-500/15 transition-all text-left overflow-hidden"
-              >
-                <div className="w-full flex items-center justify-between mb-1.5">
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-pink-400">Past Workouts</span>
-                  <motion.div animate={{ rotate: historyOpen ? 90 : 0 }}>
-                    <ChevronRight className="w-5 h-5 text-pink-400/60" />
-                  </motion.div>
-                </div>
-                <h3 className="text-lg font-bold text-white mb-2">Workout History</h3>
-                <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-pink-500/15 text-[11px] font-semibold text-pink-300">
-                  <History className="w-3 h-3 mr-1" />
-                  {historyData.length} Sessions
-                </span>
-              </button>
-
-              {/* Log past workout button */}
-              <div className="mt-2 flex justify-end">
+              <div className="flex items-center justify-between mb-2 px-1">
+                <p className="text-[13px] font-semibold" style={{ color: 'var(--label-tertiary)' }}>History</p>
                 <button
                   onClick={() => { setLogFormOpen(o => !o); setLogFormError(''); }}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-pink-500/15 hover:bg-pink-500/25 text-pink-300 text-[11px] font-bold uppercase tracking-widest transition-all"
+                  className="flex items-center gap-1 text-[13px] font-medium transition-colors"
+                  style={{ color: 'var(--tint-blue)' }}
                 >
                   <Plus className="w-3.5 h-3.5" />
-                  Log Past Workout
+                  Log Past
                 </button>
               </div>
 
@@ -1143,63 +1039,63 @@ export default function App() {
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: 'auto', opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
-                    className="overflow-hidden"
+                    className="overflow-hidden mb-3"
                   >
-                    <div className="mt-3 glass-pink rounded-2xl p-4 space-y-3">
-                      <p className="text-[10px] font-black uppercase tracking-widest text-pink-400">Log Past Workout</p>
+                    <div className="rounded-2xl p-4 space-y-3" style={{ background: '#1c1c1e', border: '1px solid rgba(255,255,255,0.08)' }}>
+                      <p className="text-[13px] font-semibold text-white">Log Past Workout</p>
 
-                      {/* Date */}
                       <div>
-                        <label className="block text-[10px] font-bold uppercase tracking-widest text-white/40 mb-1">Date</label>
+                        <label className="block text-[11px] font-medium uppercase tracking-widest mb-1.5" style={{ color: 'var(--label-tertiary)' }}>Date</label>
                         <input
                           type="date"
                           value={logFormDate}
                           onChange={e => setLogFormDate(e.target.value)}
-                          className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-pink-500/50"
+                          className="w-full rounded-xl px-3 py-2.5 text-[14px] text-white focus:outline-none glass-input"
                         />
                       </div>
 
-                      {/* Session type */}
                       <div>
-                        <label className="block text-[10px] font-bold uppercase tracking-widest text-white/40 mb-1">Session Type</label>
+                        <label className="block text-[11px] font-medium uppercase tracking-widest mb-1.5" style={{ color: 'var(--label-tertiary)' }}>Session Type</label>
                         <select
                           value={logFormSessionType}
                           onChange={e => setLogFormSessionType(e.target.value)}
-                          className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-pink-500/50 appearance-none"
+                          className="w-full rounded-xl px-3 py-2.5 text-[14px] text-white focus:outline-none glass-input appearance-none"
                         >
                           {['Push A (Heavy)', 'Push B (Pump)', 'Pull A (Heavy)', 'Pull B (Pump)', 'Legs + Core', 'Cardio', 'Push', 'Pull', 'Other'].map(t => (
-                            <option key={t} value={t} className="bg-zinc-900">{t}</option>
+                            <option key={t} value={t} style={{ background: '#1c1c1e' }}>{t}</option>
                           ))}
                         </select>
                       </div>
 
-                      {/* Exercises */}
                       <div>
-                        <label className="block text-[10px] font-bold uppercase tracking-widest text-white/40 mb-1">Exercises</label>
-                        <p className="text-[10px] text-white/30 mb-1.5">One per line — <span className="font-mono">Exercise: 80 x 8, 85 x 6</span></p>
+                        <label className="block text-[11px] font-medium uppercase tracking-widest mb-1" style={{ color: 'var(--label-tertiary)' }}>Exercises</label>
+                        <p className="text-[11px] mb-1.5" style={{ color: 'var(--label-quaternary)' }}>One per line — <span className="font-mono">Exercise: 80 x 8, 85 x 6</span></p>
                         <textarea
                           value={logFormText}
                           onChange={e => setLogFormText(e.target.value)}
-                          placeholder={"Bench Press: 70 x 10, 80 x 8, 90 x 6\nOHP: 40 x 10, 40 x 8\nLateral Raise: 8 x 10, 8 x 10"}
-                          rows={5}
-                          className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm text-white placeholder-white/20 focus:outline-none focus:border-pink-500/50 font-mono resize-none"
+                          placeholder={"Bench Press: 70 x 10, 80 x 8, 90 x 6\nOHP: 40 x 10, 40 x 8"}
+                          rows={4}
+                          className="w-full rounded-xl px-3 py-2.5 text-[13px] text-white focus:outline-none glass-input font-mono resize-none"
+                          style={{ color: 'var(--label-primary)', caretColor: 'var(--tint-blue)' }}
                         />
                       </div>
 
                       {logFormError && (
-                        <p className="text-[11px] text-red-400 font-semibold">{logFormError}</p>
+                        <p className="text-[12px] font-medium" style={{ color: 'var(--tint-red)' }}>{logFormError}</p>
                       )}
 
                       <div className="flex gap-2 pt-1">
                         <button
                           onClick={() => { setLogFormOpen(false); setLogFormError(''); }}
-                          className="flex-1 py-2.5 rounded-xl bg-white/5 text-white/50 text-sm font-semibold hover:bg-white/10 transition-all"
+                          className="flex-1 py-2.5 rounded-xl text-[14px] font-medium transition-all"
+                          style={{ background: '#2c2c2e', color: 'var(--label-secondary)' }}
                         >
                           Cancel
                         </button>
                         <button
                           onClick={handleLogPastWorkout}
-                          className="flex-1 py-2.5 rounded-xl bg-pink-600 hover:bg-pink-500 text-white text-sm font-bold transition-all"
+                          className="flex-1 py-2.5 rounded-xl text-[14px] font-semibold text-white transition-all"
+                          style={{ background: 'var(--tint-blue)' }}
                         >
                           Save
                         </button>
@@ -1209,6 +1105,23 @@ export default function App() {
                 )}
               </AnimatePresence>
 
+              <button
+                onClick={() => setHistoryOpen(!historyOpen)}
+                className="w-full flex items-center px-4 py-4 rounded-2xl transition-colors list-row"
+                style={{ background: '#1c1c1e', border: '1px solid rgba(255,255,255,0.08)' }}
+              >
+                <div className="w-9 h-9 rounded-full flex items-center justify-center mr-3 shrink-0" style={{ background: 'rgba(26,204,255,0.15)' }}>
+                  <History className="w-4 h-4" style={{ color: 'var(--ring-stand)' }} />
+                </div>
+                <div className="flex-1 text-left">
+                  <p className="text-[15px] font-semibold text-white">Workout History</p>
+                  <p className="text-[12px]" style={{ color: 'var(--label-tertiary)' }}>{historyData.length} sessions</p>
+                </div>
+                <motion.div animate={{ rotate: historyOpen ? 90 : 0 }} transition={{ type: 'spring', stiffness: 300, damping: 30 }}>
+                  <ChevronRight className="w-4 h-4" style={{ color: 'var(--label-quaternary)' }} />
+                </motion.div>
+              </button>
+
               <AnimatePresence>
                 {historyOpen && (
                   <motion.div
@@ -1217,12 +1130,12 @@ export default function App() {
                     exit={{ height: 0, opacity: 0 }}
                     className="overflow-hidden"
                   >
-                    <div className="mt-3 space-y-2">
+                    <div className="mt-2 rounded-2xl overflow-hidden" style={{ background: '#1c1c1e', border: '1px solid rgba(255,255,255,0.08)' }}>
                       {historyData.length === 0 ? (
-                        <div className="text-center py-8 text-white/30 text-sm">No workouts logged yet</div>
+                        <div className="py-10 text-center text-[14px]" style={{ color: 'var(--label-tertiary)' }}>No workouts logged yet</div>
                       ) : (
                         historyData.map((session, i) => (
-                          <HistoryCard key={i} session={session} />
+                          <HistoryCard key={i} session={session} index={i} total={historyData.length} />
                         ))
                       )}
                     </div>
@@ -1240,9 +1153,9 @@ export default function App() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="pb-32"
+            className="pb-36"
           >
-            <header className="sticky top-0 z-30 glass-header px-6 py-4">
+            <header className="sticky top-0 z-30 glass-header px-5 pt-safe pb-3" style={{ paddingTop: 'max(env(safe-area-inset-top, 0px), 12px)' }}>
               <div className="max-w-2xl mx-auto flex items-center justify-between">
                 <button
                   onClick={() => {
@@ -1251,32 +1164,34 @@ export default function App() {
                       setScreen('select');
                     }
                   }}
-                  className="p-2 -ml-2 text-white/50 hover:text-white transition-colors"
+                  className="p-2 -ml-2 transition-colors"
+                  style={{ color: 'var(--tint-blue)' }}
                 >
                   <ChevronLeft className="w-6 h-6" />
                 </button>
                 <div className="text-center">
-                  <h2 className="text-sm font-bold text-white uppercase tracking-tight">
+                  <h2 className="text-[14px] font-semibold text-white">
                     {programme.sessions[currentSessionKey].label.split(' — ')[1]}
                   </h2>
-                  <div className="flex items-center justify-center gap-2 mt-0.5">
+                  <div className="flex items-center justify-center gap-1.5 mt-0.5">
                     <div className={cn(
                       "w-1.5 h-1.5 rounded-full",
-                      isTimerRunning ? "bg-emerald-400 animate-pulse" : "bg-amber-400"
-                    )} />
-                    <span className="text-lg font-bold tabular-nums text-white/80">{formatTime(elapsed)}</span>
+                      isTimerRunning ? "animate-pulse" : ""
+                    )} style={{ background: isTimerRunning ? 'var(--ring-exercise)' : 'var(--tint-orange)' }} />
+                    <span className="text-[15px] font-semibold tabular-nums" style={{ color: 'var(--label-secondary)' }}>{formatTime(elapsed)}</span>
                   </div>
                 </div>
                 <button
                   onClick={() => setIsTimerRunning(!isTimerRunning)}
-                  className="p-2 -mr-2 text-white/50 hover:text-white transition-colors"
+                  className="p-2 -mr-2 transition-colors"
+                  style={{ color: 'var(--label-secondary)' }}
                 >
                   {isTimerRunning ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
                 </button>
               </div>
             </header>
 
-            <main className="max-w-2xl mx-auto px-5 py-6 space-y-4">
+            <main className="max-w-2xl mx-auto px-4 py-5 space-y-3">
               {getSessionExercises(programme.sessions[currentSessionKey]).map((ex, idx) => (
                 <ExerciseCard
                   key={idx}
@@ -1347,12 +1262,11 @@ export default function App() {
               ))}
             </main>
 
-            <div className="fixed bottom-0 left-0 right-0 p-5 bottom-fade pointer-events-none">
+            <div className="fixed bottom-0 left-0 right-0 bottom-fade pointer-events-none" style={{ paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 20px)', padding: '20px 16px max(env(safe-area-inset-bottom, 0px), 16px)' }}>
               <div className="max-w-2xl mx-auto pointer-events-auto flex gap-3">
                 <button
                   onClick={() => {
                     setIsTimerRunning(false);
-                    // Save backup before clearing so the user can restore
                     const backup: SessionProgress = {
                       sessionKey: currentSessionKey!,
                       setData,
@@ -1365,13 +1279,15 @@ export default function App() {
                     localStorage.removeItem('liftoff_session');
                     setScreen('select');
                   }}
-                  className="flex-1 glass text-white/60 font-bold py-4 rounded-2xl hover:bg-white/15 transition-all active:scale-[0.98]"
+                  className="flex-1 font-semibold py-3.5 rounded-2xl transition-all active:scale-[0.97] text-[15px]"
+                  style={{ background: '#2c2c2e', color: 'var(--label-secondary)' }}
                 >
-                  Quit Session
+                  Quit
                 </button>
                 <button
                   onClick={handleFinish}
-                  className="flex-[2] bg-emerald-500 text-white font-bold py-4 rounded-2xl shadow-lg shadow-emerald-500/25 hover:bg-emerald-400 transition-all active:scale-[0.98]"
+                  className="flex-[2] font-semibold py-3.5 rounded-2xl transition-all active:scale-[0.97] text-white text-[15px]"
+                  style={{ background: 'var(--ring-exercise)', color: '#000' }}
                 >
                   Finish Workout
                 </button>
@@ -1410,103 +1326,96 @@ export default function App() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 glass-overlay flex flex-col items-center justify-center p-8"
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-50 glass-overlay flex flex-col items-center justify-center px-8"
           >
-            <span className="text-xs font-bold uppercase tracking-widest text-violet-400 mb-2">Rest Period</span>
-            <h3 className="text-xl font-bold text-white mb-8 text-center">{restTimer.exName}</h3>
+            <span className="text-[11px] font-semibold uppercase tracking-widest mb-1" style={{ color: 'var(--label-tertiary)' }}>Rest</span>
+            <h3 className="text-[17px] font-semibold text-white mb-10 text-center">{restTimer.exName}</h3>
 
-            <div className="relative w-48 h-48 mb-6">
+            {/* Large ring */}
+            <div className="relative w-52 h-52 mb-8">
               <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
-                <circle
-                  cx="50" cy="50" r="45"
-                  fill="none" stroke="currentColor"
-                  strokeWidth="4" className="text-white/10"
-                />
+                <circle cx="50" cy="50" r="44" fill="none" stroke="rgba(255,255,255,0.07)" strokeWidth="5" />
                 <motion.circle
-                  cx="50" cy="50" r="45"
-                  fill="none" stroke="currentColor"
-                  strokeWidth="4" className="text-violet-500"
-                  strokeDasharray="283"
-                  animate={{ strokeDashoffset: 283 - (283 * (restTimer.remaining / restTimer.total)) }}
-                  transition={{ duration: 1, ease: "linear" }}
+                  cx="50" cy="50" r="44"
+                  fill="none"
+                  stroke="var(--ring-stand)"
+                  strokeWidth="5"
                   strokeLinecap="round"
+                  strokeDasharray="276.5"
+                  animate={{ strokeDashoffset: 276.5 - (276.5 * (restTimer.remaining / restTimer.total)) }}
+                  transition={{ duration: 1, ease: "linear" }}
                 />
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className="text-5xl font-black tabular-nums text-white">{restTimer.remaining}</span>
-                <span className="text-xs font-bold text-white/40 uppercase tracking-tighter">Seconds</span>
+                <span className="text-[64px] font-light tabular-nums text-white leading-none" style={{ letterSpacing: '-0.03em' }}>
+                  {restTimer.remaining}
+                </span>
+                <span className="text-[12px] font-medium uppercase tracking-widest mt-1" style={{ color: 'var(--label-tertiary)' }}>seconds</span>
               </div>
             </div>
 
-            <div className="flex gap-4 w-full max-w-xs mb-6">
+            <div className="flex gap-3 w-full max-w-xs mb-8">
               <button
                 onClick={() => setRestTimer(prev => ({ ...prev, active: false }))}
-                className="flex-1 glass text-white/70 font-bold py-3 rounded-2xl hover:bg-white/15 transition-all"
+                className="flex-1 font-medium py-3.5 rounded-2xl text-[15px] transition-all active:scale-[0.97]"
+                style={{ background: '#2c2c2e', color: 'var(--label-secondary)' }}
               >
                 Skip
               </button>
               <button
                 onClick={() => setRestTimer(prev => ({ ...prev, remaining: prev.remaining + 30, total: prev.total + 30 }))}
-                className="flex-1 bg-violet-600 text-white font-bold py-3 rounded-2xl hover:bg-violet-500 transition-all"
+                className="flex-1 font-medium py-3.5 rounded-2xl text-[15px] text-white transition-all active:scale-[0.97]"
+                style={{ background: 'var(--ring-stand)' }}
               >
                 +30s
               </button>
             </div>
 
-            {/* Synergist suggestion — only during countdown (not at 0) */}
+            {/* Synergist suggestion */}
             {!showCoachingCue && synergistSuggestion && !suggestionHidden && (
               <motion.div
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
-                className="w-full max-w-xs rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-4"
+                className="w-full max-w-xs rounded-2xl p-4"
+                style={{ background: '#1c1c1e', border: '1px solid rgba(255,255,255,0.08)' }}
               >
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-pink-400">While you wait</span>
-                  <div className="flex items-center gap-2">
+                  <span className="text-[11px] font-semibold uppercase tracking-widest" style={{ color: 'var(--ring-stand)' }}>While you wait</span>
+                  <div className="flex items-center gap-1.5">
                     <button
                       onClick={() => {
                         if (currentSessionKey) {
-                          const next = getSynergistSuggestion(
-                            currentSessionKey,
-                            historyData,
-                            exerciseRegistry,
-                            synergistSuggestion.exercise.name
-                          );
+                          const next = getSynergistSuggestion(currentSessionKey, historyData, exerciseRegistry, synergistSuggestion.exercise.name);
                           setSynergistSuggestion(next);
                         }
                       }}
-                      className="text-white/40 hover:text-white/80 transition-colors p-1"
-                      title="Shuffle"
+                      className="p-1 transition-colors"
+                      style={{ color: 'var(--label-tertiary)' }}
                     >
                       <Shuffle className="w-3.5 h-3.5" />
                     </button>
-                    <button
-                      onClick={() => setSuggestionHidden(true)}
-                      className="text-white/30 hover:text-white/60 transition-colors p-1"
-                      title="Dismiss"
-                    >
+                    <button onClick={() => setSuggestionHidden(true)} className="p-1 transition-colors" style={{ color: 'var(--label-tertiary)' }}>
                       <X className="w-3.5 h-3.5" />
                     </button>
                   </div>
                 </div>
-                <div className="flex items-baseline gap-2 mb-1">
-                  <span className="text-sm font-bold text-white capitalize">{synergistSuggestion.muscleGroup}</span>
-                  <span className="text-[10px] text-white/35">last trained: {synergistSuggestion.lastTrainedLabel}</span>
-                </div>
-                <p className="text-xs text-white/70 leading-snug capitalize">{synergistSuggestion.exercise.name}</p>
-                <span className="mt-1 inline-block text-[10px] text-white/30 capitalize">{synergistSuggestion.exercise.equipment}</span>
+                <p className="text-[15px] font-semibold text-white capitalize">{synergistSuggestion.exercise.name}</p>
+                <p className="text-[12px] mt-0.5 capitalize" style={{ color: 'var(--label-tertiary)' }}>
+                  {synergistSuggestion.muscleGroup} · last: {synergistSuggestion.lastTrainedLabel}
+                </p>
               </motion.div>
             )}
 
-            {/* Coaching cue — shown at timer end, replaces synergist */}
             <AnimatePresence>
               {showCoachingCue && (
                 <motion.p
                   initial={{ opacity: 0, y: 6 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0 }}
-                  className="text-sm text-white/60 text-center mt-2"
+                  className="text-[14px] text-center"
+                  style={{ color: 'var(--label-secondary)' }}
                 >
                   {coachingCueText}
                 </motion.p>
@@ -1520,25 +1429,26 @@ export default function App() {
       <AnimatePresence>
         {newPRBanner && (
           <motion.div
-            initial={{ opacity: 0, y: -20, scale: 0.95 }}
+            initial={{ opacity: 0, y: -16, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -20, scale: 0.95 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-            className="fixed top-6 left-1/2 -translate-x-1/2 z-[60] w-[calc(100%-2.5rem)] max-w-sm"
+            exit={{ opacity: 0, y: -16, scale: 0.96 }}
+            transition={{ type: 'spring', stiffness: 500, damping: 36 }}
+            className="fixed top-16 left-1/2 -translate-x-1/2 z-[60] w-[calc(100%-2rem)] max-w-sm"
             onClick={() => setNewPRBanner(null)}
           >
-            <div className="glass rounded-2xl border border-emerald-500/30 bg-emerald-500/10 backdrop-blur-xl px-5 py-4 flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center shrink-0">
-                <TrendingUp className="w-4 h-4 text-emerald-400" />
+            <div className="rounded-2xl px-4 py-3.5 flex items-center gap-3"
+              style={{ background: '#1c1c1e', border: '1px solid rgba(48,209,88,0.3)', boxShadow: '0 8px 32px rgba(0,0,0,0.6)' }}>
+              <div className="w-9 h-9 rounded-full flex items-center justify-center shrink-0" style={{ background: 'rgba(48,209,88,0.15)' }}>
+                <TrendingUp className="w-4 h-4" style={{ color: 'var(--tint-green)' }} />
               </div>
               <div className="min-w-0">
-                <p className="text-[10px] font-black uppercase tracking-widest text-emerald-400 mb-0.5">NEW PR</p>
-                <p className="text-sm font-bold text-white leading-tight">
+                <p className="text-[11px] font-semibold uppercase tracking-widest mb-0.5" style={{ color: 'var(--tint-green)' }}>New Personal Record</p>
+                <p className="text-[15px] font-semibold text-white leading-tight">
                   {newPRBanner.exercise.replace(/^Barbell /, '')} — {newPRBanner.weight}kg
                 </p>
                 {newPRBanner.oldPR > 0 && (
-                  <p className="text-[11px] text-emerald-400 font-semibold">
-                    +{(newPRBanner.weight - newPRBanner.oldPR).toFixed(1)}kg above previous best
+                  <p className="text-[12px] font-medium" style={{ color: 'var(--tint-green)' }}>
+                    +{(newPRBanner.weight - newPRBanner.oldPR).toFixed(1)}kg above previous
                   </p>
                 )}
               </div>
@@ -1625,61 +1535,68 @@ function ExerciseCard({
   return (
     <motion.div
       layout
-      className={cn(
-        "glass rounded-3xl transition-all overflow-hidden",
-        isSkipped ? "opacity-50" : isComplete ? "border-emerald-500/30" : ""
-      )}
+      className="rounded-2xl overflow-hidden transition-all"
+      style={{
+        background: '#1c1c1e',
+        border: isComplete && !isSkipped ? '1px solid rgba(48,209,88,0.25)' : '1px solid rgba(255,255,255,0.07)',
+        opacity: isSkipped ? 0.45 : 1
+      }}
     >
       <div
         onClick={() => setIsOpen(!isOpen)}
-        className="p-5 flex items-start gap-4 cursor-pointer hover:bg-white/5 transition-colors"
+        className="px-4 py-4 flex items-start gap-3 cursor-pointer active:bg-[#2c2c2e] transition-colors"
       >
+        {/* Completion indicator dot */}
+        <div className="mt-1 shrink-0">
+          <div className="w-2 h-2 rounded-full" style={{
+            background: isComplete && !isSkipped ? 'var(--tint-green)' :
+              sets.some(s => s.weight || s.reps) ? 'var(--ring-stand)' :
+              'rgba(255,255,255,0.15)'
+          }} />
+        </div>
+
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 mb-1">
+          <div className="flex items-center gap-2 mb-0.5">
             {exercise.superset_group && (
-              <span className="text-[10px] font-black bg-violet-500/20 text-violet-300 px-1.5 py-0.5 rounded uppercase tracking-tighter">
+              <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-md uppercase tracking-tighter"
+                style={{ background: 'rgba(191,90,242,0.18)', color: 'var(--tint-purple)' }}>
                 {exercise.superset_group}
               </span>
             )}
-            <MarqueeText text={exercise.name} className="text-lg font-bold text-white" />
+            <MarqueeText text={exercise.name} className="text-[16px] font-semibold text-white" />
           </div>
           <div className="flex items-center gap-2">
-            <p className="text-xs font-medium text-white/40">
-              {exercise.sets ? `${exercise.sets} sets • ` : ''}{exercise.reps || (exercise.duration_seconds ? `${exercise.duration_seconds}s` : '')}{exercise.rest_seconds ? ` • ${exercise.rest_seconds}s rest` : ''}
+            <p className="text-[13px]" style={{ color: 'var(--label-tertiary)' }}>
+              {exercise.sets ? `${exercise.sets} × ` : ''}{exercise.reps || (exercise.duration_seconds ? `${exercise.duration_seconds}s` : '')}{exercise.rest_seconds ? ` · ${exercise.rest_seconds}s rest` : ''}
             </p>
-            {/* Beat-last-session delta badge */}
             {beatDelta !== null && beatDelta > 0 && (
-              <span className="text-[10px] font-bold text-emerald-400">+{beatDelta % 1 === 0 ? beatDelta : beatDelta.toFixed(1)}kg ↑</span>
-            )}
-            {beatDelta !== null && beatDelta === 0 && (
-              <span className="text-[10px] font-bold text-white/40">✓</span>
+              <span className="text-[12px] font-medium" style={{ color: 'var(--tint-green)' }}>+{beatDelta % 1 === 0 ? beatDelta : beatDelta.toFixed(1)}kg</span>
             )}
           </div>
-          {/* Beat-last-session banner */}
           {lastSession && lastSession.weight > 0 && (
-            <p className="text-[11px] text-white/40 mt-1">
-              Last: {lastSession.weight}kg × {lastSession.reps} — match or beat it
+            <p className="text-[12px] mt-0.5" style={{ color: 'var(--label-quaternary)' }}>
+              Last: {lastSession.weight}kg × {lastSession.reps}
             </p>
           )}
         </div>
-        <div className="flex items-center gap-3">
-          {/* Sparkline */}
+        <div className="flex items-center gap-2 shrink-0">
           {sparklineData.length >= 2 && (
-            <div className="shrink-0 opacity-60">
+            <div className="opacity-50">
               <Sparkline data={sparklineData} />
             </div>
           )}
           <button
             onClick={(e) => { e.stopPropagation(); onToggleSkip(); }}
-            className={cn(
-              "text-[10px] font-bold uppercase tracking-widest px-2.5 py-1.5 rounded-full border transition-all",
-              isSkipped ? "bg-amber-500/20 border-amber-500/30 text-amber-400" : "bg-white/5 border-white/10 text-white/40 hover:text-white/60"
-            )}
+            className="text-[12px] font-medium px-2.5 py-1 rounded-lg transition-all"
+            style={{
+              background: isSkipped ? 'rgba(255,159,10,0.15)' : '#2c2c2e',
+              color: isSkipped ? 'var(--tint-orange)' : 'var(--label-tertiary)'
+            }}
           >
-            {isSkipped ? 'Skipped' : 'Skip'}
+            {isSkipped ? 'Undo' : 'Skip'}
           </button>
-          <motion.div animate={{ rotate: isOpen ? 180 : 0 }}>
-            <ChevronRight className="w-5 h-5 text-white/30" />
+          <motion.div animate={{ rotate: isOpen ? 90 : 0 }} transition={{ type: 'spring', stiffness: 400, damping: 35 }}>
+            <ChevronRight className="w-4 h-4" style={{ color: 'var(--label-quaternary)' }} />
           </motion.div>
         </div>
       </div>
@@ -1690,31 +1607,39 @@ function ExerciseCard({
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            className="px-5 pb-5"
+            className="px-4 pb-4"
           >
+            {/* Separator */}
+            <div className="mb-4" style={{ height: '1px', background: 'rgba(255,255,255,0.06)' }} />
+
             {exercise.notes && (
-              <div className="mb-4 p-3 bg-violet-500/10 rounded-xl border-l-4 border-violet-500 text-xs text-white/60 leading-relaxed">
+              <div className="mb-4 px-3 py-2.5 rounded-xl text-[13px] leading-relaxed"
+                style={{ background: 'rgba(191,90,242,0.08)', borderLeft: '3px solid var(--tint-purple)', color: 'var(--label-secondary)' }}>
                 {exercise.notes}
               </div>
             )}
 
-            <div className="space-y-3 mb-6">
-              <div className="grid grid-cols-[28px_1fr_1fr_1.5fr] gap-2 px-1">
-                <span className="text-[10px] font-bold text-white/30 uppercase tracking-widest">Set</span>
-                <span className="text-[10px] font-bold text-white/30 uppercase tracking-widest text-center">Weight</span>
-                <span className="text-[10px] font-bold text-white/30 uppercase tracking-widest text-center">Reps</span>
-                <span className="text-[10px] font-bold text-white/30 uppercase tracking-widest">Note</span>
-              </div>
+            {/* Column headers */}
+            <div className="grid grid-cols-[24px_1fr_1fr_1.4fr] gap-2 px-1 mb-2">
+              <span className="text-[11px] font-medium uppercase tracking-widest" style={{ color: 'var(--label-quaternary)' }}>#</span>
+              <span className="text-[11px] font-medium uppercase tracking-widest text-center" style={{ color: 'var(--label-quaternary)' }}>kg</span>
+              <span className="text-[11px] font-medium uppercase tracking-widest text-center" style={{ color: 'var(--label-quaternary)' }}>Reps</span>
+              <span className="text-[11px] font-medium uppercase tracking-widest" style={{ color: 'var(--label-quaternary)' }}>Note</span>
+            </div>
+
+            <div className="space-y-2 mb-5">
               {sets.map((set, si) => (
-                <div key={si} className="grid grid-cols-[28px_1fr_1fr_1.5fr] gap-2 items-center">
-                  <div className={cn(
-                    "w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-black transition-colors",
-                    set.isDropSet && set.weight && set.reps ? "bg-amber-500/20 text-amber-400" :
-                    set.weight && set.reps ? "bg-emerald-500/20 text-emerald-400" :
-                    set.isDropSet ? "bg-amber-500/10 text-amber-400/50 border border-dashed border-amber-500/30" :
-                    "bg-white/10 text-white/30"
-                  )}>
-                    {set.isDropSet ? <ChevronDown className="w-3.5 h-3.5" /> : si + 1}
+                <div key={si} className="grid grid-cols-[24px_1fr_1fr_1.4fr] gap-2 items-center">
+                  <div className="w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-medium transition-colors"
+                    style={{
+                      background: set.isDropSet && set.weight && set.reps ? 'rgba(255,159,10,0.18)' :
+                        set.weight && set.reps ? 'rgba(48,209,88,0.18)' :
+                        set.isDropSet ? 'rgba(255,159,10,0.08)' : '#2c2c2e',
+                      color: set.isDropSet && set.weight && set.reps ? 'var(--tint-orange)' :
+                        set.weight && set.reps ? 'var(--tint-green)' :
+                        set.isDropSet ? 'rgba(255,159,10,0.4)' : 'var(--label-tertiary)'
+                    }}>
+                    {set.isDropSet ? <ChevronDown className="w-3 h-3" /> : si + 1}
                   </div>
                   <input
                     type="number"
@@ -1723,11 +1648,12 @@ function ExerciseCard({
                     value={set.weight}
                     onChange={(e) => onUpdateSet(si, 'weight', e.target.value)}
                     className={cn(
-                      "w-full glass-input rounded-xl py-2 px-1 text-center text-sm font-bold text-white focus:outline-none focus:border-violet-500/50 focus:ring-2 focus:ring-violet-500/20 transition-all",
+                      "w-full glass-input rounded-xl py-2 px-1 text-center text-[15px] font-semibold text-white focus:outline-none transition-all",
                       ghostWeights[si] != null && ghostWeights[si]! > 0 && set.weight === ''
-                        ? "placeholder:text-emerald-400/50"
-                        : "placeholder:text-white/20"
+                        ? "placeholder:text-emerald-400/60"
+                        : "placeholder:text-white/18"
                     )}
+                    style={{ '--tw-placeholder-opacity': 1 } as React.CSSProperties}
                   />
                   <input
                     type="number"
@@ -1735,82 +1661,71 @@ function ExerciseCard({
                     placeholder={exercise.type === 'timed' ? 'sec' : 'reps'}
                     value={set.reps}
                     onChange={(e) => onUpdateSet(si, 'reps', e.target.value)}
-                    className="w-full glass-input rounded-xl py-2 px-1 text-center text-sm font-bold text-white placeholder:text-white/20 focus:outline-none focus:border-violet-500/50 focus:ring-2 focus:ring-violet-500/20 transition-all"
+                    className="w-full glass-input rounded-xl py-2 px-1 text-center text-[15px] font-semibold text-white focus:outline-none transition-all"
+                    style={{ '--placeholder-color': 'rgba(255,255,255,0.18)' } as React.CSSProperties}
                   />
                   <input
                     type="text"
                     placeholder="note"
                     value={set.note}
                     onChange={(e) => onUpdateSet(si, 'note', e.target.value)}
-                    className="w-full glass-input rounded-xl py-2 px-2 text-xs text-white/60 placeholder:text-white/15 focus:outline-none focus:border-violet-500/50 focus:ring-2 focus:ring-violet-500/20 transition-all"
+                    className="w-full glass-input rounded-xl py-2 px-2 text-[13px] focus:outline-none transition-all"
+                    style={{ color: 'var(--label-secondary)' }}
                   />
                 </div>
               ))}
             </div>
 
-            {/* RPE picker — only for weighted exercises */}
+            {/* RPE picker */}
             {exercise.type === 'weight' && (
-              <div className="mb-5">
+              <div className="mb-4 px-1">
                 <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center gap-2">
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-white/30">Effort</span>
-                  </div>
+                  <span className="text-[11px] font-medium uppercase tracking-widest" style={{ color: 'var(--label-tertiary)' }}>Effort (RPE)</span>
                   <div className="flex items-center gap-1.5">
                     {[6, 7, 8, 9, 10].map(n => (
                       <button
                         key={n}
                         onClick={() => onRpeChange(n)}
-                        className={cn(
-                          "w-9 h-9 rounded-xl text-sm font-black border transition-all active:scale-90",
-                          rpe === n
-                            ? "bg-violet-600 border-violet-500 text-white shadow-sm shadow-violet-600/30"
-                            : "bg-white/5 border-white/10 text-white/40 hover:bg-white/10 hover:text-white/60"
-                        )}
+                        className="w-8 h-8 rounded-xl text-[13px] font-semibold transition-all active:scale-90"
+                        style={{
+                          background: rpe === n ? 'var(--tint-blue)' : '#2c2c2e',
+                          color: rpe === n ? '#fff' : 'var(--label-tertiary)'
+                        }}
                       >
                         {n}
                       </button>
                     ))}
                   </div>
                 </div>
-                <div className="flex justify-between px-0.5">
-                  <span className="text-[9px] text-white/20 font-medium">6 Easy</span>
-                  <span className="text-[9px] text-white/20 font-medium">10 Max</span>
-                </div>
               </div>
             )}
 
+            {/* Action buttons */}
             <div className="flex gap-2">
               <button
                 onClick={onAddSet}
-                className="flex-1 flex items-center justify-center gap-1.5 bg-white/10 text-white/70 font-bold py-3 rounded-xl hover:bg-white/15 transition-all text-xs"
+                className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl transition-all active:scale-[0.97] text-[13px] font-medium"
+                style={{ background: '#2c2c2e', color: 'var(--label-secondary)' }}
               >
                 <Plus className="w-3.5 h-3.5" />
                 Set
               </button>
               <button
                 onClick={onAddDropSet}
-                className="flex-1 flex items-center justify-center gap-1.5 bg-amber-500/15 text-amber-400 font-bold py-3 rounded-xl hover:bg-amber-500/25 transition-all text-xs"
+                className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl transition-all active:scale-[0.97] text-[13px] font-medium"
+                style={{ background: 'rgba(255,159,10,0.12)', color: 'var(--tint-orange)' }}
               >
                 <ChevronDown className="w-3.5 h-3.5" />
-                Drop Set
+                Drop
               </button>
-              {exercise.rest_seconds ? (
-                <button
-                  onClick={() => onStartRest(exercise.rest_seconds!)}
-                  className="flex-1 flex items-center justify-center gap-1.5 bg-emerald-500/15 text-emerald-400 font-bold py-3 rounded-xl hover:bg-emerald-500/25 transition-all text-xs"
-                >
-                  <Timer className="w-3.5 h-3.5" />
-                  Rest {exercise.rest_seconds}s
-                </button>
-              ) : (
-                <button
-                  onClick={() => onStartRest(60)}
-                  className="flex-1 flex items-center justify-center gap-1.5 bg-emerald-500/15 text-emerald-400 font-bold py-3 rounded-xl hover:bg-emerald-500/25 transition-all text-xs"
-                >
-                  <Timer className="w-3.5 h-3.5" />
-                  Rest 60s
-                </button>
-              )}
+              <button
+                onClick={() => onStartRest(exercise.rest_seconds ?? 60)}
+                className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl transition-all active:scale-[0.97] text-[13px] font-medium"
+                style={{ background: 'rgba(29,204,255,0.12)', color: 'var(--ring-stand)' }}
+              >
+                <Timer className="w-3.5 h-3.5" />
+                {exercise.rest_seconds ? `${exercise.rest_seconds}s` : 'Rest'}
+              </button>
             </div>
           </motion.div>
         )}
@@ -1819,18 +1734,22 @@ function ExerciseCard({
   );
 }
 
-function HistoryCard({ session, ...rest }: { session: { date: string; sessionType: string; exercises: { exercise: string; weight: string; sets: string; reps: string; notes: string }[] }; [key: string]: any }) {
+function HistoryCard({ session, index, total }: {
+  session: { date: string; sessionType: string; exercises: { exercise: string; weight: string; sets: string; reps: string; notes: string }[] };
+  index: number;
+  total: number;
+}) {
   return (
-    <div className="glass-pink rounded-2xl overflow-hidden">
-      <div className="p-4 flex items-center justify-between text-left">
-        <div>
-          <div className="flex items-center gap-2 mb-0.5">
-            <Calendar className="w-3.5 h-3.5 text-pink-400" />
-            <span className="text-sm font-bold text-white">{session.date}</span>
-          </div>
-          <span className="text-xs font-semibold text-pink-400">{session.sessionType}</span>
-        </div>
-        <span className="text-[10px] font-bold text-white/40">{session.exercises.length} exercises</span>
+    <div
+      className="px-4 py-3.5 flex items-center gap-3"
+      style={{ borderTop: index > 0 ? '1px solid rgba(255,255,255,0.06)' : 'none' }}
+    >
+      <div className="w-9 h-9 rounded-full flex items-center justify-center shrink-0" style={{ background: '#2c2c2e' }}>
+        <Calendar className="w-4 h-4" style={{ color: 'var(--ring-stand)' }} />
+      </div>
+      <div className="flex-1 min-w-0">
+        <p className="text-[14px] font-semibold text-white leading-snug">{session.sessionType}</p>
+        <p className="text-[12px]" style={{ color: 'var(--label-tertiary)' }}>{session.date} · {session.exercises.length} exercises</p>
       </div>
     </div>
   );
@@ -1894,50 +1813,49 @@ function FeedbackScreen({
       initial={{ opacity: 0, x: 40 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -40 }}
-      className="max-w-2xl mx-auto px-5 py-10"
+      transition={{ type: 'spring', stiffness: 280, damping: 28 }}
+      className="max-w-2xl mx-auto px-4 pt-14 pb-10"
     >
       <header className="mb-8">
-        <p className="text-[10px] font-bold uppercase tracking-widest text-violet-400 mb-1">Post-Session</p>
-        <h1 className="text-3xl font-extrabold text-white">How was that?</h1>
+        <p className="text-[13px] font-semibold uppercase tracking-widest mb-1" style={{ color: 'var(--label-tertiary)' }}>Post-Session</p>
+        <h1 className="text-[34px] font-bold text-white tracking-tight">How was that?</h1>
       </header>
 
-      <div className="space-y-4 mb-6">
+      <div className="space-y-3 mb-8">
         {/* Input 1: Session feel */}
-        <div className="glass rounded-3xl p-5">
-          <p className="text-xs font-bold uppercase tracking-widest text-white/40 mb-4">How was the session?</p>
-          <div className="grid grid-cols-3 gap-3">
+        <div className="rounded-2xl p-4" style={{ background: '#1c1c1e', border: '1px solid rgba(255,255,255,0.08)' }}>
+          <p className="text-[12px] font-medium uppercase tracking-widest mb-3" style={{ color: 'var(--label-tertiary)' }}>Session</p>
+          <div className="grid grid-cols-3 gap-2">
             {SESSION_OPTS.map(opt => (
               <button
                 key={opt.value}
                 onClick={() => setSessionRating(opt.value)}
-                className={cn(
-                  "flex flex-col items-center gap-2 py-4 rounded-2xl border font-bold transition-all active:scale-[0.96]",
-                  sessionRating === opt.value
-                    ? "bg-violet-600 border-violet-500 text-white shadow-lg shadow-violet-600/25"
-                    : "bg-white/5 border-white/10 text-white/50 hover:bg-white/10 hover:border-white/20"
-                )}
+                className="flex flex-col items-center gap-2 py-4 rounded-2xl font-medium transition-all active:scale-[0.95]"
+                style={{
+                  background: sessionRating === opt.value ? 'var(--tint-blue)' : '#2c2c2e',
+                  color: sessionRating === opt.value ? '#fff' : 'var(--label-secondary)'
+                }}
               >
-                <span className="text-2xl leading-none">{opt.emoji}</span>
-                <span className="text-sm">{opt.label}</span>
+                <span className="text-[28px] leading-none">{opt.emoji}</span>
+                <span className="text-[13px]">{opt.label}</span>
               </button>
             ))}
           </div>
         </div>
 
         {/* Input 2: Body feel */}
-        <div className="glass rounded-3xl p-5">
-          <p className="text-xs font-bold uppercase tracking-widest text-white/40 mb-4">How's your body?</p>
+        <div className="rounded-2xl p-4" style={{ background: '#1c1c1e', border: '1px solid rgba(255,255,255,0.08)' }}>
+          <p className="text-[12px] font-medium uppercase tracking-widest mb-3" style={{ color: 'var(--label-tertiary)' }}>Body</p>
           <div className="flex gap-2">
             {BODY_OPTS.map(opt => (
               <button
                 key={opt.value}
                 onClick={() => setBodyScore(opt.value)}
-                className={cn(
-                  "flex-1 py-2.5 rounded-xl text-sm font-bold border transition-all active:scale-[0.96]",
-                  bodyScore === opt.value
-                    ? "bg-emerald-600 border-emerald-500 text-white"
-                    : "bg-white/5 border-white/10 text-white/50 hover:bg-white/10 hover:border-white/20"
-                )}
+                className="flex-1 py-3 rounded-xl text-[14px] font-medium transition-all active:scale-[0.96]"
+                style={{
+                  background: bodyScore === opt.value ? 'var(--tint-green)' : '#2c2c2e',
+                  color: bodyScore === opt.value ? '#000' : 'var(--label-secondary)'
+                }}
               >
                 {opt.label}
               </button>
@@ -1946,25 +1864,27 @@ function FeedbackScreen({
         </div>
 
         {/* Input 3: Sleep stepper */}
-        <div className="glass rounded-3xl p-5">
+        <div className="rounded-2xl p-4" style={{ background: '#1c1c1e', border: '1px solid rgba(255,255,255,0.08)' }}>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Moon className="w-4 h-4 text-white/50" />
-              <p className="text-xs font-bold uppercase tracking-widest text-white/40">Sleep last night</p>
+              <Moon className="w-4 h-4" style={{ color: 'var(--tint-purple)' }} />
+              <p className="text-[14px] font-medium text-white">Sleep</p>
             </div>
             <div className="flex items-center gap-3">
               <button
                 onClick={() => adjustSleep(-0.5)}
-                className="w-9 h-9 rounded-xl bg-white/10 text-white/60 hover:bg-white/20 hover:text-white flex items-center justify-center transition-all active:scale-90 font-black text-lg"
+                className="w-9 h-9 rounded-xl flex items-center justify-center transition-all active:scale-90 text-[18px] font-light"
+                style={{ background: '#2c2c2e', color: 'var(--label-secondary)' }}
               >
                 −
               </button>
-              <span className="text-xl font-black text-white w-14 text-center tabular-nums">
-                {sleepHours % 1 === 0 ? `${sleepHours}h` : `${sleepHours}h`}
+              <span className="text-[22px] font-semibold text-white w-16 text-center tabular-nums" style={{ letterSpacing: '-0.02em' }}>
+                {sleepHours}h
               </span>
               <button
                 onClick={() => adjustSleep(0.5)}
-                className="w-9 h-9 rounded-xl bg-white/10 text-white/60 hover:bg-white/20 hover:text-white flex items-center justify-center transition-all active:scale-90 font-black text-lg"
+                className="w-9 h-9 rounded-xl flex items-center justify-center transition-all active:scale-90 text-[18px] font-light"
+                style={{ background: '#2c2c2e', color: 'var(--label-secondary)' }}
               >
                 +
               </button>
@@ -1973,12 +1893,13 @@ function FeedbackScreen({
         </div>
 
         {/* Optional note */}
-        <div className="glass rounded-3xl overflow-hidden">
+        <div className="rounded-2xl overflow-hidden" style={{ background: '#1c1c1e', border: '1px solid rgba(255,255,255,0.08)' }}>
           <button
             onClick={() => setNoteOpen(v => !v)}
-            className="w-full flex items-center justify-between px-5 py-4 text-sm font-semibold text-white/40 hover:text-white/60 transition-colors"
+            className="w-full flex items-center justify-between px-4 py-4 text-[14px] font-medium transition-colors"
+            style={{ color: 'var(--label-tertiary)' }}
           >
-            <span>Add a note (optional)</span>
+            <span>Add a note</span>
             <motion.div animate={{ rotate: noteOpen ? 180 : 0 }} transition={{ duration: 0.15 }}>
               <ChevronDown className="w-4 h-4" />
             </motion.div>
@@ -1991,14 +1912,15 @@ function FeedbackScreen({
                 exit={{ height: 0, opacity: 0 }}
                 className="overflow-hidden"
               >
-                <div className="px-5 pb-4 border-t border-white/5">
+                <div className="px-4 pb-4" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
                   <textarea
                     value={notes}
                     onChange={e => setNotes(e.target.value)}
-                    placeholder="Pain, PRs, conditions, anything else..."
+                    placeholder="Pain, PRs, conditions..."
                     rows={3}
                     autoFocus
-                    className="w-full bg-transparent text-sm text-white/80 placeholder:text-white/25 focus:outline-none resize-none mt-3"
+                    className="w-full bg-transparent text-[14px] text-white placeholder:text-white/25 focus:outline-none resize-none mt-3"
+                    style={{ color: 'var(--label-primary)', caretColor: 'var(--tint-blue)' }}
                   />
                 </div>
               </motion.div>
@@ -2010,15 +1932,17 @@ function FeedbackScreen({
       <div className="flex gap-3">
         <button
           onClick={onSkip}
-          className="flex-1 glass text-white/50 font-bold py-4 rounded-2xl hover:bg-white/10 transition-all active:scale-[0.98]"
+          className="flex-1 font-medium py-4 rounded-2xl transition-all active:scale-[0.97] text-[15px]"
+          style={{ background: '#1c1c1e', color: 'var(--label-secondary)', border: '1px solid rgba(255,255,255,0.08)' }}
         >
           Skip
         </button>
         <button
           onClick={handleSubmit}
-          className="flex-[2] bg-violet-600 text-white font-bold py-4 rounded-2xl shadow-lg shadow-violet-600/25 hover:bg-violet-500 transition-all active:scale-[0.98]"
+          className="flex-[2] font-semibold py-4 rounded-2xl transition-all active:scale-[0.97] text-[15px] text-white"
+          style={{ background: 'var(--tint-blue)' }}
         >
-          See My Report
+          See Report
         </button>
       </div>
     </motion.div>
@@ -2325,11 +2249,18 @@ function ReportScreen({
   const dashoffset = circumference - (circumference * score) / 100;
 
   const labelColors: Record<string, string> = {
-    'Crushed it': 'text-emerald-400',
-    'Solid session': 'text-violet-400',
-    'Grinding': 'text-amber-400',
-    'Off day': 'text-red-400',
+    'Crushed it': 'var(--tint-green)',
+    'Solid session': 'var(--tint-blue)',
+    'Grinding': 'var(--tint-orange)',
+    'Off day': 'var(--tint-red)',
   };
+  const ringGradients: Record<string, [string, string]> = {
+    'Crushed it': ['var(--ring-exercise)', 'var(--tint-green)'],
+    'Solid session': ['var(--ring-stand)', 'var(--tint-blue)'],
+    'Grinding': ['var(--tint-orange)', '#ffcc00'],
+    'Off day': ['var(--ring-move)', 'var(--tint-red)'],
+  };
+  const [gradStart, gradEnd] = ringGradients[label] ?? ['var(--ring-move)', 'var(--ring-exercise)'];
 
   const handleDone = () => {
     // Auto-accept all weight adjustments from the evaluation
@@ -2350,48 +2281,47 @@ function ReportScreen({
       initial={{ opacity: 0, x: 40 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -40 }}
-      className="max-w-2xl mx-auto px-5 py-10 pb-52"
+      transition={{ type: 'spring', stiffness: 280, damping: 28 }}
+      className="max-w-2xl mx-auto px-4 pt-14 pb-56"
     >
       {/* Top: Score Ring */}
       <div className="flex flex-col items-center mb-10">
-        <p className="text-[10px] font-bold uppercase tracking-widest text-violet-400 mb-5">Session Report</p>
+        <p className="text-[12px] font-medium uppercase tracking-widest mb-6" style={{ color: 'var(--label-tertiary)' }}>Session Report</p>
 
         {/* Ring */}
-        <div className="relative w-32 h-32 mb-4">
+        <div className="relative w-36 h-36 mb-5">
           <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
-            {/* Track */}
             <circle
-              cx="50" cy="50" r="45"
+              cx="50" cy="50" r="44"
               fill="none"
-              stroke="currentColor"
-              strokeWidth="7"
-              className="text-white/8"
+              stroke="rgba(255,255,255,0.06)"
+              strokeWidth="6"
             />
-            {/* Fill */}
             <motion.circle
-              cx="50" cy="50" r="45"
+              cx="50" cy="50" r="44"
               fill="none"
-              stroke="url(#scoreGrad)"
-              strokeWidth="7"
+              stroke={`url(#scoreGrad-${label.replace(/ /g, '')})`}
+              strokeWidth="6"
               strokeLinecap="round"
               strokeDasharray={circumference}
               initial={{ strokeDashoffset: circumference }}
               animate={{ strokeDashoffset: ringAnimated ? dashoffset : circumference }}
-              transition={{ duration: 1.2, ease: [0.34, 1.2, 0.64, 1] }}
+              transition={{ duration: 1.4, ease: [0.34, 1.1, 0.64, 1] }}
             />
             <defs>
-              <linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#8b5cf6" />
-                <stop offset="100%" stopColor="#a78bfa" />
+              <linearGradient id={`scoreGrad-${label.replace(/ /g, '')}`} x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor={gradStart} />
+                <stop offset="100%" stopColor={gradEnd} />
               </linearGradient>
             </defs>
           </svg>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
             <motion.span
-              className="text-3xl font-black text-white tabular-nums leading-none"
+              className="tabular-nums text-white leading-none"
+              style={{ fontSize: '36px', fontWeight: 300, letterSpacing: '-0.03em' }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.4 }}
+              transition={{ delay: 0.5 }}
             >
               {score}%
             </motion.span>
@@ -2399,7 +2329,8 @@ function ReportScreen({
         </div>
 
         <motion.h1
-          className={cn("text-2xl font-extrabold", labelColors[label] ?? 'text-white')}
+          className="text-[28px] font-semibold tracking-tight"
+          style={{ color: labelColors[label] ?? '#fff' }}
           initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
@@ -2407,85 +2338,63 @@ function ReportScreen({
           {label}
         </motion.h1>
 
-        {/* Quick stats row */}
+        {/* Quick stats */}
         <motion.div
-          className="flex gap-4 mt-5"
+          className="flex gap-6 mt-6"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.6 }}
+          transition={{ delay: 0.65 }}
         >
           <div className="text-center">
-            <span className="block text-xl font-black text-white">{Math.round(elapsed / 60)}</span>
-            <span className="text-[9px] font-bold uppercase tracking-widest text-white/30">min</span>
+            <span className="block tabular-nums text-white leading-none" style={{ fontSize: '26px', fontWeight: 300, letterSpacing: '-0.03em' }}>{Math.round(elapsed / 60)}</span>
+            <span className="text-[11px] font-medium uppercase tracking-widest mt-1 block" style={{ color: 'var(--label-tertiary)' }}>min</span>
           </div>
-          <div className="w-px bg-white/10" />
+          <div style={{ width: '1px', background: 'rgba(255,255,255,0.1)' }} />
           <div className="text-center">
-            <span className="block text-xl font-black text-white">
+            <span className="block tabular-nums text-white leading-none" style={{ fontSize: '26px', fontWeight: 300, letterSpacing: '-0.03em' }}>
               {Object.values(setData).flat().filter((s: SetEntry) => s.weight !== '' || s.reps !== '').length}
             </span>
-            <span className="text-[9px] font-bold uppercase tracking-widest text-white/30">sets</span>
+            <span className="text-[11px] font-medium uppercase tracking-widest mt-1 block" style={{ color: 'var(--label-tertiary)' }}>sets</span>
           </div>
-          <div className="w-px bg-white/10" />
+          <div style={{ width: '1px', background: 'rgba(255,255,255,0.1)' }} />
           <div className="text-center">
-            <span className="block text-xl font-black text-white">
-              {exerciseScores.length}
-            </span>
-            <span className="text-[9px] font-bold uppercase tracking-widest text-white/30">exercises</span>
+            <span className="block tabular-nums text-white leading-none" style={{ fontSize: '26px', fontWeight: 300, letterSpacing: '-0.03em' }}>{exerciseScores.length}</span>
+            <span className="text-[11px] font-medium uppercase tracking-widest mt-1 block" style={{ color: 'var(--label-tertiary)' }}>exercises</span>
           </div>
         </motion.div>
       </div>
 
-      {/* Section 1: What Stood Out */}
+      {/* Highlights */}
       {callouts.length > 0 && (
-        <motion.div
-          className="mb-5"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.65 }}
-        >
-          <p className="text-[10px] font-bold uppercase tracking-widest text-white/40 mb-2 px-1">What Stood Out</p>
-          <div className="glass rounded-3xl overflow-hidden divide-y divide-white/5">
+        <motion.div className="mb-4" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.65 }}>
+          <p className="text-[13px] font-medium mb-2 px-1" style={{ color: 'var(--label-tertiary)' }}>Highlights</p>
+          <div className="rounded-2xl overflow-hidden" style={{ background: '#1c1c1e', border: '1px solid rgba(255,255,255,0.07)' }}>
             {callouts.map((es, i) => {
               const isExceeded = es.status === 'exceeded';
               const isMissed = es.status === 'missed';
               const note = rpeNote(es.status, es.rpe);
-              // Short name (strip "Barbell " prefix)
               const shortName = es.name.replace(/^Barbell /, '').replace(/^Assisted /, '');
-
+              const accentColor = isExceeded ? 'var(--tint-green)' : isMissed ? 'var(--tint-orange)' : 'var(--label-secondary)';
               return (
-                <div key={i} className="p-4">
-                  <div className="flex items-baseline gap-2 flex-wrap">
-                    <span className={cn(
-                      "text-sm font-black",
-                      isExceeded ? "text-emerald-400" : isMissed ? "text-amber-400" : "text-white"
-                    )}>
-                      {isExceeded ? '↑' : isMissed ? '↓' : '→'} {shortName}
-                    </span>
-                    <span className="text-sm font-bold text-white tabular-nums">
-                      {es.actualWeight}kg x{es.actualReps}
-                    </span>
-                    {es.prescribedWeight !== null && (
-                      <span className={cn(
-                        "text-xs font-semibold",
-                        isExceeded ? "text-emerald-400" : isMissed ? "text-amber-400" : "text-white/40"
-                      )}>
-                        {es.weightDelta > 0 ? `+${es.weightDelta.toFixed(1)}kg` : es.weightDelta < 0 ? `${es.weightDelta.toFixed(1)}kg` : 'on target'}
-                        {es.prescribedWeight !== null && es.weightDelta !== 0 ? ' vs target' : ''}
+                <div key={i} className="px-4 py-3.5" style={{ borderTop: i > 0 ? '1px solid rgba(255,255,255,0.06)' : 'none' }}>
+                  <div className="flex items-baseline justify-between gap-2">
+                    <span className="text-[15px] font-semibold text-white">{shortName}</span>
+                    <span className="text-[13px] font-medium tabular-nums" style={{ color: accentColor }}>{es.actualWeight}kg × {es.actualReps}</span>
+                  </div>
+                  <div className="flex items-center gap-3 mt-0.5">
+                    {es.prescribedWeight !== null && es.weightDelta !== 0 && (
+                      <span className="text-[12px]" style={{ color: accentColor }}>
+                        {es.weightDelta > 0 ? '+' : ''}{es.weightDelta.toFixed(1)}kg vs target
                       </span>
                     )}
                     {es.prescribedWeight === null && es.repsDelta !== 0 && (
-                      <span className={cn(
-                        "text-xs font-semibold",
-                        es.repsDelta > 0 ? "text-emerald-400" : "text-amber-400"
-                      )}>
-                        {es.repsDelta > 0 ? `+${es.repsDelta}` : `${es.repsDelta}`} reps vs target
+                      <span className="text-[12px]" style={{ color: accentColor }}>
+                        {es.repsDelta > 0 ? '+' : ''}{es.repsDelta} reps vs target
                       </span>
                     )}
-                    <span className="text-xs font-semibold text-white/30 ml-auto">RPE {es.rpe.toFixed(1)}</span>
+                    <span className="text-[12px] ml-auto" style={{ color: 'var(--label-quaternary)' }}>RPE {es.rpe.toFixed(1)}</span>
                   </div>
-                  {note && (
-                    <p className="text-[11px] text-white/40 mt-1 italic">{note}</p>
-                  )}
+                  {note && <p className="text-[12px] mt-0.5 italic" style={{ color: 'var(--label-quaternary)' }}>{note}</p>}
                 </div>
               );
             })}
@@ -2493,196 +2402,156 @@ function ReportScreen({
         </motion.div>
       )}
 
-      {/* Section 2: Next Session */}
-      <motion.div
-        className="mb-5"
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.75 }}
-      >
-        <p className="text-[10px] font-bold uppercase tracking-widest text-white/40 mb-2 px-1">Next Session</p>
-        <div className="glass rounded-3xl p-4 space-y-2.5">
+      {/* Next Session */}
+      <motion.div className="mb-4" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.75 }}>
+        <p className="text-[13px] font-medium mb-2 px-1" style={{ color: 'var(--label-tertiary)' }}>Next Session</p>
+        <div className="rounded-2xl p-4" style={{ background: '#1c1c1e', border: '1px solid rgba(255,255,255,0.07)' }}>
           {adjLines.length > 0 ? (
-            adjLines.map((line, i) => {
-              const isIncrease = line.includes('increases');
-              const isDecrease = line.includes('drops') || line.includes('deload');
-              return (
-                <div key={i} className="flex items-start gap-2.5">
-                  <span className={cn(
-                    "mt-0.5 shrink-0",
-                    isIncrease ? "text-emerald-400" : isDecrease ? "text-amber-400" : "text-white/40"
-                  )}>
-                    {isIncrease ? <TrendingUp className="w-3.5 h-3.5" /> : isDecrease ? <TrendingDown className="w-3.5 h-3.5" /> : <Minus className="w-3.5 h-3.5" />}
-                  </span>
-                  <span className="text-sm text-white/80 font-medium">{line}</span>
-                </div>
-              );
-            })
+            <div className="space-y-2.5">
+              {adjLines.map((line, i) => {
+                const isIncrease = line.includes('increases');
+                const isDecrease = line.includes('drops') || line.includes('deload');
+                return (
+                  <div key={i} className="flex items-start gap-3">
+                    <span className="mt-0.5 shrink-0" style={{ color: isIncrease ? 'var(--tint-green)' : isDecrease ? 'var(--tint-orange)' : 'var(--label-tertiary)' }}>
+                      {isIncrease ? <TrendingUp className="w-3.5 h-3.5" /> : isDecrease ? <TrendingDown className="w-3.5 h-3.5" /> : <Minus className="w-3.5 h-3.5" />}
+                    </span>
+                    <span className="text-[14px] font-medium text-white">{line}</span>
+                  </div>
+                );
+              })}
+            </div>
           ) : (
-            <p className="text-sm text-white/50 font-medium">All loads stay the same — keep building.</p>
+            <p className="text-[14px] font-medium" style={{ color: 'var(--label-secondary)' }}>All loads stay the same — keep building.</p>
           )}
         </div>
       </motion.div>
 
       {/* Section 3: Big Picture — Progress Bars */}
       {progressBars.length > 0 && (
-        <motion.div
-          className="mb-5"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.85 }}
-        >
-          <p className="text-[10px] font-bold uppercase tracking-widest text-white/40 mb-2 px-1">Big Picture</p>
-          <div className="glass rounded-3xl p-4 space-y-5">
-            {progressBars.map((bar, i) => (
-              <div key={i}>
-                <div className="flex items-center justify-between mb-1.5">
-                  <span className="text-sm font-bold text-white">{bar.name}</span>
-                  <span className={cn("text-[10px] font-black uppercase tracking-widest", bar.statusColor)}>
-                    {bar.statusLabel}
-                  </span>
-                </div>
-                <div className="flex items-center gap-3 mb-1">
-                  <span className="text-xs font-bold text-white/60 tabular-nums w-12">{bar.current}kg</span>
-                  <div className="flex-1 h-2 bg-white/10 rounded-full overflow-hidden">
-                    <motion.div
-                      initial={{ width: 0 }}
-                      animate={{ width: `${bar.progress * 100}%` }}
-                      transition={{ duration: 1, ease: 'easeOut', delay: 0.9 + i * 0.1 }}
-                      className="h-full rounded-full bg-gradient-to-r from-violet-600 to-violet-400"
-                    />
+        <motion.div className="mb-4" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.85 }}>
+          <p className="text-[13px] font-medium mb-2 px-1" style={{ color: 'var(--label-tertiary)' }}>Programme Progress</p>
+          <div className="rounded-2xl p-4 space-y-5" style={{ background: '#1c1c1e', border: '1px solid rgba(255,255,255,0.07)' }}>
+            {progressBars.map((bar, i) => {
+              const statusColorMap: Record<string, string> = {
+                'On track': 'var(--tint-green)', 'Behind': 'var(--tint-orange)', 'Ahead': 'var(--tint-blue)'
+              };
+              const barColor = statusColorMap[bar.statusLabel] ?? 'var(--tint-blue)';
+              return (
+                <div key={i}>
+                  <div className="flex items-baseline justify-between mb-2">
+                    <span className="text-[15px] font-semibold text-white">{bar.name}</span>
+                    <span className="text-[12px] font-medium" style={{ color: barColor }}>{bar.statusLabel}</span>
                   </div>
-                  <span className="text-xs font-bold text-white/30 tabular-nums w-14 text-right">{bar.target}kg</span>
+                  <div className="flex items-center gap-3 mb-1.5">
+                    <span className="text-[13px] font-medium text-white tabular-nums w-14">{bar.current}kg</span>
+                    <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ background: '#2c2c2e' }}>
+                      <motion.div
+                        initial={{ width: 0 }}
+                        animate={{ width: `${bar.progress * 100}%` }}
+                        transition={{ duration: 1.1, ease: 'easeOut', delay: 0.9 + i * 0.1 }}
+                        className="h-full rounded-full"
+                        style={{ background: barColor }}
+                      />
+                    </div>
+                    <span className="text-[12px] text-right tabular-nums w-14" style={{ color: 'var(--label-tertiary)' }}>{bar.target}kg</span>
+                  </div>
+                  <p className="text-[12px]" style={{ color: 'var(--label-quaternary)' }}>
+                    {bar.current >= bar.target ? 'Week 8 target achieved' : `${(bar.target - bar.current).toFixed(1)}kg to go`}
+                  </p>
                 </div>
-                <p className="text-[10px] text-white/30">
-                  {bar.current >= bar.target
-                    ? 'Week 8 target achieved'
-                    : `${(bar.target - bar.current).toFixed(1)}kg to week 8 target`}
-                </p>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </motion.div>
       )}
 
-      {/* Expandable Full Details */}
-      <motion.div
-        className="mb-6"
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.95 }}
-      >
+      {/* All Exercise Details */}
+      <motion.div className="mb-6" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.95 }}>
         <button
           onClick={() => setShowAllExercises(v => !v)}
-          className="w-full flex items-center justify-between px-5 py-4 glass rounded-2xl text-sm font-semibold text-white/40 hover:text-white/60 hover:bg-white/10 transition-all"
+          className="w-full flex items-center justify-between px-4 py-4 rounded-2xl transition-all list-row text-[14px] font-medium"
+          style={{ background: '#1c1c1e', border: '1px solid rgba(255,255,255,0.07)', color: 'var(--label-secondary)' }}
         >
-          <span>{showAllExercises ? 'Hide details' : 'Show all exercises'}</span>
+          <span>{showAllExercises ? 'Hide details' : 'All exercises'}</span>
           <motion.div animate={{ rotate: showAllExercises ? 180 : 0 }} transition={{ duration: 0.2 }}>
-            <ChevronDown className="w-4 h-4" />
+            <ChevronDown className="w-4 h-4" style={{ color: 'var(--label-quaternary)' }} />
           </motion.div>
         </button>
 
         <AnimatePresence>
           {showAllExercises && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              className="overflow-hidden"
-            >
-              <div className="mt-2 space-y-2">
-                {exerciseScores.map((es, i) => {
-                  const statusColors = {
-                    exceeded: 'text-emerald-400',
-                    on_target: 'text-white/70',
-                    missed: 'text-amber-400',
-                    no_data: 'text-white/30',
+            <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">
+              <div className="mt-2 rounded-2xl overflow-hidden" style={{ background: '#1c1c1e', border: '1px solid rgba(255,255,255,0.07)' }}>
+                {exerciseScores.length === 0 ? (
+                  <div className="py-8 text-center text-[14px]" style={{ color: 'var(--label-tertiary)' }}>No weighted exercises logged.</div>
+                ) : exerciseScores.map((es, i) => {
+                  const statusColorByKey: Record<string, string> = {
+                    exceeded: 'var(--tint-green)', on_target: 'var(--label-secondary)',
+                    missed: 'var(--tint-orange)', no_data: 'var(--label-quaternary)',
                   };
-                  const statusLabels = {
-                    exceeded: 'EXCEEDED',
-                    on_target: 'ON TARGET',
-                    missed: 'MISSED',
-                    no_data: 'NO DATA',
-                  };
-                  const badgeColors = {
-                    exceeded: 'bg-emerald-500/15 text-emerald-400',
-                    on_target: 'bg-white/10 text-white/50',
-                    missed: 'bg-amber-500/15 text-amber-400',
-                    no_data: 'bg-white/5 text-white/20',
-                  };
+                  const statusLabel = { exceeded: 'Exceeded', on_target: 'On Target', missed: 'Missed', no_data: '—' }[es.status];
+                  const accentColor = statusColorByKey[es.status];
                   return (
-                    <div key={i} className="glass rounded-2xl p-4">
-                      <div className="flex items-start justify-between gap-3 mb-2">
-                        <p className="text-sm font-bold text-white leading-snug">{es.name}</p>
-                        <span className={cn("text-[9px] font-black uppercase tracking-widest shrink-0 px-2 py-0.5 rounded-full", badgeColors[es.status])}>
-                          {statusLabels[es.status]}
-                        </span>
+                    <div key={i} className="px-4 py-3.5" style={{ borderTop: i > 0 ? '1px solid rgba(255,255,255,0.06)' : 'none' }}>
+                      <div className="flex items-center justify-between mb-2">
+                        <p className="text-[14px] font-semibold text-white">{es.name}</p>
+                        <span className="text-[11px] font-medium" style={{ color: accentColor }}>{statusLabel}</span>
                       </div>
                       <div className="grid grid-cols-4 gap-2 text-center">
-                        <div>
-                          <span className="block text-base font-black text-white">{es.actualWeight}kg</span>
-                          <span className="text-[9px] text-white/30 uppercase tracking-wider">weight</span>
-                        </div>
-                        <div>
-                          <span className="block text-base font-black text-white">{es.actualReps}</span>
-                          <span className="text-[9px] text-white/30 uppercase tracking-wider">reps</span>
-                        </div>
-                        <div>
-                          <span className="block text-base font-black text-white">{es.actualSets}</span>
-                          <span className="text-[9px] text-white/30 uppercase tracking-wider">sets</span>
-                        </div>
-                        <div>
-                          <span className={cn("block text-base font-black", statusColors[es.status])}>{es.rpe.toFixed(1)}</span>
-                          <span className="text-[9px] text-white/30 uppercase tracking-wider">rpe</span>
-                        </div>
+                        {[
+                          { value: `${es.actualWeight}kg`, label: 'weight' },
+                          { value: String(es.actualReps), label: 'reps' },
+                          { value: String(es.actualSets), label: 'sets' },
+                          { value: es.rpe.toFixed(1), label: 'rpe', color: accentColor },
+                        ].map(stat => (
+                          <div key={stat.label}>
+                            <span className="block text-[17px] font-light text-white tabular-nums" style={stat.color ? { color: stat.color, letterSpacing: '-0.02em' } : { letterSpacing: '-0.02em' }}>
+                              {stat.value}
+                            </span>
+                            <span className="text-[10px] font-medium uppercase tracking-widest" style={{ color: 'var(--label-quaternary)' }}>{stat.label}</span>
+                          </div>
+                        ))}
                       </div>
                       {es.prescribedWeight !== null && (
-                        <p className="text-[10px] text-white/30 mt-2">
+                        <p className="text-[11px] mt-1.5" style={{ color: 'var(--label-quaternary)' }}>
                           Target: {es.prescribedWeight}kg × {es.prescribedReps} reps × {es.prescribedSets} sets
                         </p>
                       )}
                     </div>
                   );
                 })}
-                {exerciseScores.length === 0 && (
-                  <div className="text-center py-6 text-white/30 text-sm">No weighted exercises logged.</div>
-                )}
               </div>
             </motion.div>
           )}
         </AnimatePresence>
       </motion.div>
 
-      {/* Bottom buttons */}
-      <div className="fixed bottom-0 left-0 right-0 p-5 bottom-fade pointer-events-none">
-        <div className="max-w-2xl mx-auto pointer-events-auto space-y-3">
-
-          {/* Save status */}
-          <div className={cn(
-            "w-full flex items-center justify-center gap-2.5 font-bold py-3 rounded-2xl text-sm transition-all",
-            savingStatus === 'saving' && "glass text-white/40",
-            savingStatus === 'saved' && "bg-emerald-500/15 text-emerald-400 border border-emerald-500/20",
-            savingStatus === 'error' && "bg-red-500/15 text-red-400 border border-red-500/20",
-            savingStatus === 'idle' && "glass text-white/20"
-          )}>
-            {savingStatus === 'saving' && <><RotateCcw className="w-4 h-4 animate-spin" />Saving...</>}
-            {savingStatus === 'saved' && <><CheckCircle2 className="w-4 h-4" />Saved to device</>}
+      {/* Bottom action bar */}
+      <div className="fixed bottom-0 left-0 right-0 bottom-fade pointer-events-none" style={{ padding: '20px 16px max(env(safe-area-inset-bottom, 0px), 16px)' }}>
+        <div className="max-w-2xl mx-auto pointer-events-auto space-y-2.5">
+          <div className="w-full flex items-center justify-center gap-2 font-medium py-2.5 rounded-2xl text-[13px] transition-all"
+            style={{
+              background: savingStatus === 'saved' ? 'rgba(48,209,88,0.12)' : savingStatus === 'error' ? 'rgba(255,69,58,0.12)' : '#1c1c1e',
+              color: savingStatus === 'saved' ? 'var(--tint-green)' : savingStatus === 'error' ? 'var(--tint-red)' : 'var(--label-quaternary)',
+              border: '1px solid rgba(255,255,255,0.06)'
+            }}>
+            {savingStatus === 'saving' && <><RotateCcw className="w-3.5 h-3.5 animate-spin" />Saving...</>}
+            {savingStatus === 'saved' && <><CheckCircle2 className="w-3.5 h-3.5" />Saved to device</>}
             {savingStatus === 'error' && <span>Save failed</span>}
             {savingStatus === 'idle' && <span>Saving...</span>}
           </div>
 
-          <div className="flex gap-3">
-            {/* iCloud save */}
+          <div className="flex gap-2.5">
             <button
               onClick={onICloudSave}
               disabled={iCloudStatus === 'saving' || iCloudStatus === 'saved'}
-              className={cn(
-                "flex-1 flex items-center justify-center gap-2 font-bold py-4 rounded-2xl text-sm transition-all active:scale-[0.97]",
-                iCloudStatus === 'idle' && "bg-sky-600 hover:bg-sky-500 text-white shadow-lg shadow-sky-600/25",
-                iCloudStatus === 'saving' && "bg-sky-600/50 text-sky-200 cursor-not-allowed",
-                iCloudStatus === 'saved' && "bg-sky-500/20 text-sky-300 border border-sky-500/30",
-                iCloudStatus === 'share' && "bg-sky-600/70 hover:bg-sky-600 text-white"
-              )}
+              className="flex-1 flex items-center justify-center gap-1.5 font-medium py-3.5 rounded-2xl text-[14px] transition-all active:scale-[0.97]"
+              style={{
+                background: iCloudStatus === 'saved' ? 'rgba(10,132,255,0.15)' : 'var(--tint-blue)',
+                color: iCloudStatus === 'saved' ? 'var(--tint-blue)' : '#fff',
+                opacity: iCloudStatus === 'saving' ? 0.6 : 1
+              }}
             >
               {iCloudStatus === 'idle' && <><CloudUpload className="w-4 h-4" />iCloud</>}
               {iCloudStatus === 'saving' && <><RotateCcw className="w-4 h-4 animate-spin" />Saving</>}
@@ -2690,21 +2559,20 @@ function ReportScreen({
               {iCloudStatus === 'share' && <><Share2 className="w-4 h-4" />Share</>}
             </button>
 
-            {/* Share / Download CSV */}
             <button
               onClick={onShareCSV}
-              className="flex-1 flex items-center justify-center gap-2 glass-pink text-pink-300 font-bold py-4 rounded-2xl text-sm hover:bg-pink-500/20 transition-all active:scale-[0.97]"
+              className="flex-1 flex items-center justify-center gap-1.5 font-medium py-3.5 rounded-2xl text-[14px] transition-all active:scale-[0.97]"
+              style={{ background: '#2c2c2e', color: 'var(--label-secondary)' }}
             >
               {typeof navigator !== 'undefined' && navigator.share
                 ? <><Share2 className="w-4 h-4" />CSV</>
-                : <><Download className="w-4 h-4" />CSV</>
-              }
+                : <><Download className="w-4 h-4" />CSV</>}
             </button>
 
-            {/* Done */}
             <button
               onClick={handleDone}
-              className="flex-[2] bg-violet-600 text-white font-bold py-4 rounded-2xl hover:bg-violet-500 transition-all active:scale-[0.98] shadow-lg shadow-violet-600/25"
+              className="flex-[2] font-semibold py-3.5 rounded-2xl text-[15px] transition-all active:scale-[0.97]"
+              style={{ background: 'var(--ring-exercise)', color: '#000' }}
             >
               Done
             </button>

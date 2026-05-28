@@ -1,102 +1,119 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif;
+}
+
+/* ── Apple-style design tokens ───────────────────────────────────────────── */
+:root {
+  /* Surface layers — true black base, elevated zinc cards */
+  --surface-0: #000000;
+  --surface-1: #1c1c1e;
+  --surface-2: #2c2c2e;
+  --surface-3: #3a3a3c;
+
+  /* Separators */
+  --separator: rgba(255, 255, 255, 0.08);
+  --separator-strong: rgba(255, 255, 255, 0.14);
+
+  /* Apple Fitness ring colours */
+  --ring-move: #fa3e5d;       /* vivid red-pink  — Move */
+  --ring-exercise: #92f53c;   /* electric green  — Exercise */
+  --ring-stand: #1dccff;      /* bright blue     — Stand */
+
+  /* System tints */
+  --tint-blue: #0a84ff;
+  --tint-green: #30d158;
+  --tint-red: #ff453a;
+  --tint-orange: #ff9f0a;
+  --tint-purple: #bf5af2;
+  --tint-gray: #636366;
+
+  /* Text */
+  --label-primary: rgba(255, 255, 255, 1);
+  --label-secondary: rgba(255, 255, 255, 0.55);
+  --label-tertiary: rgba(255, 255, 255, 0.30);
+  --label-quaternary: rgba(255, 255, 255, 0.18);
 }
 
 @layer base {
   body {
     @apply text-white antialiased;
-    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
-    background: #0a0a0a;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif;
+    background: #000000;
     /* Prevent double-tap zoom on iOS/Android while keeping scroll */
     touch-action: pan-x pan-y;
     -webkit-tap-highlight-color: transparent;
     /* Prevent text selection flash on rapid taps */
     -webkit-user-select: none;
     user-select: none;
+    -webkit-font-smoothing: antialiased;
   }
 
   /* Allow text selection inside inputs and textareas */
   input, textarea {
     -webkit-user-select: text;
     user-select: text;
-    /* Removes 300ms tap delay and disables double-tap zoom */
     touch-action: manipulation;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif;
   }
 
   button, [role="button"], select, label {
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
     cursor: pointer;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", system-ui, sans-serif;
   }
 }
 
-/* Full-screen background image — fills on mobile, centered on desktop */
-.app-bg {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  background: url('/bg.png') center/cover no-repeat;
-}
-
-/* Dark overlay so glass cards are readable */
-.app-bg::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.45);
-}
-
-/* Glass card base */
+/* ── Apple card surface — elevated #1c1c1e, hairline border ──────────────── */
 .glass {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(20px) saturate(1.4);
-  -webkit-backdrop-filter: blur(20px) saturate(1.4);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: #1c1c1e;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .glass-strong {
-  background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(24px) saturate(1.5);
-  -webkit-backdrop-filter: blur(24px) saturate(1.5);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: #2c2c2e;
+  border: 1px solid rgba(255, 255, 255, 0.10);
 }
 
+/* History section — slightly tinted surface */
 .glass-pink {
-  background: rgba(236, 72, 153, 0.1);
-  backdrop-filter: blur(20px) saturate(1.4);
-  -webkit-backdrop-filter: blur(20px) saturate(1.4);
-  border: 1px solid rgba(236, 72, 153, 0.25);
+  background: #1c1c1e;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
+/* Sticky nav bar */
 .glass-header {
-  background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(24px) saturate(1.5);
-  -webkit-backdrop-filter: blur(24px) saturate(1.5);
+  background: rgba(0, 0, 0, 0.82);
+  backdrop-filter: blur(20px) saturate(1.8);
+  -webkit-backdrop-filter: blur(20px) saturate(1.8);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
+/* Input fields */
 .glass-input {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: #2c2c2e;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: white;
 }
 
 .glass-input:focus {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(139, 92, 246, 0.5);
+  background: #3a3a3c;
+  border-color: var(--tint-blue);
+  outline: none;
 }
 
-/* Rest timer overlay */
+/* Rest timer full-screen overlay */
 .glass-overlay {
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(30px) saturate(1.5);
-  -webkit-backdrop-filter: blur(30px) saturate(1.5);
+  background: rgba(0, 0, 0, 0.92);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
 }
 
-/* Bottom bar gradient */
+/* Bottom gradient fade for floating action buttons */
 .bottom-fade {
-  background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 60%, transparent 100%);
+  background: linear-gradient(to top, #000 0%, rgba(0,0,0,0.85) 50%, transparent 100%);
 }
 
 .no-scrollbar::-webkit-scrollbar {
@@ -106,6 +123,27 @@
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/* Grouped list row hover state */
+.list-row {
+  background: #1c1c1e;
+  transition: background 0.15s ease;
+}
+.list-row:active {
+  background: #2c2c2e;
+}
+
+/* Disable background image — Apple style uses flat true black */
+.app-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: #000000;
+}
+
+.app-bg::after {
+  display: none;
 }
 
 /* ─── Desktop shell ─────────────────────────────────────────────────────────── */
