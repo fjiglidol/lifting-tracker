@@ -54,6 +54,16 @@ If the day is rough, do the MVS. Three exercises at RPE 6+ counts as a session. 
 
 ---
 
+## Bail-Out: Wind-Down Session (the "do this instead" option)
+
+When it's too late, you're wiped, or your head's not right and even MVS isn't happening — **do the wind-down instead of skipping.** It *replaces* the designated session. It's the recovery rung below MVS: 30 min of breathing, mobility, and stretching, no equipment, finishes you calm. Doing it = you stayed in routine. It counts as a session attempted, not a gap.
+
+Full sequence: [`wind-down-bailout.md`](./wind-down-bailout.md).
+
+This is the floor. The order of preference on a bad day is: full session → MVS → **wind-down bail-out** → (only then) nothing. Log it as "Wind-down bail-out (replaced [day] session)".
+
+---
+
 ## Working Weights (recalibrated from re-entry)
 
 These are conservative starting points. Add load only when RPE feels easy, not on a schedule.
