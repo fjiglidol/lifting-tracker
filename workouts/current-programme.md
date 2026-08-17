@@ -1,14 +1,40 @@
 # Current Programme
 
-**Updated:** 2026-05-28
-**Phase:** End-of-semester survival mode → restart
-**Goal:** bigger, stronger, fitter — every aspect
+**Updated:** 2026-08-17
+**Phase:** ⚠️ **SWEDEN RESET BLOCK — 2026-08-17 → 2026-08-29**
+**Goal:** rebuild inputs (sleep, food, aerobic base). Lifting is maintenance only.
 
 This file always reflects the latest schedule from coach. Dated session files in this folder are historical / day-of records.
 
 ---
 
-## Situation (2026-05-27 reset)
+## 🇸🇪 ACTIVE PLAN: Sweden Reset Block (2026-08-17 → 2026-08-29)
+
+**Everything below this section is on hold until 2026-08-30.**
+
+Trip to Sweden for sister's baby shower. Gym access uncertain. This is an **aerobic-led, lifting-supported** block — the inversion is deliberate and temporary.
+
+- **5 easy runs** (~185 min total), all conversational pace, no hard efforts
+- **4 full-body strength sessions**, 45 min cap, RPE 7 ceiling, gym *and* no-gym versions
+- **Protein floor 150 g/day** — no calorie counting, no cut
+- **Jet-lag protocol** for the 7 h westward shift + eastward return
+- Wind-Down is the **nightly default**, not a bail-out
+
+Full plan: [`2026-08-17-sweden-reset-block.md`](./2026-08-17-sweden-reset-block.md)
+
+**Floor for the whole trip:** walk daily, hit protein, sleep 8 h. Everything else is bonus.
+
+---
+
+## ⚠️ Stale content warning
+
+The programme below was written **2026-05-28** for the end-of-semester survival period. Semester ended ~2026-07-11 and the planned 2026-07-14 recalibration week was never run. **Working weights below are May estimates and should not be trusted.**
+
+On return (2026-08-30) the first job is the recalibration week — retest squat, bench, deadlift fresh, then rebuild from real numbers.
+
+---
+
+## Situation (2026-05-27 reset) — HISTORICAL
 
 Gym missed entirely for several weeks due to school load. Last confirmed gym session: 2026-05-20 (upper re-entry, stripped back). No guilt, no backtracking — clock restarts now.
 
