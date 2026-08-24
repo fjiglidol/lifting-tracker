@@ -1,16 +1,38 @@
 # Current Programme
 
-**Updated:** 2026-08-17
-**Phase:** ⚠️ **SWEDEN RESET BLOCK — 2026-08-17 → 2026-08-29**
-**Goal:** rebuild inputs (sleep, food, aerobic base). Lifting is maintenance only.
+**Updated:** 2026-08-24
+**Phase:** 🛣️ **ROAD BLOCK — Field Games — 2026-08-24 → 2026-09-06 (rolling)**
+**Goal:** rebuild inputs (sleep, food, aerobic base). No gym access — outdoor, bodyweight, large-area training.
 
 This file always reflects the latest schedule from coach. Dated session files in this folder are historical / day-of records.
 
 ---
 
-## 🇸🇪 ACTIVE PLAN: Sweden Reset Block (2026-08-17 → 2026-08-29)
+## 🛣️ ACTIVE PLAN: Road Block — Field Games (2026-08-24 → rolling)
 
-**Everything below this section is on hold until 2026-08-30.**
+**No gym access. Overrides the strength half of the Sweden block; its running, food, and sleep rules still stand.**
+
+Four sessions on a **rotation**, not a fixed week — you take the next one, not the one the calendar says:
+
+**A — Crossings** (open field, bodyweight) → **C — Fartlek** (run) → **B — The Bar Hunt** (playground/utegym) → **C — Fartlek** → **D — Carry & Cross** (loaded backpack) → walk → rest
+
+- **Distance, not reps.** One *crossing* = a landmark ~25–30 m out. Every field distance is measured in those.
+- **Five pull-up negatives per Bar Hunt** + the **free bar rule** (every bar you pass in a day = one dead hang). Biggest structural gap, cheapest fix.
+- **Fartlek** = landmark-driven speed play. No watch, no pace. Surges are smooth-fast, never sprinting. Shin rules from the Sweden block still binding.
+- **Finisher deck** — seconds on the clock pick your finisher. No deciding.
+- **RPE 7 ceiling, 45 min cap, no PRs.**
+
+Kit: nothing required. Band + abusable backpack + jump rope (~£15) unlocks session D.
+
+Full plan: [`2026-08-24-road-block.md`](./2026-08-24-road-block.md)
+
+**Floor for any day on the road:** walk daily, hit protein (150 g), sleep 8 h.
+
+---
+
+## 🇸🇪 SUPERSEDED: Sweden Reset Block (2026-08-17 → 2026-08-29)
+
+**Strength sessions replaced by the Road Block above. Running / food / sleep / jet-lag rules below still apply. Everything under the stale-content warning stays on hold until the road ends.**
 
 Trip to Sweden for sister's baby shower. Gym access uncertain. This is an **aerobic-led, lifting-supported** block — the inversion is deliberate and temporary.
 
