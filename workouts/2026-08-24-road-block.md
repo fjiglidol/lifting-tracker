@@ -14,9 +14,10 @@ Four sessions on a rotation, not a fixed week. You don't ask "what day is it," y
 **A — Crossings** (open field, bodyweight, ~35 min)
 **B — The Bar Hunt** (playground / utegym, ~35 min)
 **C — Fartlek** (run, landmark-driven, 30–50 min)
+**C2 — The Ladder** (run, fixed shape — Wednesdays, ~40 min)
 **D — Carry & Cross** (loaded backpack, ~35 min)
 
-Rotation: **A → C → B → C → D → walk → rest**, repeat. Never two run days back to back.
+Rotation: **A → C2 → B → C → D → walk → rest**, repeat. Never two run days back to back.
 
 **Ceilings, non-negotiable:** RPE 7. 45 min. No PRs, none attempted, none expected. This is a holding block that happens to be fun — the recalibration week on 2026-08-30 is where numbers come back.
 
@@ -113,6 +114,36 @@ The last run before you travel home is the one session in this block allowed any
 
 ---
 
+## Session C2 — The Ladder
+
+*Wednesdays. This is the Namban replacement.*
+
+Namban Rengo doesn't run while you're away, and losing it costs you more than a session. It was the only thing in your week with a **fixed time, other people there, and a workout somebody else decided.** You showed up because it existed, not because you talked yourself into it.
+
+Session C can't cover that. Fartlek is the most negotiable thing in the block — no watch, no pace, no structure. Brilliant when you're already out the door. Useless at 4pm in a town you don't know, when the plan is "go and play a bit."
+
+So Wednesday gets a shape decided in advance. You don't choose anything. You count.
+
+### 1 – 2 – 3 – 2 – 1
+
+- **10 min easy** — genuinely easy, nose-breathing. Don't shorten it to get to the ladder.
+- **1 min on**, 1 min easy jog
+- **2 min on**, 2 min easy jog
+- **3 min on**, 3 min easy jog
+- **2 min on**, 2 min easy jog
+- **1 min on**, 1 min easy jog
+- **8 min easy** to finish
+
+**"On" means steady-strong, not fast.** RPE 6 — comfortably hard, short phrases still possible. The effort you could hold for twenty minutes if someone made you. If that reads as too easy, good. Nine minutes of honest tempo on legs that haven't run in months is plenty, and you have shins to protect.
+
+**Rung 2 should feel the same as rung 1, just longer.** If it feels harder, you went out too fast on rung 1. Rung 4 should feel easier than rung 2. That symmetry is the whole diagnostic — it tells you whether you paced it or raced it.
+
+**First time through, or if the calves say anything at all: cut it to 1–2–2–1 and go home.** That's a completed session, not a scaled one.
+
+Same rules as every run in this block: never two run days back to back, grass over asphalt, day-after ache means the next run becomes a walk of the same duration.
+
+---
+
 ## Session D — Carry & Cross
 
 *Backpack, loaded 8–15 kg. Water bottles, books, whatever's in the boot.*
@@ -154,13 +185,13 @@ End of any session, look at the seconds hand on your watch or phone. Whatever it
 | --- | --- | --- |
 | Aug 24 | Mon | **Rest** — your rest day stays your rest day |
 | Aug 25 | Tue | **A — Crossings** |
-| Aug 26 | Wed | **C — Fartlek**, easy end (~35 min) |
+| Aug 26 | Wed | **C2 — The Ladder** (Namban slot) |
 | Aug 27 | Thu | **B — The Bar Hunt** |
 | Aug 28 | Fri | **C — Fartlek**, long and easy (45–55 min) |
 | Aug 29 | Sat | Travel — walk + mobility + Wind-Down |
 | Aug 30+ | | Rotation continues if you're still on the road; otherwise **recalibration week** |
 
-If the road runs longer than that, just keep turning the rotation: **A → C → B → C → D → walk → rest**.
+If the road runs longer than that, just keep turning the rotation: **A → C2 → B → C → D → walk → rest**. Wednesday stays the Ladder — that's the appointment.
 
 ---
 

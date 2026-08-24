@@ -14,11 +14,12 @@ This file always reflects the latest schedule from coach. Dated session files in
 
 Four sessions on a **rotation**, not a fixed week — you take the next one, not the one the calendar says:
 
-**A — Crossings** (open field, bodyweight) → **C — Fartlek** (run) → **B — The Bar Hunt** (playground/utegym) → **C — Fartlek** → **D — Carry & Cross** (loaded backpack) → walk → rest
+**A — Crossings** (open field, bodyweight) → **C2 — The Ladder** (Wed run, fixed shape) → **B — The Bar Hunt** (playground/utegym) → **C — Fartlek** (free run) → **D — Carry & Cross** (loaded backpack) → walk → rest
 
 - **Distance, not reps.** One *crossing* = a landmark ~25–30 m out. Every field distance is measured in those.
 - **Five pull-up negatives per Bar Hunt** + the **free bar rule** (every bar you pass in a day = one dead hang). Biggest structural gap, cheapest fix.
-- **Fartlek** = landmark-driven speed play. No watch, no pace. Surges are smooth-fast, never sprinting. Shin rules from the Sweden block still binding.
+- **Namban Rengo is off while travelling.** Wednesday becomes **The Ladder** (1-2-3-2-1 min steady-strong, equal easy between) — a fixed shape you don't get to negotiate with, which is the part of Namban worth replacing. Its intensity deliberately isn't replaced.
+- **Fartlek** = landmark-driven speed play, free-form, Fridays. No watch, no pace. Surges smooth-fast, never sprinting. Shin rules from the Sweden block still binding.
 - **Finisher deck** — seconds on the clock pick your finisher. No deciding.
 - **RPE 7 ceiling, 45 min cap, no PRs.**
 

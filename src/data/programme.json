@@ -1138,6 +1138,119 @@
         }
       ]
     },
+    "road_ladder": {
+      "label": "Road — C2: The Ladder",
+      "focus": "Aerobic — Namban replacement. Fixed shape, decided in advance, nothing to negotiate.",
+      "estimated_duration_minutes": 40,
+      "location": "Anywhere with ~30 min of runnable ground. Grass or gravel over asphalt.",
+      "rest_between_sets_seconds": "equal easy jog between every rung",
+      "notes": "ROAD BLOCK session C2 — Wednesdays. This is what Namban Rengo used to do for you: somebody else decided the workout so you did not have to. The shape is 1-2-3-2-1 minutes with an equal easy jog after each rung. You are not choosing anything, you are counting. STEADY-STRONG, NOT FAST — RPE 6, comfortably hard, short phrases still possible. If that reads as easy, it is meant to. First time through, or if the calves have anything to say at all, cut it to 1-2-2-1 and go home. All shin rules still binding: never two run days back to back, day-after ache means the next run becomes a walk of the same duration.",
+      "exercises": [
+        {
+          "name": "Pogo Hops (Pre-Run)",
+          "type": "bodyweight",
+          "sets": 1,
+          "reps": "20",
+          "rpe": "5",
+          "rest_seconds": 30,
+          "notes": "Calves and ankles before the first stride. Cheapest shin-splint insurance there is.",
+          "form_cues": [
+            "Stiff ankles, small hops.",
+            "Land under the hips, not in front."
+          ]
+        },
+        {
+          "name": "Easy Warm-Up Run",
+          "type": "timed",
+          "sets": 1,
+          "duration_seconds": 600,
+          "rpe": "4",
+          "rest_seconds": 60,
+          "notes": "Ten minutes, genuinely easy, nose-breathing. Do not shorten this to get to the ladder.",
+          "form_cues": [
+            "Talk test over pace over watch.",
+            "Short, quick steps.",
+            "Relax shoulders and jaw."
+          ]
+        },
+        {
+          "name": "Rung 1 — 1 min steady-strong",
+          "type": "timed",
+          "sets": 1,
+          "duration_seconds": 60,
+          "rpe": "6",
+          "rest_seconds": 60,
+          "notes": "Then 1 min easy jog. Not a sprint. Find the effort you could hold for 20 minutes if you had to.",
+          "form_cues": [
+            "Accelerate into it, do not launch.",
+            "Tall posture, quick cadence, quiet feet."
+          ]
+        },
+        {
+          "name": "Rung 2 — 2 min steady-strong",
+          "type": "timed",
+          "sets": 1,
+          "duration_seconds": 120,
+          "rpe": "6",
+          "rest_seconds": 120,
+          "notes": "Then 2 min easy jog. Same effort as rung 1, just longer. If it feels harder, you started rung 1 too fast.",
+          "form_cues": [
+            "Hold the effort, let the pace do what it wants.",
+            "Breathing rhythmic, not ragged."
+          ]
+        },
+        {
+          "name": "Rung 3 — 3 min steady-strong",
+          "type": "timed",
+          "sets": 1,
+          "duration_seconds": 180,
+          "rpe": "6",
+          "rest_seconds": 180,
+          "notes": "Then 3 min easy jog. The top of the ladder. This is the only rung with any bite and it still is not hard.",
+          "form_cues": [
+            "Same effort. Do not race the clock.",
+            "If you cannot say a short phrase, back off — that is the rule, not a suggestion."
+          ]
+        },
+        {
+          "name": "Rung 4 — 2 min steady-strong",
+          "type": "timed",
+          "sets": 1,
+          "duration_seconds": 120,
+          "rpe": "6",
+          "rest_seconds": 120,
+          "notes": "Then 2 min easy jog. Coming back down. This one is meant to feel easier than rung 2 did.",
+          "form_cues": [
+            "Relax first, then hold the effort."
+          ]
+        },
+        {
+          "name": "Rung 5 — 1 min steady-strong",
+          "type": "timed",
+          "sets": 1,
+          "duration_seconds": 60,
+          "rpe": "6",
+          "rest_seconds": 60,
+          "notes": "Then 1 min easy jog. Last rung. Resist finishing it fast — the ladder is not a race and there is no prize at the top.",
+          "form_cues": [
+            "Same effort as the first rung. Symmetry is the whole point."
+          ]
+        },
+        {
+          "name": "Easy Cool-Down Run",
+          "type": "timed",
+          "sets": 1,
+          "duration_seconds": 480,
+          "rpe": "3",
+          "rest_seconds": 0,
+          "notes": "Do not skip this to get home faster. Finish easy or the next run costs you.",
+          "form_cues": [
+            "Slower than the warm-up.",
+            "Walk the last two minutes if you want."
+          ]
+        }
+      ]
+    },
     "road_carry": {
       "label": "Field — D: Carry & Cross",
       "focus": "Loaded full body — a backpack is the entire equipment list",
@@ -1516,7 +1629,7 @@
     "overrides": "Replaces the strength half of the Sweden Reset Block. Its running, food and sleep rules still stand.",
     "rotation": [
       "road_crossings",
-      "road_fartlek",
+      "road_ladder",
       "road_bar_hunt",
       "road_fartlek",
       "road_carry",
@@ -1540,6 +1653,7 @@
     "nutrition": "No cut, no counting. Protein floor 150 g/day. That is the whole plan.",
     "floor": "Walk daily, hit protein, sleep 8 h. Missing a session does not break the block.",
     "reverts_to": "Recalibration week — test squat, bench, deadlift fresh. All working weights in the programme are stale May estimates.",
-    "source_file": "workouts/2026-08-24-road-block.md"
+    "source_file": "workouts/2026-08-24-road-block.md",
+    "namban_note": "Namban Rengo Wednesdays do not run while off the road. road_ladder replaces the thing Namban actually provided — a fixed appointment with a workout somebody else decided — without replacing its intensity, which the block deliberately spends elsewhere."
   }
 }

@@ -26,7 +26,7 @@ const ROAD_DAY_TO_SESSION: Record<number, string> = {
   0: 'day_7',           // Sun — Rest
   1: 'day_7',           // Mon — Rest (rest day stays the rest day)
   2: 'road_crossings',  // Tue — A: Crossings
-  3: 'road_fartlek',    // Wed — C: Fartlek
+  3: 'road_ladder',     // Wed — C2: The Ladder (Namban replacement)
   4: 'road_bar_hunt',   // Thu — B: The Bar Hunt
   5: 'road_fartlek',    // Fri — C: Fartlek
   6: 'road_carry',      // Sat — D: Carry & Cross
@@ -71,6 +71,7 @@ export const MUSCLE_GROUPS: Record<string, string> = {
   road_carry: 'full_body',
   road_bar_hunt: 'pull',
   road_fartlek: 'cardio',
+  road_ladder: 'cardio',
 };
 
 const SWAP_ORDER: Record<string, string> = {
@@ -81,7 +82,7 @@ const SWAP_ORDER: Record<string, string> = {
 const ROAD_WEEK_SCHEDULE: { day: string; dow: number; sessionKey: string; label: string }[] = [
   { day: 'Mon', dow: 1, sessionKey: 'day_7',          label: 'Rest' },
   { day: 'Tue', dow: 2, sessionKey: 'road_crossings', label: 'Crossings' },
-  { day: 'Wed', dow: 3, sessionKey: 'road_fartlek',   label: 'Fartlek' },
+  { day: 'Wed', dow: 3, sessionKey: 'road_ladder',    label: 'Ladder' },
   { day: 'Thu', dow: 4, sessionKey: 'road_bar_hunt',  label: 'Bar Hunt' },
   { day: 'Fri', dow: 5, sessionKey: 'road_fartlek',   label: 'Fartlek' },
   { day: 'Sat', dow: 6, sessionKey: 'road_carry',     label: 'Carry' },
