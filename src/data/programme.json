@@ -1,15 +1,18 @@
 {
-  "programme_name": "PPL Recomp — Rebuild Phase (Option C: A/B Variation)",
-  "phase": "Recomposition — Lean Phase",
-  "start_date": "2026-03-25",
-  "end_date": "2026-05-20",
-  "duration_weeks": 8,
-  "deload_week": 7,
-  "target_frequency": "5-6 days/week (minimum 4)",
-  "minimum_priority_order": ["Pull A or B", "Legs", "Push A or B", "Cardio"],
-
+  "programme_name": "5-Week Steady Growth Cycle",
+  "phase": "Steady growth — lean gain (maintenance +150-250 kcal)",
+  "start_date": "2026-07-20",
+  "duration_weeks": 5,
+  "target_frequency": "6 days/week — 4 lifting, 1-2 swim, 1 full rest",
+  "minimum_priority_order": [
+    "Pull A",
+    "Legs + Core",
+    "Push A",
+    "Push B",
+    "Swim"
+  ],
   "athlete": {
-    "age": 24,
+    "age": 25,
     "height_cm": 182,
     "weight_kg": 81,
     "experience": "intermediate-beginner (~1 year)",
@@ -18,10 +21,14 @@
       "squat_kg_x6": 90,
       "pull_ups": "assisted only, max 5 reps"
     },
-    "weak_points": ["calves", "pull-up strength", "cardio capacity", "lower abdominal fat"],
+    "weak_points": [
+      "calves",
+      "pull-up strength",
+      "cardio capacity",
+      "lower abdominal fat"
+    ],
     "equipment": "university gym — barbells, dumbbells, cables, machines, pull-up bar, assisted pull-up machine"
   },
-
   "week_8_targets": {
     "bench_press_kg": "97.5kg x7-8 (revised — 90kg x8 already hit on 2026-03-23)",
     "squat": "97.5kg x7-8",
@@ -33,43 +40,43 @@
     "body_composition": "visible reduction in lower stomach fat, scale ~80-81kg",
     "stretch_goal": "100kg bench — realistic at 10-12 week mark if week 8 targets are hit"
   },
-
   "weekly_template": {
-    "day_1": "Push A — Heavy Compounds (gym)",
-    "day_2": "Pull A — Heavy Compounds (gym)",
-    "day_3": "Legs + Core (gym)",
-    "day_4": "Cardio — Intervals + Steady State + Core Circuit (outdoor or gym)",
-    "day_5": "Push B — Pump / Supersets (gym)",
-    "day_6": "Pull B — Pump / Supersets (gym)",
-    "day_7": "Rest OR Light Cardio (20-30 min easy walk/cycle)"
+    "day_1": "Mon — Push A (Heavy)",
+    "day_2": "Tue — Pull A (Heavy)",
+    "day_3": "Wed — Swim: Steady State 30-40 min + Core",
+    "day_4": "Thu — Legs + Core",
+    "day_5": "Fri — Push B (Pump / Supersets)",
+    "day_6": "Sat — Swim Intervals 20-30 min OR Pull B (alternate weekly)",
+    "day_7": "Sun — Full Rest"
   },
-
   "nutrition": {
-    "goal": "Recomposition — slight caloric deficit on rest/cardio days, maintenance on lifting days",
+    "goal": "Steady growth — maintenance plus a deliberately small surplus. Muscle-to-fat gain ratio over scale speed.",
     "estimated_maintenance_kcal": 2700,
-    "lifting_day_target_kcal": 2600,
-    "cardio_rest_day_target_kcal": 2300,
-    "protein_g_per_kg": 2.0,
-    "protein_target_g": 160,
-    "carbohydrate_strategy": "Prioritise carbs around training (pre and post-workout). Keep evening carbs moderate.",
-    "fat_target_g": "55-70g",
-    "meal_timing": {
-      "pre_workout": "Carb + protein meal 60-90 min before training. Example: rice + chicken, oats + protein powder, or a banana + Greek yoghurt.",
-      "post_workout": "Protein + carb within 60 min. Example: protein shake + fruit, or chicken + rice.",
-      "daily_meals": "3 main meals + 1-2 snacks. High-protein snacks: Greek yoghurt, cottage cheese, eggs, protein shake, tuna."
+    "surplus_kcal": "150-250",
+    "default_calorie_target": 2900,
+    "default_protein_target_g": 175,
+    "protein_rule": "~0.9-1 g per lb bodyweight daily. Non-negotiable regardless of training day.",
+    "carbohydrate_strategy": "Concentrated around lifting and swim sessions — pre and post workout.",
+    "fat_strategy": "Fills the remaining calories.",
+    "adjustable": true,
+    "adjustment_rule": {
+      "gain_too_fast": {
+        "threshold_kg_per_week": 0.23,
+        "threshold_lb_per_week": 0.5,
+        "action_kcal": -125,
+        "note": "Average weight climbing faster than 0.25-0.5 lb/week — cut 100-150 kcal."
+      },
+      "stalled": {
+        "weeks_flat": 2,
+        "action_kcal": 125,
+        "note": "Weight flat for 2+ consecutive weeks — add 100-150 kcal."
+      }
     },
-    "practical_student_tips": [
-      "Batch cook rice, chicken, and eggs at the start of the week.",
-      "Keep protein powder and oats as staples — cheap and effective.",
-      "Avoid liquid calories (juice, alcohol) — they undermine the deficit silently.",
-      "Track food for at least 2 weeks to build awareness, then estimate.",
-      "Aim for 160g protein daily as the non-negotiable pillar of your nutrition."
-    ]
+    "review_cadence": "Set at each Week 5 reassessment, not hardcoded."
   },
-
   "sessions": {
     "push_a": {
-      "label": "Sat — Push A (Heavy)",
+      "label": "Mon — Push A (Heavy)",
       "focus": "Strength — compound-led, progressive overload + serratus anterior",
       "estimated_duration_minutes": 70,
       "rep_range": "5-8",
@@ -176,9 +183,8 @@
         }
       ]
     },
-
     "pull_a": {
-      "label": "Sun — Pull A (Heavy)",
+      "label": "Tue — Pull A (Heavy)",
       "focus": "Strength — vertical and horizontal pull, pull-up priority + lower trap activation",
       "estimated_duration_minutes": 70,
       "rep_range": "5-8",
@@ -288,9 +294,8 @@
         }
       ]
     },
-
     "legs_core": {
-      "label": "Fri — Legs + Core",
+      "label": "Thu — Legs + Core",
       "focus": "Lower body strength and hypertrophy — calf priority baked in",
       "estimated_duration_minutes": 75,
       "rep_range": "5-15 depending on exercise",
@@ -474,7 +479,6 @@
         }
       ]
     },
-
     "cardio_day": {
       "label": "Wed — Cardio (Intervals + Steady State + Core)",
       "focus": "Aerobic base building, fat oxidation, calorie burn",
@@ -552,9 +556,8 @@
         }
       }
     },
-
     "push_b": {
-      "label": "Mon — Push B (Pump / Supersets)",
+      "label": "Fri — Push B (Pump / Supersets)",
       "focus": "Metabolic stress, muscle fullness, volume accumulation",
       "estimated_duration_minutes": 60,
       "rep_range": "10-20",
@@ -685,9 +688,8 @@
         }
       ]
     },
-
     "pull_b": {
-      "label": "Tue — Pull B (Pump / Supersets)",
+      "label": "Sat — Pull B (Pump / Supersets)",
       "focus": "Back thickness, rear delt, arm pump — metabolic stress + brachioradialis/forearms",
       "estimated_duration_minutes": 65,
       "rep_range": "10-20",
@@ -854,9 +856,385 @@
         }
       ]
     },
-
+    "road_crossings": {
+      "label": "Field — A: Crossings",
+      "focus": "Full body, bodyweight, measured in field-widths instead of reps",
+      "estimated_duration_minutes": 35,
+      "location": "Open field or park — grass if you can get it",
+      "rep_range": "distance-based",
+      "rest_between_sets_seconds": "90 between rounds",
+      "notes": "ROAD BLOCK session A. 4 rounds. RPE 7 ceiling, 45 min cap, no PRs. Circuit format: move straight to the next station, rest 90 s only after the last one. One 'crossing' = a landmark ~25-30 m out. Distance, not reps. Finisher deck — look at the seconds on your watch when you finish. 00-09: 40 s max push-ups. 10-19: 60 s wall sit. 20-29: 30 s side plank each side. 30-39: 20 broad jumps. 40-49: 45 s total dead hang. 50-59: 50 pogo hops. No choosing.",
+      "exercises": [
+        {
+          "name": "Pogo Hops (Warm-Up)",
+          "type": "bodyweight",
+          "sets": 1,
+          "reps": "20",
+          "rpe": "5",
+          "rest_seconds": 30,
+          "notes": "Shin insurance. Small, stiff, off the ankles — this is why you get to run tomorrow. Do not skip.",
+          "form_cues": [
+            "Knees almost locked, bounce from the ankle.",
+            "Minimal ground contact time.",
+            "Stay tall, do not squat into it."
+          ]
+        },
+        {
+          "name": "Walking Lunge — 1 Crossing",
+          "type": "bodyweight",
+          "sets": 4,
+          "reps": "1 crossing (~25-30 m)",
+          "rpe": "7",
+          "rest_seconds": 15,
+          "notes": "Backpack on = the upgrade. Walk it, do not rush it.",
+          "form_cues": [
+            "Long step, front shin vertical.",
+            "Back knee brushes the ground, does not slam.",
+            "Torso upright, chest proud."
+          ]
+        },
+        {
+          "name": "Bear Crawl out / Crab Walk back",
+          "type": "bodyweight",
+          "sets": 4,
+          "reps": "1/2 crossing each",
+          "rpe": "7",
+          "rest_seconds": 15,
+          "notes": "Out on hands and toes, back facing the sky on the return. Hips low the whole way.",
+          "form_cues": [
+            "Hips stay below shoulder height on the bear crawl.",
+            "Opposite hand and foot move together.",
+            "On the crab walk, drive hips up — do not let them sag."
+          ]
+        },
+        {
+          "name": "Push-Up",
+          "type": "bodyweight",
+          "sets": 4,
+          "reps": "12",
+          "rpe": "7",
+          "rest_seconds": 15,
+          "notes": "Feet on a bench = the upgrade if 12 is easy.",
+          "form_cues": [
+            "Elbows ~45 degrees, not flared.",
+            "Body in one line — squeeze glutes.",
+            "Full lockout at the top."
+          ]
+        },
+        {
+          "name": "Broad Jump — 1 Crossing",
+          "type": "bodyweight",
+          "sets": 4,
+          "reps": "1 crossing — count your jumps",
+          "rpe": "7",
+          "rest_seconds": 15,
+          "notes": "THE ONE SCORE IN THIS BLOCK. Round 1 sets your jump count; try to beat it by one on any later round. Grass only. Any shin complaint at all — swap for a 4th crossing of walking lunges and move on.",
+          "form_cues": [
+            "Swing the arms, load the hips.",
+            "Land soft, absorb through hips and knees.",
+            "Reset fully between jumps — this is not a bounding drill."
+          ]
+        },
+        {
+          "name": "Single-Leg Calf Raise (curb or step)",
+          "type": "bodyweight",
+          "sets": 4,
+          "reps": "15 per leg",
+          "rpe": "7",
+          "rest_seconds": 90,
+          "notes": "Weak calves are your named running risk. This is the insurance premium.",
+          "form_cues": [
+            "Full stretch at the bottom, off the edge.",
+            "Pause one second at the top.",
+            "Hold something for balance, not for assistance."
+          ]
+        },
+        {
+          "name": "Side Plank",
+          "type": "timed",
+          "sets": 3,
+          "duration_seconds": 30,
+          "rpe": "7",
+          "rest_seconds": 30,
+          "notes": "Per side. Session finish.",
+          "form_cues": [
+            "Straight line ankle to shoulder.",
+            "Stack the hips, do not roll forward.",
+            "Drive the bottom shoulder away from the ear."
+          ]
+        }
+      ]
+    },
+    "road_bar_hunt": {
+      "label": "Park — B: The Bar Hunt",
+      "focus": "Pull-focused — every fixed object in the park is a station",
+      "estimated_duration_minutes": 35,
+      "location": "Playground, utegym, or any park with fixed metal",
+      "rep_range": "8-12",
+      "rest_between_sets_seconds": "60-90",
+      "notes": "ROAD BLOCK session B. Walk or jog 10-15 min to get there — that is the warm-up. RPE 7 ceiling. FREE BAR RULE: every bar you pass anywhere, any day, is one dead hang. Finisher deck — look at the seconds on your watch when you finish. 00-09: 40 s max push-ups. 10-19: 60 s wall sit. 20-29: 30 s side plank each side. 30-39: 20 broad jumps. 40-49: 45 s total dead hang. 50-59: 50 pogo hops. No choosing.",
+      "exercises": [
+        {
+          "name": "Dead Hang",
+          "type": "timed",
+          "sets": 3,
+          "duration_seconds": 30,
+          "rpe": "7",
+          "rest_seconds": 90,
+          "notes": "Max time each set — 30 s is the target, log what you actually get. This is your pull-up work.",
+          "form_cues": [
+            "Full hang, shoulders relaxed at the bottom.",
+            "Then pull shoulder blades down without bending the arms.",
+            "Breathe. Let go before the grip fails completely."
+          ]
+        },
+        {
+          "name": "Pull-Up Negative (5-Count)",
+          "type": "bodyweight",
+          "sets": 5,
+          "reps": "1",
+          "rpe": "7",
+          "rest_seconds": 120,
+          "notes": "THE NEGATIVES LADDER. Five across the whole session, taken whenever you happen to pass the bar — not as a block, not for time. Highest-value movement in the entire road block.",
+          "form_cues": [
+            "Jump or step to the top, chin over the bar.",
+            "Lower for a slow 5-count — control the whole way.",
+            "Do not drop out of the bottom; finish the rep, then step off."
+          ]
+        },
+        {
+          "name": "Inverted Row (bar, rail, or low branch)",
+          "type": "bodyweight",
+          "sets": 3,
+          "reps": "8-10",
+          "rpe": "7",
+          "rest_seconds": 75,
+          "notes": "Walk the feet further out to make it harder, tuck them in to make it easier.",
+          "form_cues": [
+            "Body rigid in one line, glutes on.",
+            "Pull the chest to the bar, not the chin.",
+            "Squeeze the shoulder blades at the top, pause one second."
+          ]
+        },
+        {
+          "name": "Incline Push-Up then Decline Push-Up",
+          "type": "bodyweight",
+          "sets": 3,
+          "reps": "12 each",
+          "rpe": "7",
+          "rest_seconds": 75,
+          "notes": "Hands on the bench for incline, feet on the bench for decline. Two sets in one — incline first, decline straight after.",
+          "form_cues": [
+            "Same elbow angle on both: ~45 degrees.",
+            "Full range, chest to the surface.",
+            "Do not let the hips sag on the decline version."
+          ]
+        },
+        {
+          "name": "Step-Up onto Bench",
+          "type": "bodyweight",
+          "sets": 3,
+          "reps": "10 per leg",
+          "rpe": "7",
+          "rest_seconds": 60,
+          "notes": "Bench height around knee level. Pack on = upgrade.",
+          "form_cues": [
+            "Drive through the heel of the top foot.",
+            "Do not push off the bottom foot.",
+            "Lower under control — the eccentric is the point."
+          ]
+        },
+        {
+          "name": "Bulgarian Split Squat (back foot on bench)",
+          "type": "bodyweight",
+          "sets": 3,
+          "reps": "10 per leg",
+          "rpe": "7",
+          "rest_seconds": 75,
+          "notes": "The hardest thing you can do to a leg without a barbell. RPE 7 means stop with reps left.",
+          "form_cues": [
+            "Front foot far enough forward that the shin stays near-vertical.",
+            "Drop straight down, not forward.",
+            "Torso slightly forward for more glute, upright for more quad."
+          ]
+        },
+        {
+          "name": "Hanging Knee Raise",
+          "type": "bodyweight",
+          "sets": 3,
+          "reps": "10",
+          "rpe": "7",
+          "rest_seconds": 60,
+          "notes": "Lower-abdominal emphasis — your stated target area.",
+          "form_cues": [
+            "Start from a full dead hang.",
+            "Initiate with a posterior pelvic tilt, not the hip flexors.",
+            "Lower slowly, kill the swing before the next rep."
+          ]
+        }
+      ]
+    },
+    "road_fartlek": {
+      "label": "Road — C: Fartlek",
+      "focus": "Aerobic base — Swedish speed play, landmark-driven, no watch",
+      "estimated_duration_minutes": 40,
+      "location": "Anywhere. Grass, gravel, or trail over asphalt wherever it is offered.",
+      "rest_between_sets_seconds": "full recovery — you must be able to speak a full sentence before the next surge",
+      "notes": "ROAD BLOCK session C. No watch, no pace, no structure decided in advance. Pick a thing ahead of you — tree, sign, dog walker — ease UP to it, ease back down when you reach it. RULES STILL BINDING: never two run days back to back; shins or calves ache the day after means the next run becomes a walk of the same duration (that counts as done, that is not skipping); Recovery Gauge 1-2 means walk instead, same duration. The last run before travelling home is the one session allowed any ambition: 45-55 min, easy the whole way, no surges needed.",
+      "exercises": [
+        {
+          "name": "Pogo Hops (Pre-Run)",
+          "type": "bodyweight",
+          "sets": 1,
+          "reps": "20",
+          "rpe": "5",
+          "rest_seconds": 30,
+          "notes": "Wakes the calves and ankles up before the first stride. Cheapest shin-splint insurance there is.",
+          "form_cues": [
+            "Stiff ankles, small hops.",
+            "Land under the hips, not in front."
+          ]
+        },
+        {
+          "name": "Easy Warm-Up Run",
+          "type": "timed",
+          "sets": 1,
+          "duration_seconds": 600,
+          "rpe": "4",
+          "rest_seconds": 60,
+          "notes": "Genuinely easy. Nose-breathing pace. You will be slower than your ego wants and it does not matter.",
+          "form_cues": [
+            "Talk test over pace over watch.",
+            "Short, quick steps — land under the hips.",
+            "Relax the shoulders and jaw."
+          ]
+        },
+        {
+          "name": "Surge (Smooth-Fast)",
+          "type": "timed",
+          "sets": 8,
+          "duration_seconds": 30,
+          "rpe": "7",
+          "rest_seconds": 120,
+          "notes": "20-40 s each, maximum 8. SMOOTH-FAST, NOT SPRINTING. Recover fully between — if you cannot speak a full sentence, you are not ready for the next one, so do not go yet. Fewer surges is always the right call.",
+          "form_cues": [
+            "Accelerate into it, do not launch.",
+            "Tall posture, quick cadence, quiet feet.",
+            "Ease off before you reach the landmark, not after."
+          ]
+        },
+        {
+          "name": "Easy Cool-Down Run",
+          "type": "timed",
+          "sets": 1,
+          "duration_seconds": 480,
+          "rpe": "3",
+          "rest_seconds": 0,
+          "notes": "Do not skip this to get home faster. Finish the run easy or the next one costs you.",
+          "form_cues": [
+            "Slower than the warm-up.",
+            "Walk the last two minutes if you want."
+          ]
+        }
+      ]
+    },
+    "road_carry": {
+      "label": "Field — D: Carry & Cross",
+      "focus": "Loaded full body — a backpack is the entire equipment list",
+      "estimated_duration_minutes": 35,
+      "location": "Open field with any slope nearby",
+      "rep_range": "10-12",
+      "rest_between_sets_seconds": "90 between rounds",
+      "notes": "ROAD BLOCK session D. Backpack loaded 8-15 kg — water bottles, books, rocks, whatever is in the boot. 3-4 rounds. RPE 7 ceiling. Circuit format: move straight to the next station, rest 90 s only after the last one. One 'crossing' = a landmark ~25-30 m out. Distance, not reps. Finisher deck — look at the seconds on your watch when you finish. 00-09: 40 s max push-ups. 10-19: 60 s wall sit. 20-29: 30 s side plank each side. 30-39: 20 broad jumps. 40-49: 45 s total dead hang. 50-59: 50 pogo hops. No choosing.",
+      "exercises": [
+        {
+          "name": "Rucksack Carry — 2 Crossings",
+          "type": "bodyweight",
+          "sets": 4,
+          "reps": "2 crossings (~50-60 m)",
+          "rpe": "7",
+          "rest_seconds": 15,
+          "notes": "Hugged at the chest, or one strap in each hand as a farmer carry. Both are correct.",
+          "form_cues": [
+            "Ribs down, brace the trunk.",
+            "Walk tall — the moment posture breaks, the set is over.",
+            "Do not lean back to counterbalance."
+          ]
+        },
+        {
+          "name": "Backpack Goblet Squat",
+          "type": "bodyweight",
+          "sets": 4,
+          "reps": "12",
+          "rpe": "7",
+          "rest_seconds": 15,
+          "notes": "Pack hugged at the chest. Depth over load, always.",
+          "form_cues": [
+            "Elbows inside the knees at the bottom.",
+            "Sit down between the hips, not back.",
+            "Full depth if the ankles allow it."
+          ]
+        },
+        {
+          "name": "Backpack Single-Leg RDL",
+          "type": "bodyweight",
+          "sets": 3,
+          "reps": "10 per leg",
+          "rpe": "7",
+          "rest_seconds": 15,
+          "notes": "Hinge quality over load. Slow. This is balance work as much as hamstring work.",
+          "form_cues": [
+            "Hips square — do not let the free hip rotate open.",
+            "Soft knee on the standing leg, do not squat it.",
+            "Back leg and torso move as one line."
+          ]
+        },
+        {
+          "name": "Backpack Bent-Over Row",
+          "type": "bodyweight",
+          "sets": 4,
+          "reps": "12",
+          "rpe": "7",
+          "rest_seconds": 15,
+          "notes": "Grab the pack by the top handle or both straps. Hinge to roughly 45 degrees and hold it there.",
+          "form_cues": [
+            "Flat back, chest over the toes.",
+            "Pull to the belly button, not the chest.",
+            "Squeeze the shoulder blades, pause, lower slowly."
+          ]
+        },
+        {
+          "name": "Backpack Overhead Press",
+          "type": "bodyweight",
+          "sets": 3,
+          "reps": "10",
+          "rpe": "7",
+          "rest_seconds": 90,
+          "notes": "Your known weak link. At 10 kg this is SKILL PRACTICE, not load. Free reps on a pattern you are bad at — treat every rep as technique.",
+          "form_cues": [
+            "Ribs down, glutes on — do not lean back.",
+            "Press slightly behind your ears at the top.",
+            "Biceps by the ears at lockout, head through."
+          ]
+        },
+        {
+          "name": "Uphill Pack Walk",
+          "type": "timed",
+          "sets": 3,
+          "duration_seconds": 30,
+          "rpe": "7",
+          "rest_seconds": 90,
+          "notes": "Find any slope. This is a sled push made of geography. Walk down to recover.",
+          "form_cues": [
+            "Lean into the hill from the ankles, not the waist.",
+            "Drive through the whole foot.",
+            "Powerful walk, not a run."
+          ]
+        }
+      ]
+    },
     "day_7": {
-      "label": "Thu — Rest or Light Active Recovery",
+      "label": "Sun — Full Rest",
       "estimated_duration_minutes": 30,
       "options": [
         {
@@ -915,37 +1293,107 @@
             }
           ]
         }
+      ],
+      "focus": "Full rest — recovery is where the growth lands"
+    },
+    "namban": {
+      "label": "Wed — Namban Rengo",
+      "focus": "Track / conditioning — coach-led",
+      "estimated_duration_minutes": 90,
+      "notes": "Content programmed by on-site coach. Log what was done after.",
+      "session_type": "namban",
+      "location": "Oda Field",
+      "exercises": []
+    },
+    "swim_steady": {
+      "label": "Wed — Swim: Steady State + Core",
+      "focus": "Aerobic base — continuous, conversational effort",
+      "estimated_duration_minutes": 45,
+      "session_type": "swim",
+      "swim": {
+        "mode": "steady_state",
+        "target_duration_minutes": 35,
+        "duration_range_minutes": [
+          30,
+          40
+        ],
+        "intensity": "Steady, conversational. You should be able to hold the pace the whole way.",
+        "protocol": "Continuous swimming for 30-40 min. Break for form, not for breath. Mix strokes if freestyle fatigues."
+      },
+      "notes": "Supports recovery rather than competing with it — stays as programmed through deload week.",
+      "exercises": [
+        {
+          "name": "Plank",
+          "type": "timed",
+          "sets": 3,
+          "duration_seconds": 45,
+          "rpe": "8",
+          "rest_seconds": 45,
+          "notes": "Core stability, not just aesthetics. Builds the foundation for all compound lifts.",
+          "form_cues": [
+            "Body in a straight line from head to heels.",
+            "Brace like you are about to take a punch.",
+            "Do not let hips sag or pike up.",
+            "Breathe — do not hold your breath."
+          ]
+        },
+        {
+          "name": "Dead Bug",
+          "type": "bodyweight",
+          "sets": 3,
+          "reps": "8 each side",
+          "rpe": "7",
+          "rest_seconds": 45,
+          "notes": "Anti-extension core work. Excellent for lower abdominal control — directly relevant to your target area.",
+          "form_cues": [
+            "Lower back pressed into the floor at all times.",
+            "Extend opposite arm and leg simultaneously, slowly.",
+            "Do not let lower back arch — that is the whole point.",
+            "Move slowly: 3 seconds out, 3 seconds back."
+          ]
+        },
+        {
+          "name": "Hanging Leg Raise or Knee Raise",
+          "type": "bodyweight",
+          "sets": 3,
+          "reps": "8-12",
+          "rpe": "8",
+          "rest_seconds": 60,
+          "notes": "Lower abdominal emphasis. Use knee raises if full leg raises are too difficult. Progress to straight legs over the 8 weeks.",
+          "form_cues": [
+            "Hang from bar, full dead hang.",
+            "Initiate with posterior pelvic tilt (tuck tailbone) — not hip flexors.",
+            "Raise knees or legs to 90 degrees or above.",
+            "Lower slowly — do not let legs swing."
+          ]
+        }
       ]
+    },
+    "swim_intervals": {
+      "label": "Sat — Swim: Intervals",
+      "focus": "Conditioning — repeated hard efforts with short rest",
+      "estimated_duration_minutes": 30,
+      "session_type": "swim",
+      "swim": {
+        "mode": "intervals",
+        "target_duration_minutes": 25,
+        "duration_range_minutes": [
+          20,
+          30
+        ],
+        "intensity": "Hard efforts, incomplete recovery. Last interval should be a fight.",
+        "protocol": "Warm up 5 min easy. Then repeats — e.g. 8-12 x 50m hard on 1:00-1:30, or 6 x 100m. Cool down 5 min easy."
+      },
+      "notes": "Alternates with Pull B week to week. Stays as programmed through deload week.",
+      "exercises": []
     }
   },
-
   "progression_scheme": {
-    "weeks_1_2": {
-      "label": "Foundation and Calibration",
-      "notes": "Re-establish movement patterns. Weights should feel moderate — RPE 7 max. Prioritise form over load. Do not push to failure.",
-      "volume_modifier": "As written"
-    },
-    "weeks_3_4": {
-      "label": "Accumulation I",
-      "notes": "Begin pushing RPE to 8. Apply progressive overload on main compound lifts. Add 2.5kg to bench and OHP when 4x6 is achieved.",
-      "volume_modifier": "As written"
-    },
-    "weeks_5_6": {
-      "label": "Accumulation II",
-      "notes": "Highest volume and intensity phase. Compound lifts should be approaching previous PRs. Pull-up assistance continues to reduce. Cardio intervals increase by 1-2 rounds.",
-      "volume_modifier": "Add 1 set to main compound lifts if recovery allows"
-    },
-    "week_7": {
-      "label": "Deload — Mandatory",
-      "notes": "Reduce all weights by 40-50%. Reduce sets to 2-3 per exercise. No supersets — straight sets only. Do not skip this. The deload allows your nervous system and tendons to recover, and you will come back stronger in week 8.",
-      "volume_modifier": "50% volume reduction. 50% load reduction."
-    },
-    "week_8": {
-      "label": "Peak and Test Week",
-      "notes": "Attempt benchmark tests. Bench: go for 87.5kg. Squat: go for 90kg x8 or 95kg x6. Pull-ups: attempt unassisted. Cardio: 45 min steady state. Record all results for the next programme cycle."
-    }
+    "baseline_weeks": "Weeks 1-2 — run as written. Log honestly, no load chasing.",
+    "progressive_week": "Week 3 — add 2.5kg to main lifts OR one extra set to accessory work.",
+    "deload_week": "Week 4 — cut volume ~40%. Sets scale automatically from stored baseline. Swim stays as programmed; it supports recovery rather than competing with it.",
+    "reassess_week": "Week 5 — retest 1-2 main lifts, record waist + 7-day average bodyweight, adjust calories and loads, restart at Week 1."
   },
-
   "key_lift_progression_notes": {
     "bench_press": {
       "starting_weight_kg": 90,
@@ -975,7 +1423,6 @@
       "progression": "5kg increment when 3x10 achieved at RPE 8 or less"
     }
   },
-
   "tracking": {
     "weekly_log_fields": [
       "Date",
@@ -990,7 +1437,6 @@
     "photo_schedule": "Take photos every 2 weeks, same lighting, same time of day, same poses: front, side, back. Do not compare daily — compare month over month.",
     "measurement_schedule": "Waist measurement at navel every 2 weeks. This is a better fat loss indicator than scale weight."
   },
-
   "recovery_guidelines": {
     "sleep": "8 hours is the target. This is non-negotiable for recomp — muscle is built and fat is mobilised during sleep.",
     "hydration": "3-4 litres of water per day. More on training days.",
@@ -1004,11 +1450,96 @@
     ],
     "response_to_overtraining_signs": "If 3 or more signs are present, insert an additional rest day and reduce volume by 30% for the following week. Report to your coach."
   },
-
   "programme_metadata": {
     "created": "2026-03-25",
     "version": "1.0 — Option C PPL A/B",
     "next_review_date": "2026-05-20",
     "coach_notes": "Programme designed for a 24-year-old intermediate-beginner at 182cm/81kg targeting recomposition with aesthetic priority. The A/B structure provides strength stimulus (A days) and hypertrophy/metabolic stimulus (B days). Calf volume is deliberately elevated (9 working sets on leg day) to address a stated weak point. Pull-up progression is the single most important long-term tracking metric. Do not suggest programme changes before the 8-week review unless there is injury or significant life disruption."
+  },
+  "cycle_length_weeks": 5,
+  "cycle": {
+    "name": "5-Week Steady Growth Cycle",
+    "length_weeks": 5,
+    "default_start_date": "2026-07-20",
+    "start_day_of_week": "monday",
+    "week_types": {
+      "1": "baseline",
+      "2": "baseline",
+      "3": "progressive",
+      "4": "deload",
+      "5": "reassess"
+    },
+    "week_type_meta": {
+      "baseline": {
+        "label": "Baseline",
+        "short": "Establish the numbers. Run the sessions as written, no chasing.",
+        "volume_multiplier": 1.0,
+        "load_delta_kg": 0
+      },
+      "progressive": {
+        "label": "Progressive Push",
+        "short": "+2.5kg on main lifts, or +1 set on accessories. Primary driver of visible progress.",
+        "volume_multiplier": 1.0,
+        "load_delta_kg": 2.5,
+        "accessory_extra_set": true
+      },
+      "deload": {
+        "label": "Deload",
+        "short": "Volume cut ~40%. Same movements, fewer sets, moderate intensity. Mandatory, not optional.",
+        "volume_multiplier": 0.6,
+        "load_delta_kg": 0,
+        "rpe_cap": 7
+      },
+      "reassess": {
+        "label": "Reassess",
+        "short": "Retest 1-2 main lifts, log waist + 7-day average bodyweight, adjust calories, restart at Week 1.",
+        "volume_multiplier": 1.0,
+        "load_delta_kg": 0
+      }
+    },
+    "saturday_alternation": {
+      "odd_weeks": "swim_intervals",
+      "even_weeks": "pull_b",
+      "notes": "Swim Intervals or Pull B, alternating week to week."
+    }
+  },
+  "check_in": {
+    "format": "done | missed — reason — fix",
+    "required_daily": true,
+    "notes": "Vague check-ins are rejected. A missed session requires a same-day reason and a same-day fix."
+  },
+  "temporary_plan": {
+    "name": "Road Block — Field Games",
+    "active_from": "2026-08-24",
+    "active_until": "2026-09-06",
+    "reason": "No gym access — travelling. Outdoor, bodyweight / basic-equipment, large-area training.",
+    "overrides": "Replaces the strength half of the Sweden Reset Block. Its running, food and sleep rules still stand.",
+    "rotation": [
+      "road_crossings",
+      "road_fartlek",
+      "road_bar_hunt",
+      "road_fartlek",
+      "road_carry",
+      "walk",
+      "rest"
+    ],
+    "ceilings": {
+      "rpe_max": 7,
+      "session_minutes_max": 45,
+      "prs": "none attempted, none expected"
+    },
+    "unit": "One 'crossing' = a landmark ~25-30 m away. Field distances are measured in crossings, not reps.",
+    "kit": {
+      "required": "nothing",
+      "optional": [
+        "long resistance band",
+        "backpack you can load 8-15 kg",
+        "jump rope"
+      ]
+    },
+    "nutrition": "No cut, no counting. Protein floor 150 g/day. That is the whole plan.",
+    "floor": "Walk daily, hit protein, sleep 8 h. Missing a session does not break the block.",
+    "reverts_to": "Recalibration week — test squat, bench, deadlift fresh. All working weights in the programme are stale May estimates.",
+    "source_file": "workouts/2026-08-24-road-block.md"
   }
 }
