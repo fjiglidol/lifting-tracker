@@ -1654,6 +1654,7 @@
     "floor": "Walk daily, hit protein, sleep 8 h. Missing a session does not break the block.",
     "reverts_to": "Recalibration week — test squat, bench, deadlift fresh. All working weights in the programme are stale May estimates.",
     "source_file": "workouts/2026-08-24-road-block.md",
-    "namban_note": "Namban Rengo Wednesdays do not run while off the road. road_ladder replaces the thing Namban actually provided — a fixed appointment with a workout somebody else decided — without replacing its intensity, which the block deliberately spends elsewhere."
+    "namban_note": "Namban Rengo Wednesdays do not run while off the road. road_ladder replaces the thing Namban actually provided — a fixed appointment with a workout somebody else decided — without replacing its intensity, which the block deliberately spends elsewhere.",
+    "rest_days": "Tue + Sun. Monday rest moved to Tuesday for this block — no barbell load on the road, so Monday is the most active non-gym day instead."
   }
 }

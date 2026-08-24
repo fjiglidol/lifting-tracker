@@ -22,6 +22,7 @@ Four sessions on a **rotation**, not a fixed week — you take the next one, not
 - **Fartlek** = landmark-driven speed play, free-form, Fridays. No watch, no pace. Surges smooth-fast, never sprinting. Shin rules from the Sweden block still binding.
 - **Finisher deck** — seconds on the clock pick your finisher. No deciding.
 - **RPE 7 ceiling, 45 min cap, no PRs.**
+- **Rest days are Tue + Sun** for this block — Monday rest moved, since there is no barbell load on the road to recover from. Two rest days a week stays non-negotiable; which days they land on does not.
 
 Kit: nothing required. Band + abusable backpack + jump rope (~£15) unlocks session D.
 

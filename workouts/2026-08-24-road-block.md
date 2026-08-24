@@ -19,6 +19,8 @@ Four sessions on a rotation, not a fixed week. You don't ask "what day is it," y
 
 Rotation: **A → C2 → B → C → D → walk → rest**, repeat. Never two run days back to back.
 
+**Rest day moved to Tuesday for this block.** Monday is normally your rest day because it sits after a week of barbell load — and there is no barbell load on the road. Nothing needs recovering from on a Monday here, so Monday becomes the most active non-gym day and Tuesday takes the rest. Sunday stays rest either way. **Two rest days per week, non-negotiable — the day they land on is not.**
+
 **Ceilings, non-negotiable:** RPE 7. 45 min. No PRs, none attempted, none expected. This is a holding block that happens to be fun — the recalibration week on 2026-08-30 is where numbers come back.
 
 ---
@@ -183,8 +185,8 @@ End of any session, look at the seconds hand on your watch or phone. Whatever it
 
 | Date | Day | Session |
 | --- | --- | --- |
-| Aug 24 | Mon | **Rest** — your rest day stays your rest day |
-| Aug 25 | Tue | **A — Crossings** |
+| Aug 24 | Mon | **A — Crossings** |
+| Aug 25 | Tue | **Rest** |
 | Aug 26 | Wed | **C2 — The Ladder** (Namban slot) |
 | Aug 27 | Thu | **B — The Bar Hunt** |
 | Aug 28 | Fri | **C — Fartlek**, long and easy (45–55 min) |
