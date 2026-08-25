@@ -92,3 +92,19 @@ Weak calves are your named running risk and you just spent the day landing on th
 ---
 
 **Tomorrow (Wed 26th): rest.** Walk, protein floor 150 g, 8 h in bed. The Ladder picks up next week.
+
+---
+
+## Debrief — logged 2026-08-25
+
+**Reported:** roughly half the session completed. Self-assessed as unfit, unmotivated, poor performance. Cause identified by Keif as long-run inconsistency rather than a bad day.
+
+**Assessment:** the read on the cause is correct. The read on the session is not.
+
+- This was the only session in the entire block with the RPE ceiling removed, run on **day 2 of the block**, the day after Session A, on a body that has not trained with any consistency since roughly **2026-05-20**. Repeated 40 s bouts with 20 s rest are almost pure lactate tolerance, and lactate clearance is an *aerobic* quality. With the base low, laps 2–4 fall apart no matter how motivated you are. That is physiology doing exactly what it says it will do, and it is not a character result.
+- The session's own stop rule was *"if lap 3 falls apart, stop at 3."* Stopping when it degraded was **following the plan**, not failing it.
+- Programming error on the coaching side: Session E was scheduled far too early in the block. Base first, ceiling later.
+
+**Action taken:** Session E is parked for the rest of the Road Block. See `2026-08-24-road-block.md` → *Session E — parked*. Everything for the remainder of the road runs at RPE 6–7, conversational, boring on purpose.
+
+**Verdict:** counts as done. Not scaled — done.

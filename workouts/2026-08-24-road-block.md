@@ -16,13 +16,23 @@ Five sessions on a rotation, not a fixed week. You don't ask "what day is it," y
 **C — Fartlek** (run, landmark-driven, 30–50 min)
 **C2 — The Ladder** (run, fixed shape — Wednesdays, ~40 min)
 **D — Carry & Cross** (loaded backpack, ~35 min)
-**E — The Grid** (HIIT, open field, ~35 min) — *takes a rest day's slot, never added on top*
+**E — The Grid** (HIIT, open field, ~35 min) — **parked 2026-08-25.** Came too early. See below.
 
 Rotation: **A → C2 → B → C → D → walk → rest**, repeat. Never two run days back to back.
 
 **Rest day moved to Tuesday for this block.** Monday is normally your rest day because it sits after a week of barbell load — and there is no barbell load on the road. Nothing needs recovering from on a Monday here, so Monday becomes the most active non-gym day and Tuesday takes the rest. Sunday stays rest either way. **Two rest days per week, non-negotiable — the day they land on is not.**
 
-**Ceilings, non-negotiable:** RPE 7. 45 min. No PRs, none attempted, none expected. **The single exception is Session E**, where the work bouts run at RPE 8–9 — and it pays for that by spending a rest day rather than adding a sixth day of work. This is a holding block that happens to be fun — the recalibration week on 2026-08-30 is where numbers come back.
+**Ceilings, non-negotiable:** RPE 7. 45 min. No PRs, none attempted, none expected. **No exceptions** — the one that existed (Session E) is parked as of 2026-08-25. This is a holding block that happens to be fun — the recalibration week on 2026-08-30 is where numbers come back.
+
+---
+
+## The bar for a day to count
+
+Added 2026-08-25. This block was still being scored on performance, and performance is the wrong scoreboard for someone rebuilding a base.
+
+**A day counts if you went outside and moved for 20 minutes.** That's the floor. A walk clears it. A walk in the rain clears it. Half a session clears it, and clears it fully — a session you stopped early because it degraded is a *completed* session, because the stop rules are part of the session.
+
+**The only score in this block is the tick count: how many days out of seven you cleared the floor.** Not laps, not crossings, not pace. Four ticks is a good week. Six is a great one. There is no number of hard sessions that beats a week of ticks right now, because the thing that's missing is frequency, not effort.
 
 ---
 
@@ -167,7 +177,11 @@ Overhead press is your known weak link — with 10 kg it's **skill practice, not
 
 ---
 
-## Session E — The Grid (HIIT)
+## Session E — The Grid (HIIT) — **PARKED**
+
+**Parked 2026-08-25 after one attempt.** Run on day 2 of the block on a body with months of inconsistency behind it, it did what a lactate-tolerance session always does off a thin aerobic base: lap 1 was honest, the rest degraded. That's a scheduling error, not a fitness verdict.
+
+**It comes back when the base is there to hold it, and the condition is written in advance so it isn't a mood call: three consecutive weeks of five-or-more ticks.** Not before. Kept below for when that happens.
 
 *Open field, grass only. Nothing in your hands. The one session where the RPE ceiling comes off.*
 
@@ -214,10 +228,10 @@ End of any session, look at the seconds hand on your watch or phone. Whatever it
 | Date | Day | Session |
 | --- | --- | --- |
 | Aug 24 | Mon | **A — Crossings** |
-| Aug 25 | Tue | **E — The Grid (HIIT)** — added, takes the rest day's slot |
+| Aug 25 | Tue | ~~E — The Grid~~ — **attempted, half done, counts. E now parked.** |
 | Aug 26 | Wed | **Rest** — moved here from Tue; the Ladder slides a week |
-| Aug 27 | Thu | **B — The Bar Hunt** |
-| Aug 28 | Fri | **C — Fartlek**, long and easy (45–55 min) |
+| Aug 27 | Thu | **B — The Bar Hunt** — easy. Take the five negatives, don't chase reps |
+| Aug 28 | Fri | **C — Fartlek**, long and easy (45–55 min) — **surges optional.** If you'd rather run 45 min flat and easy, that's the better session right now |
 | Aug 29 | Sat | Travel — walk + mobility + Wind-Down |
 | Aug 30+ | | Rotation continues if you're still on the road; otherwise **recalibration week** |
 
@@ -237,4 +251,6 @@ If the road runs longer than that, just keep turning the rotation: **A → C2 �
 
 It isn't a strength block and it isn't a substitute for one. It's fourteen days of keeping the machine warm in a way that doesn't feel like a punishment for being away from a barbell. The score is: did you go outside, did you take the bars you passed, did you eat and sleep.
 
-**On 2026-08-30 or whenever the road ends** — run the recalibration week. Test squat, bench, deadlift fresh. Every working weight in `current-programme.md` is still a May estimate and still untrustworthy.
+**On 2026-08-30 or whenever the road ends** — run the recalibration week. Establish squat, bench, deadlift fresh. Every working weight in `current-programme.md` is still a May estimate and still untrustworthy.
+
+**Reframed 2026-08-25: recalibration is a baseline, not a test.** One top set per lift at **RPE 7 — a rep left in the tank, no grinding** — and the number gets estimated from that, not proven. You are coming off months of inconsistency; a max attempt in that state measures your last three months, not your ceiling, and produces a number you'll take personally. Take the RPE 7 number, build on it, and let the ceiling show up on its own in six weeks.
