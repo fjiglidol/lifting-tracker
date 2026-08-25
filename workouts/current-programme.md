@@ -1,6 +1,6 @@
 # Current Programme
 
-**Updated:** 2026-08-24
+**Updated:** 2026-08-25
 **Phase:** 🛣️ **ROAD BLOCK — Field Games — 2026-08-24 → 2026-09-06 (rolling)**
 **Goal:** rebuild inputs (sleep, food, aerobic base). No gym access — outdoor, bodyweight, large-area training.
 
@@ -12,21 +12,26 @@ This file always reflects the latest schedule from coach. Dated session files in
 
 **No gym access. Overrides the strength half of the Sweden block; its running, food, and sleep rules still stand.**
 
-Four sessions on a **rotation**, not a fixed week — you take the next one, not the one the calendar says:
+Five sessions on a **rotation**, not a fixed week — you take the next one, not the one the calendar says:
 
 **A — Crossings** (open field, bodyweight) → **C2 — The Ladder** (Wed run, fixed shape) → **B — The Bar Hunt** (playground/utegym) → **C — Fartlek** (free run) → **D — Carry & Cross** (loaded backpack) → walk → rest
+
+**E — The Grid (HIIT)** sits outside the rotation — a drop-in field day that **takes a rest day's slot** rather than being added on top.
 
 - **Distance, not reps.** One *crossing* = a landmark ~25–30 m out. Every field distance is measured in those.
 - **Five pull-up negatives per Bar Hunt** + the **free bar rule** (every bar you pass in a day = one dead hang). Biggest structural gap, cheapest fix.
 - **Namban Rengo is off while travelling.** Wednesday becomes **The Ladder** (1-2-3-2-1 min steady-strong, equal easy between) — a fixed shape you don't get to negotiate with, which is the part of Namban worth replacing. Its intensity deliberately isn't replaced.
 - **Fartlek** = landmark-driven speed play, free-form, Fridays. No watch, no pace. Surges smooth-fast, never sprinting. Shin rules from the Sweden block still binding.
 - **Finisher deck** — seconds on the clock pick your finisher. No deciding.
-- **RPE 7 ceiling, 45 min cap, no PRs.**
+- **The Grid (E)** — 15 m square, four corners, four stations. 40 s on / 20 s off around the square = one lap; 4 laps, 90 s between. Grass only, one plyo station per lap, mandatory warm-up and cool-down. **The one place the RPE ceiling lifts** (work bouts 8-9) — and it pays for that with a rest day, not an extra day.
+- **RPE 7 ceiling, 45 min cap, no PRs** — Session E work bouts excepted.
 - **Rest days are Tue + Sun** for this block — Monday rest moved, since there is no barbell load on the road to recover from. Two rest days a week stays non-negotiable; which days they land on does not.
+- **This week only (Aug 24-30):** Tue 25th is **The Grid**, and the rest day moves to **Wed 26th**. The Ladder slides to next week. The app reverts to the standard rotation on its own after Sunday.
 
 Kit: nothing required. Band + abusable backpack + jump rope (~£15) unlocks session D.
 
 Full plan: [`2026-08-24-road-block.md`](./2026-08-24-road-block.md)
+Today's session: [`2026-08-25-hiit-field-day.md`](./2026-08-25-hiit-field-day.md)
 
 **Floor for any day on the road:** walk daily, hit protein (150 g), sleep 8 h.
 

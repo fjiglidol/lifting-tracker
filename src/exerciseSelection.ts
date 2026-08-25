@@ -32,6 +32,16 @@ const ROAD_DAY_TO_SESSION: Record<number, string> = {
   6: 'road_carry',      // Sat — D: Carry & Cross
 };
 
+// One-off days that override the rotation for a single date. A Grid (HIIT) day
+// takes a rest day's slot rather than being added on top, so each entry here
+// that adds work is paired with one that gives the rest back. Entries fall out
+// of the schedule on their own once their week has passed.
+
+export const ROAD_ONE_OFFS: Record<string, string> = {
+  '2026-08-25': 'road_hiit', // Tue — HIIT in place of the rest day
+  '2026-08-26': 'day_7',     // Wed — rest moves here; the Ladder slides a week
+};
+
 /** Local YYYY-MM-DD — avoids the UTC shift toISOString() would introduce. */
 function localISODate(d: Date): string {
   const pad = (n: number) => String(n).padStart(2, '0');
@@ -43,8 +53,29 @@ export function isRoadBlockActive(now = new Date()): boolean {
   return today >= ROAD_BLOCK_FROM && today <= ROAD_BLOCK_UNTIL;
 }
 
+/** Monday-start week bounds containing `now`, as local YYYY-MM-DD. */
+function weekBounds(now: Date): [string, string] {
+  const monday = new Date(now);
+  monday.setDate(monday.getDate() - ((monday.getDay() + 6) % 7));
+  const sunday = new Date(monday);
+  sunday.setDate(sunday.getDate() + 6);
+  return [localISODate(monday), localISODate(sunday)];
+}
+
+/** One-off overrides for the week containing `now`, keyed by day of week. */
+export function activeOneOffs(now = new Date()): Record<number, string> {
+  const [from, to] = weekBounds(now);
+  const out: Record<number, string> = {};
+  for (const [date, sessionKey] of Object.entries(ROAD_ONE_OFFS)) {
+    if (date < from || date > to) continue;
+    const [y, m, d] = date.split('-').map(Number);
+    out[new Date(y, m - 1, d).getDay()] = sessionKey;
+  }
+  return out;
+}
+
 export function getDayToSession(cycleWeek = getCycleState().week, now = new Date()): Record<number, string> {
-  if (isRoadBlockActive(now)) return { ...ROAD_DAY_TO_SESSION };
+  if (isRoadBlockActive(now)) return { ...ROAD_DAY_TO_SESSION, ...activeOneOffs(now) };
   return {
     0: 'day_7',                       // Sun — Full rest
     1: 'push_a',                      // Mon — Push A (Heavy)
@@ -72,11 +103,22 @@ export const MUSCLE_GROUPS: Record<string, string> = {
   road_bar_hunt: 'pull',
   road_fartlek: 'cardio',
   road_ladder: 'cardio',
+  road_hiit: 'cardio',
 };
 
 const SWAP_ORDER: Record<string, string> = {
   push_b: 'pull_b', push_a: 'pull_a',
   pull_b: 'push_b', pull_a: 'push_a',
+};
+
+const ROAD_LABELS: Record<string, string> = {
+  road_crossings: 'Crossings',
+  road_ladder: 'Ladder',
+  road_bar_hunt: 'Bar Hunt',
+  road_fartlek: 'Fartlek',
+  road_carry: 'Carry',
+  road_hiit: 'The Grid',
+  day_7: 'Rest',
 };
 
 const ROAD_WEEK_SCHEDULE: { day: string; dow: number; sessionKey: string; label: string }[] = [
@@ -90,7 +132,14 @@ const ROAD_WEEK_SCHEDULE: { day: string; dow: number; sessionKey: string; label:
 ];
 
 export function getWeekSchedule(cycleWeek = getCycleState().week, now = new Date()): { day: string; dow: number; sessionKey: string; label: string }[] {
-  if (isRoadBlockActive(now)) return ROAD_WEEK_SCHEDULE.map(d => ({ ...d }));
+  if (isRoadBlockActive(now)) {
+    const oneOffs = activeOneOffs(now);
+    return ROAD_WEEK_SCHEDULE.map(d => {
+      const override = oneOffs[d.dow];
+      if (!override) return { ...d };
+      return { ...d, sessionKey: override, label: ROAD_LABELS[override] ?? d.label };
+    });
+  }
   const sat = saturdaySession(cycleWeek);
   return [
     { day: 'Mon', dow: 1, sessionKey: 'push_a',      label: 'Push A' },

@@ -1346,6 +1346,115 @@
         }
       ]
     },
+    "road_hiit": {
+      "label": "Field — E: The Grid (HIIT)",
+      "focus": "Anaerobic conditioning — short hard bouts on an open field, no equipment",
+      "estimated_duration_minutes": 35,
+      "location": "Open field — grass only. Pace out a square, each side ~15 m (half a crossing).",
+      "rep_range": "time-based — 40 s work / 20 s rest",
+      "rest_between_sets_seconds": "20 between stations, 90 between laps",
+      "notes": "ROAD BLOCK session E. THE ONE RPE EXCEPTION IN THIS BLOCK: work bouts run at RPE 8-9. Everything else in the block still holds at 7. The trade for that is a rest day — a Grid day costs one, it does not get added on top. Four corners of the square are four stations; 40 s work / 20 s rest around the square = one lap (4 min). 4 laps, 90 s between. Grass only. One plyo station per lap, no more. Any shin or calf complaint at all: station 4 becomes speed squats, station 1 becomes tempo strides at 80 percent, and you finish the session anyway. Finisher deck — look at the seconds on your watch when you finish. 00-09: 40 s max push-ups. 10-19: 60 s wall sit. 20-29: 30 s side plank each side. 30-39: 20 broad jumps. 40-49: 45 s total dead hang. 50-59: 50 pogo hops. No choosing.",
+      "exercises": [
+        {
+          "name": "Easy Jog + Strides (Warm-Up)",
+          "type": "cardio",
+          "sets": 1,
+          "duration_seconds": 360,
+          "rpe": "4",
+          "rest_seconds": 60,
+          "notes": "4 min conversational, then 2 build-up strides to about 70 percent over one crossing. Do not start the Grid cold — this is the session where cold starts cost you.",
+          "form_cues": [
+            "Nose breathing for the jog — if you cannot, slow down.",
+            "Strides build gradually, no standing start sprints.",
+            "Shake the arms out between strides."
+          ]
+        },
+        {
+          "name": "Pogo Hops (Warm-Up)",
+          "type": "bodyweight",
+          "sets": 2,
+          "reps": "20",
+          "rpe": "5",
+          "rest_seconds": 30,
+          "notes": "Shin insurance, same as every field day. Non-negotiable before hard efforts.",
+          "form_cues": [
+            "Knees almost locked, bounce from the ankle.",
+            "Minimal ground contact time.",
+            "Stay tall, do not squat into it."
+          ]
+        },
+        {
+          "name": "Station 1 — Shuttle Runs",
+          "type": "timed",
+          "sets": 4,
+          "duration_seconds": 40,
+          "rpe": "8-9",
+          "rest_seconds": 20,
+          "notes": "Corner to corner across the grid, hand down on the grass at each end. The turn is the work, not the straight. Sub: tempo strides at 80 percent if shins are talking.",
+          "form_cues": [
+            "Decelerate over three steps, not one — chop the stride down.",
+            "Drop the hips into the turn, do not lean over at the waist.",
+            "Push out of the turn low, stand tall by the third step."
+          ]
+        },
+        {
+          "name": "Station 2 — Burpee, Step-Out",
+          "type": "timed",
+          "sets": 4,
+          "duration_seconds": 40,
+          "rpe": "8-9",
+          "rest_seconds": 20,
+          "notes": "Step the feet back and in rather than jumping them — keeps the impact budget for station 1 and 4. Chest touches the grass every rep. Count reps in lap 1 and hold that number, do not chase it.",
+          "form_cues": [
+            "Hands land under the shoulders.",
+            "Chest to grass, full lockout on the push.",
+            "Stand all the way tall at the top — hips through, no half rep."
+          ]
+        },
+        {
+          "name": "Station 3 — Bear Crawl Sprint",
+          "type": "timed",
+          "sets": 4,
+          "duration_seconds": 40,
+          "rpe": "8-9",
+          "rest_seconds": 20,
+          "notes": "One side of the grid out, one side back, repeat until the clock stops. Hips low the whole way — the moment they rise you are resting and you know it.",
+          "form_cues": [
+            "Hips stay below shoulder height.",
+            "Opposite hand and foot move together.",
+            "Short quick steps, knees hovering off the ground."
+          ]
+        },
+        {
+          "name": "Station 4 — Squat Jump",
+          "type": "timed",
+          "sets": 4,
+          "duration_seconds": 40,
+          "rpe": "8-9",
+          "rest_seconds": 90,
+          "notes": "Grass only. Land soft, reset, jump again — this is not a bounce drill. Sub: speed squats, same 40 s, at the first hint of shin or calf complaint. Last station of the lap, so the 90 s rest lands here.",
+          "form_cues": [
+            "Sit to roughly parallel, no deeper under speed.",
+            "Land through the whole foot, absorb with hips and knees.",
+            "Arms swing through — use them."
+          ]
+        },
+        {
+          "name": "Walk + Calf Stretch (Cool-Down)",
+          "type": "timed",
+          "sets": 1,
+          "duration_seconds": 300,
+          "rpe": "2",
+          "rest_seconds": 0,
+          "notes": "5 min walk until breathing is normal, then calf stretch 30 s per side against anything vertical, hamstring 30 s per side. Weak calves are the named running risk; this is the second half of the insurance premium.",
+          "form_cues": [
+            "Walk first, stretch second — never stretch while still gasping.",
+            "Back leg straight, heel down, hips forward for the calf.",
+            "Breathe out into each stretch, no bouncing."
+          ]
+        }
+      ]
+    },
     "day_7": {
       "label": "Sun — Full Rest",
       "estimated_duration_minutes": 30,
@@ -1633,13 +1742,15 @@
       "road_bar_hunt",
       "road_fartlek",
       "road_carry",
+      "road_hiit",
       "walk",
       "rest"
     ],
     "ceilings": {
       "rpe_max": 7,
       "session_minutes_max": 45,
-      "prs": "none attempted, none expected"
+      "prs": "none attempted, none expected",
+      "rpe_exception": "road_hiit work bouts run at RPE 8-9. Only exception in the block, and it costs a rest day rather than adding a session."
     },
     "unit": "One 'crossing' = a landmark ~25-30 m away. Field distances are measured in crossings, not reps.",
     "kit": {
@@ -1655,6 +1766,6 @@
     "reverts_to": "Recalibration week — test squat, bench, deadlift fresh. All working weights in the programme are stale May estimates.",
     "source_file": "workouts/2026-08-24-road-block.md",
     "namban_note": "Namban Rengo Wednesdays do not run while off the road. road_ladder replaces the thing Namban actually provided — a fixed appointment with a workout somebody else decided — without replacing its intensity, which the block deliberately spends elsewhere.",
-    "rest_days": "Tue + Sun. Monday rest moved to Tuesday for this block — no barbell load on the road, so Monday is the most active non-gym day instead."
+    "rest_days": "Tue + Sun. Monday rest moved to Tuesday for this block — no barbell load on the road to recover from. Two rest days a week stays fixed; which days they land on does not. A Grid (HIIT) day takes a rest day's slot and pushes that rest to the next day it fits."
   }
 }

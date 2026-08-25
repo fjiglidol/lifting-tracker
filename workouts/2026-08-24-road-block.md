@@ -9,19 +9,20 @@ No gym. Large open space. Nothing in your hands you can't buy at a petrol statio
 
 ## The frame
 
-Four sessions on a rotation, not a fixed week. You don't ask "what day is it," you ask "what did I do last time" and take the next one. Miss a day, the rotation doesn't care.
+Five sessions on a rotation, not a fixed week. You don't ask "what day is it," you ask "what did I do last time" and take the next one. Miss a day, the rotation doesn't care.
 
 **A — Crossings** (open field, bodyweight, ~35 min)
 **B — The Bar Hunt** (playground / utegym, ~35 min)
 **C — Fartlek** (run, landmark-driven, 30–50 min)
 **C2 — The Ladder** (run, fixed shape — Wednesdays, ~40 min)
 **D — Carry & Cross** (loaded backpack, ~35 min)
+**E — The Grid** (HIIT, open field, ~35 min) — *takes a rest day's slot, never added on top*
 
 Rotation: **A → C2 → B → C → D → walk → rest**, repeat. Never two run days back to back.
 
 **Rest day moved to Tuesday for this block.** Monday is normally your rest day because it sits after a week of barbell load — and there is no barbell load on the road. Nothing needs recovering from on a Monday here, so Monday becomes the most active non-gym day and Tuesday takes the rest. Sunday stays rest either way. **Two rest days per week, non-negotiable — the day they land on is not.**
 
-**Ceilings, non-negotiable:** RPE 7. 45 min. No PRs, none attempted, none expected. This is a holding block that happens to be fun — the recalibration week on 2026-08-30 is where numbers come back.
+**Ceilings, non-negotiable:** RPE 7. 45 min. No PRs, none attempted, none expected. **The single exception is Session E**, where the work bouts run at RPE 8–9 — and it pays for that by spending a rest day rather than adding a sixth day of work. This is a holding block that happens to be fun — the recalibration week on 2026-08-30 is where numbers come back.
 
 ---
 
@@ -166,6 +167,33 @@ Overhead press is your known weak link — with 10 kg it's **skill practice, not
 
 ---
 
+## Session E — The Grid (HIIT)
+
+*Open field, grass only. Nothing in your hands. The one session where the RPE ceiling comes off.*
+
+Pace out a **square, ~15 m per side** — half a crossing. Four corners, four stations.
+
+**40 s work / 20 s rest × 4 stations = one lap (4 min). 4 laps, 90 s between.**
+
+| Corner | Station | 40 s of |
+| --- | --- | --- |
+| 1 | Shuttle runs | Corner to corner, hand down on the grass at each end |
+| 2 | Burpee, step-out | Feet step back and in, not jumped. Chest to grass |
+| 3 | Bear crawl sprint | One side out, one side back. Hips low |
+| 4 | Squat jumps | Land soft, reset. Not a bounce drill |
+
+**One plyo station per lap, no more** — that's why the burpee steps out instead of jumping.
+
+**Shin rule:** any complaint and station 4 becomes speed squats, station 1 becomes tempo strides at 80%. You finish the session either way.
+
+**Warm-up is mandatory here:** 4 min easy jog, 2 × 20 pogo hops, 2 build-up strides to ~70%. **Cool-down too:** walk until breathing is normal, then calves 30 s per side, hamstrings 30 s per side.
+
+**Pacing:** lap 1 sets the number, laps 2–4 hold it. Three honest laps beats four ragged ones — if lap 3 falls apart, stop at 3.
+
+**The cost:** a Grid day takes a rest day's slot. It never gets added on top of a full week. Two rest days a week stays fixed.
+
+---
+
 ## The finisher deck
 
 End of any session, look at the seconds hand on your watch or phone. Whatever it lands on, that's your finisher. No choosing, no deciding, no negotiating with yourself.
@@ -186,8 +214,8 @@ End of any session, look at the seconds hand on your watch or phone. Whatever it
 | Date | Day | Session |
 | --- | --- | --- |
 | Aug 24 | Mon | **A — Crossings** |
-| Aug 25 | Tue | **Rest** |
-| Aug 26 | Wed | **C2 — The Ladder** (Namban slot) |
+| Aug 25 | Tue | **E — The Grid (HIIT)** — added, takes the rest day's slot |
+| Aug 26 | Wed | **Rest** — moved here from Tue; the Ladder slides a week |
 | Aug 27 | Thu | **B — The Bar Hunt** |
 | Aug 28 | Fri | **C — Fartlek**, long and easy (45–55 min) |
 | Aug 29 | Sat | Travel — walk + mobility + Wind-Down |
