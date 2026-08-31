@@ -1,6 +1,6 @@
 {
-  "programme_name": "5-Week Steady Growth Cycle",
-  "phase": "Steady growth — lean gain (maintenance +150-250 kcal)",
+  "programme_name": "Re-Entry Block — Hong Kong → Seoul",
+  "phase": "Re-entry — 2026-08-31 → 2026-09-13 (rolling). Putting the body clock back together while getting back on a bar. No testing, no numbers, no decisions made while jet-lagged.",
   "start_date": "2026-07-20",
   "duration_weeks": 5,
   "target_frequency": "6 days/week — 4 lifting, 1-2 swim, 1 full rest",
@@ -1608,6 +1608,656 @@
       },
       "notes": "Alternates with Pull B week to week. Stays as programmed through deload week.",
       "exercises": []
+    },
+    "reentry_a1": {
+      "label": "Mon — Re-Entry A @ 50% (Sess 1 of 3)",
+      "focus": "Getting back on a bar after fourteen weeks — tendon and pattern, not strength",
+      "estimated_duration_minutes": 45,
+      "location": "HKFC gym — 07:00–22:00, barbell and rack",
+      "rep_range": "6-15",
+      "rest_between_sets_seconds": "90-120",
+      "notes": "RE-ENTRY BLOCK — session 1 of 3. Train 16:00–19:00: your force output tracks core temperature and your core temperature is still on Swedish time, so Hong Kong evening is your subjective afternoon. Session-time rule: if it's before 19:30 the session happens; if the window's gone it's Wind-Down instead and that's a completed day. 45 MINUTE HARD CAP — walk out at 45 even mid-set. The written weight IS the weight, not a minimum: if it flies up, log \"felt light\" and take the next number next time. No top sets, no AMRAPs, no testing anything. Full range, slow eccentrics — this is pattern work, the load is almost incidental. Recovery Gauge is SUSPENDED until Sep 5: do not score yourself, just do the written numbers.",
+      "post_workout_cardio": null,
+      "exercises": [
+        {
+          "name": "Outdoor Walk — light window",
+          "type": "timed",
+          "sets": 1,
+          "duration_seconds": 2400,
+          "rest_seconds": 0,
+          "notes": "Outdoors, not through a window — an overcast Hong Kong sky beats any indoor room by an order of magnitude. Start from 10:00, sunglasses on if you're out before that. This is the actual training this week: it is the light exposure, the aerobic work and the step count in one activity. Lights-out target tonight: 00:30."
+        },
+        {
+          "name": "Barbell Back Squat",
+          "type": "weight",
+          "sets": 3,
+          "reps": "6 @ 40 kg",
+          "rpe": "5",
+          "rest_seconds": 120,
+          "notes": "50% of the May 80 kg estimate. It will feel insultingly light — that is the design. Last confirmed barbell session was 2026-05-20; after fourteen weeks the limiter is connective tissue and pattern, and those come back slower than strength does.",
+          "form_cues": [
+            "Bar position: high bar (on traps) for more quad emphasis.",
+            "Stance: shoulder-width, toes out ~30 degrees.",
+            "Knees track over toes throughout the movement.",
+            "Hit parallel or below — depth is non-negotiable, especially light.",
+            "Slow eccentric. You are re-teaching the pattern, not moving the bar."
+          ]
+        },
+        {
+          "name": "Barbell Bench Press",
+          "type": "weight",
+          "sets": 3,
+          "reps": "8 @ 40 kg",
+          "rpe": "5",
+          "rest_seconds": 120,
+          "notes": "50% of the May 80 kg estimate. There is nothing to gain from more: a heavy day this week cannot make you stronger by Seoul, it can only make the next three days worse — and you fly on Sep 5.",
+          "form_cues": [
+            "Retract and depress scapulae before unracking.",
+            "Feet flat on floor, slight arch in lower back.",
+            "Bar path: slight diagonal — touches mid-chest, presses back toward the rack.",
+            "Touch the chest every rep. No half reps because it's light."
+          ]
+        },
+        {
+          "name": "Lat Pulldown (or Assisted Pull-up)",
+          "type": "weight",
+          "sets": 3,
+          "reps": "8 — light, volume only",
+          "rpe": "5-6",
+          "rest_seconds": 90,
+          "notes": "No number written because none is needed. Pick something you could do 15 of and stop at 8.",
+          "form_cues": [
+            "Slight backward lean (10-15 degrees) — not excessive.",
+            "Pull to upper chest, elbows drive down and back.",
+            "Full stretch at the top — let the lats elongate.",
+            "Volume only this block. Nothing near failure."
+          ]
+        },
+        {
+          "name": "Dumbbell Row",
+          "type": "weight",
+          "sets": 3,
+          "reps": "10 — by feel, conservative",
+          "rpe": "6",
+          "rest_seconds": 90,
+          "notes": "By feel is allowed here and nowhere else in this session — it's the one lift where the May number was never solid enough to halve.",
+          "form_cues": [
+            "Hand and knee on the bench, back flat.",
+            "Pull to the hip, not the armpit.",
+            "Full stretch at the bottom, no torso rotation."
+          ]
+        },
+        {
+          "name": "Standing Calf Raise",
+          "type": "weight",
+          "sets": 3,
+          "reps": "15 — bodyweight or light",
+          "rpe": "6",
+          "rest_seconds": 60,
+          "notes": "Calves are not optional. Same reason as always — they're your flagged injury risk and they're the reason running comes back in Seoul instead of here.",
+          "form_cues": [
+            "Full dorsiflexion at the bottom — heel drops below the platform.",
+            "Pause 1 second at the bottom stretch.",
+            "Rise to full plantarflexion, pause 1 second at the top.",
+            "Slow and controlled — do not bounce."
+          ]
+        }
+      ]
+    },
+    "reentry_b2": {
+      "label": "Wed — Re-Entry B @ 60% (Sess 2 of 3)",
+      "focus": "Full body, hinge and press led",
+      "estimated_duration_minutes": 45,
+      "location": "HKFC gym — 07:00–22:00, barbell and rack",
+      "rep_range": "8-12",
+      "rest_between_sets_seconds": "90-120",
+      "notes": "RE-ENTRY BLOCK — session 2 of 3. Train 16:00–19:00. 45 MINUTE HARD CAP — walk out at 45 even mid-set. The written weight IS the weight, not a minimum: if it flies up, log \"felt light\" and take the next number next time. No top sets, no AMRAPs, no testing anything. Full range, slow eccentrics — this is pattern work, the load is almost incidental. Recovery Gauge is SUSPENDED until Sep 5: do not score yourself, just do the written numbers.",
+      "post_workout_cardio": null,
+      "exercises": [
+        {
+          "name": "Outdoor Walk — light window",
+          "type": "timed",
+          "sets": 1,
+          "duration_seconds": 1800,
+          "rest_seconds": 0,
+          "notes": "Outdoors, not through a window — an overcast Hong Kong sky beats any indoor room by an order of magnitude. Start from 08:00, sunglasses on if you're out before that. This is the actual training this week: it is the light exposure, the aerobic work and the step count in one activity. Lights-out target tonight: 23:30."
+        },
+        {
+          "name": "Romanian Deadlift (RDL)",
+          "type": "weight",
+          "sets": 3,
+          "reps": "8 @ 40 kg",
+          "rpe": "6",
+          "rest_seconds": 120,
+          "notes": "60% of the May 65 kg estimate — true 60% is 39 kg, rounded to what the bar will make. Nothing this week is precise enough for the difference to matter.",
+          "form_cues": [
+            "Start standing with bar at hip crease.",
+            "Hinge at hips, pushing them back — not a squat.",
+            "Bar stays in contact with legs the whole way down.",
+            "Stop when you feel a strong hamstring stretch (typically just below the knee).",
+            "Drive hips forward to return to standing."
+          ]
+        },
+        {
+          "name": "Overhead Press (Barbell)",
+          "type": "weight",
+          "sets": 3,
+          "reps": "8 @ 24 kg",
+          "rpe": "6",
+          "rest_seconds": 120,
+          "notes": "60% of the May 40 kg estimate. Strict standing press, no leg drive.",
+          "form_cues": [
+            "Grip just outside shoulder width.",
+            "Brace core hard — no excessive lumbar extension.",
+            "Bar moves in a straight line, head back to clear it then through once it passes.",
+            "Lockout fully at the top."
+          ]
+        },
+        {
+          "name": "Incline Dumbbell Press",
+          "type": "weight",
+          "sets": 3,
+          "reps": "10 — light",
+          "rpe": "6",
+          "rest_seconds": 90,
+          "notes": "Light means light. Three sets you finish knowing you had five more in you.",
+          "form_cues": [
+            "Elbows at ~45 degrees to torso, not flared out.",
+            "Full stretch at the bottom, squeeze at the top.",
+            "Control the eccentric (3 seconds down)."
+          ]
+        },
+        {
+          "name": "Cable or Machine Row",
+          "type": "weight",
+          "sets": 3,
+          "reps": "12 — light",
+          "rpe": "6",
+          "rest_seconds": 90,
+          "notes": "Pull to the stomach, squeeze the shoulder blades, let them travel forward on the way out.",
+          "form_cues": [
+            "Chest tall, no rocking for extra range.",
+            "Elbows stay close to the body.",
+            "One second squeeze at the back."
+          ]
+        },
+        {
+          "name": "Hanging Knee Raise (or Plank)",
+          "type": "timed",
+          "sets": 3,
+          "duration_seconds": 40,
+          "rpe": "6",
+          "rest_seconds": 60,
+          "notes": "30-45 s. Knee raises if there's a bar free, plank if there isn't. Either counts.",
+          "form_cues": [
+            "No swinging — dead stop between reps if you're hanging.",
+            "Ribs down, posterior pelvic tilt at the top.",
+            "Breathe. Do not hold your breath for 40 seconds."
+          ]
+        }
+      ]
+    },
+    "reentry_a3": {
+      "label": "Fri — Re-Entry A @ 70% (Sess 3 of 3)",
+      "focus": "Last Hong Kong session — the number you carry into Seoul",
+      "estimated_duration_minutes": 45,
+      "location": "HKFC gym — 07:00–22:00, barbell and rack",
+      "rep_range": "6-15",
+      "rest_between_sets_seconds": "90-120",
+      "notes": "RE-ENTRY BLOCK — session 3 of 3. Normal hours: by Friday you should be roughly aligned, so train whenever suits. Pack after. This is the number the Seoul rotation continues from — which is exactly why it is not a test. 45 MINUTE HARD CAP — walk out at 45 even mid-set. The written weight IS the weight, not a minimum: if it flies up, log \"felt light\" and take the next number next time. No top sets, no AMRAPs, no testing anything. Full range, slow eccentrics — this is pattern work, the load is almost incidental. Recovery Gauge is SUSPENDED until Sep 5: do not score yourself, just do the written numbers.",
+      "post_workout_cardio": null,
+      "exercises": [
+        {
+          "name": "Barbell Back Squat",
+          "type": "weight",
+          "sets": 3,
+          "reps": "6 @ 56 kg",
+          "rpe": "6-7",
+          "rest_seconds": 120,
+          "notes": "70% of the May 80 kg estimate. Still not a test. If it moves well, that is information for the baseline — it is not permission to add a set.",
+          "form_cues": [
+            "Bar position: high bar (on traps) for more quad emphasis.",
+            "Stance: shoulder-width, toes out ~30 degrees.",
+            "Knees track over toes throughout the movement.",
+            "Hit parallel or below — depth is non-negotiable, especially light.",
+            "Slow eccentric. You are re-teaching the pattern, not moving the bar."
+          ]
+        },
+        {
+          "name": "Barbell Bench Press",
+          "type": "weight",
+          "sets": 3,
+          "reps": "8 @ 56 kg",
+          "rpe": "6-7",
+          "rest_seconds": 120,
+          "notes": "70% of the May 80 kg estimate. Log how it felt — that note is worth more than the weight right now.",
+          "form_cues": [
+            "Retract and depress scapulae before unracking.",
+            "Feet flat on floor, slight arch in lower back.",
+            "Bar path: slight diagonal — touches mid-chest, presses back toward the rack.",
+            "Touch the chest every rep. No half reps because it's light."
+          ]
+        },
+        {
+          "name": "Lat Pulldown (or Assisted Pull-up)",
+          "type": "weight",
+          "sets": 3,
+          "reps": "8 — same as Sess 1",
+          "rpe": "6",
+          "rest_seconds": 90,
+          "notes": "Unchanged on purpose. Only the barbell numbers move in this block.",
+          "form_cues": [
+            "Slight backward lean (10-15 degrees) — not excessive.",
+            "Pull to upper chest, elbows drive down and back.",
+            "Full stretch at the top — let the lats elongate.",
+            "Volume only this block. Nothing near failure."
+          ]
+        },
+        {
+          "name": "Dumbbell Row",
+          "type": "weight",
+          "sets": 3,
+          "reps": "10 — one notch up",
+          "rpe": "6-7",
+          "rest_seconds": 90,
+          "notes": "One notch heavier than Sess 1. One. Not two.",
+          "form_cues": [
+            "Hand and knee on the bench, back flat.",
+            "Pull to the hip, not the armpit.",
+            "Full stretch at the bottom, no torso rotation."
+          ]
+        },
+        {
+          "name": "Standing Calf Raise",
+          "type": "weight",
+          "sets": 3,
+          "reps": "15",
+          "rpe": "6",
+          "rest_seconds": 60,
+          "notes": "Calves are not optional. Last set before a travel day — make it a good one.",
+          "form_cues": [
+            "Full dorsiflexion at the bottom — heel drops below the platform.",
+            "Pause 1 second at the bottom stretch.",
+            "Rise to full plantarflexion, pause 1 second at the top.",
+            "Slow and controlled — do not bounce."
+          ]
+        }
+      ]
+    },
+    "reentry_walk": {
+      "label": "Walk Day — light window + dead hangs",
+      "focus": "Circadian work. This is the training, not the filler.",
+      "estimated_duration_minutes": 60,
+      "location": "Outdoors — anywhere with sky",
+      "rep_range": "distance-based",
+      "rest_between_sets_seconds": "none",
+      "notes": "RE-ENTRY BLOCK rest day — and a day still counts if you went outside and moved for 20 minutes. Walking is the main aerobic lever this block: Hong Kong is 30 °C and humid, which is the same swamp as Tokyo, and running here stacks heat strain on circadian strain on legs that have run five times since May.\n\nLIGHT WINDOW — walk it earlier each day, and keep it dim before:\n  Aug 31 → from 10:00 (dim before 09:00), lights out 00:30\n  Sep 1  → from 09:00 (dim before 08:00), lights out 00:00\n  Sep 2  → from 08:00 (dim before 07:00), lights out 23:30\n  Sep 3  → from 07:00, lights out 23:00\n  Sep 4+ → on waking, lights out 23:00\n\n\"Get morning light\" is actively wrong for the first days of an eastward shift — light before your temperature minimum pushes your clock the wrong way. If you're falling asleep fine but waking at 04:00 you've over-advanced: hold the window where it is for a day instead of moving it earlier.\n\nCaffeine: Hong Kong morning only, nothing after 12:00, through Sep 3. Naps: 20 min, never after 15:00 — if you're wrecked at 16:00, walk instead.",
+      "post_workout_cardio": null,
+      "exercises": [
+        {
+          "name": "Outdoor Walk — light window",
+          "type": "timed",
+          "sets": 1,
+          "duration_seconds": 3600,
+          "rest_seconds": 0,
+          "notes": "Outdoors, not through a window — an overcast Hong Kong sky beats any indoor room by an order of magnitude. Start from the window above, sunglasses on if you're out before that. This is the actual training this week: it is the light exposure, the aerobic work and the step count in one activity."
+        },
+        {
+          "name": "Dead Hang (any bar you pass)",
+          "type": "timed",
+          "sets": 3,
+          "duration_seconds": 30,
+          "rpe": "5",
+          "rest_seconds": 60,
+          "notes": "Opportunistic, not a session. Playground, park, scaffolding — if you pass a bar, hang off it. Shoulders and grip, no pulling.",
+          "form_cues": [
+            "Hang relaxed first, then pull the shoulder blades down and hold.",
+            "Breathe normally.",
+            "Step off, do not drop off."
+          ]
+        },
+        {
+          "name": "Wind-Down (1-2 h before lights out)",
+          "type": "timed",
+          "sets": 1,
+          "duration_seconds": 1800,
+          "rpe": "3",
+          "rest_seconds": 0,
+          "notes": "Nightly default this block, not a bail-out. On the days you don't train it IS the session. Full sequence in workouts/wind-down-bailout.md."
+        }
+      ]
+    },
+    "reentry_run": {
+      "label": "Thu — Easy Run 25-30 min",
+      "focus": "The one run this week. Heat-capped, conversational, nothing else.",
+      "estimated_duration_minutes": 40,
+      "location": "Bowen Road — flat, shaded, ~4 km, straight up from Happy Valley",
+      "rep_range": "time-based",
+      "rest_between_sets_seconds": "none",
+      "notes": "RE-ENTRY BLOCK. HARD TIME RULE: before 07:30 or after 19:30, nothing in between. 30 °C and humid means conversational pace will be much slower than your ego expects — that is the heat, not your fitness.\n\nWong Nai Chung Gap and the climbs are PARKED. Unlock condition, written now so it isn't a mood call later: two weeks of consistent easy running with no calf or shin complaints.\n\nStanding rules still binding: never two run days back to back; if shins or calves ache the day after, the next run becomes a walk of the same duration and that counts as done.",
+      "post_workout_cardio": null,
+      "exercises": [
+        {
+          "name": "Pogo Hops (Pre-Run)",
+          "type": "bodyweight",
+          "sets": 1,
+          "reps": "20",
+          "rpe": "5",
+          "rest_seconds": 30,
+          "notes": "Shin insurance. Do not skip — this is why you get to run at all this week.",
+          "form_cues": [
+            "Knees almost locked, bounce from the ankle.",
+            "Minimal ground contact time.",
+            "Stay tall, do not squat into it."
+          ]
+        },
+        {
+          "name": "Easy Run",
+          "type": "timed",
+          "sets": 1,
+          "duration_seconds": 1650,
+          "rpe": "5",
+          "rest_seconds": 0,
+          "notes": "25-30 min. Full sentences out loud the whole way or you're going too fast. No watch pace targets — the humidity owns the number, not you."
+        },
+        {
+          "name": "Walk + Calf Stretch (Cool-Down)",
+          "type": "timed",
+          "sets": 1,
+          "duration_seconds": 300,
+          "rpe": "3",
+          "rest_seconds": 0,
+          "notes": "Walk first, stretch second — never stretch while still gasping.",
+          "form_cues": [
+            "Back leg straight, heel down, hips forward for the calf.",
+            "Breathe out into each stretch, no bouncing."
+          ]
+        }
+      ]
+    },
+    "reentry_travel": {
+      "label": "Sat — Travel to Seoul",
+      "focus": "Rest day. Travel counts as one.",
+      "estimated_duration_minutes": 40,
+      "options": [
+        {
+          "option": "Walk on arrival",
+          "type": "cardio",
+          "exercise": "Easy walk, outdoors, in Seoul daylight if there's any left",
+          "duration_minutes": 30,
+          "intensity": "Conversational. Not a workout.",
+          "notes": "Seoul is UTC+9, Hong Kong is UTC+8. One hour. It is NOT a second jet-lag event and nothing about today restarts the adaptation you're most of the way through."
+        },
+        {
+          "option": "Wind-Down at night",
+          "type": "timed",
+          "duration_minutes": 30,
+          "notes": "Non-negotiable on a travel night. Full sequence in workouts/wind-down-bailout.md."
+        },
+        {
+          "option": "Protein floor — 150 g",
+          "notes": "Airport food included. No cut, no counting, just the floor. Weight will read high for a week — four flights, salt and broken sleep all hold water. Ignore the scale until you've been in one place five days."
+        },
+        {
+          "option": "Recovery Gauge comes back today",
+          "notes": "From Sep 5 it's measuring something real again. Score it before every lifting session from here, and the RPE 7 ceiling comes back with it."
+        }
+      ]
+    },
+    "seoul_upper_a": {
+      "label": "Seoul — Upper A (provisional)",
+      "focus": "Press-led upper. First loaded session in the new city.",
+      "estimated_duration_minutes": 45,
+      "location": "Any 24h gym — access is not the constraint in Seoul",
+      "rep_range": "8-15",
+      "rest_between_sets_seconds": "90-120",
+      "notes": "SEOUL ROTATION — PROVISIONAL. Written from the block's rotation shape (Upper A → easy run → Lower → walk → Upper B → long easy run → rest) and its rule that loads continue from the Sep 4 number, adding conservatively. Rewrite it once the Seoul dates and gym are actually known. 45 min cap holds. RPE ceiling is back to 7 and the Recovery Gauge is back in force.",
+      "post_workout_cardio": null,
+      "exercises": [
+        {
+          "name": "Barbell Bench Press",
+          "type": "weight",
+          "sets": 3,
+          "reps": "8 @ 58.5 kg",
+          "rpe": "7",
+          "rest_seconds": 120,
+          "notes": "Sep 4's 56 kg plus one conservative step. If Sep 4 felt like RPE 7 or above, repeat 56 kg instead — that rule is back in force now.",
+          "form_cues": [
+            "Retract and depress scapulae before unracking.",
+            "Feet flat on floor, slight arch in lower back.",
+            "Bar path: slight diagonal — touches mid-chest, presses back toward the rack.",
+            "Touch the chest every rep. No half reps because it's light."
+          ]
+        },
+        {
+          "name": "Overhead Press (Barbell)",
+          "type": "weight",
+          "sets": 3,
+          "reps": "8 @ 26 kg",
+          "rpe": "7",
+          "rest_seconds": 120,
+          "notes": "Sep 2's 24 kg plus one step.",
+          "form_cues": [
+            "Grip just outside shoulder width.",
+            "Brace core hard — no excessive lumbar extension.",
+            "Bar moves in a straight line, head back to clear it then through once it passes.",
+            "Lockout fully at the top."
+          ]
+        },
+        {
+          "name": "Lat Pulldown (or Assisted Pull-up)",
+          "type": "weight",
+          "sets": 3,
+          "reps": "10",
+          "rpe": "7",
+          "rest_seconds": 90,
+          "notes": "Pull-up strength is a standing weak point. Reduce the assistance before you add reps.",
+          "form_cues": [
+            "Slight backward lean (10-15 degrees) — not excessive.",
+            "Pull to upper chest, elbows drive down and back.",
+            "Full stretch at the top — let the lats elongate.",
+            "Volume only this block. Nothing near failure."
+          ]
+        },
+        {
+          "name": "Dumbbell Row",
+          "type": "weight",
+          "sets": 3,
+          "reps": "10",
+          "rpe": "7",
+          "rest_seconds": 90,
+          "notes": "Continue from Sep 4."
+        },
+        {
+          "name": "Face Pull",
+          "type": "weight",
+          "sets": 3,
+          "reps": "15",
+          "rpe": "6",
+          "rest_seconds": 60,
+          "notes": "Rear delts and external rotation — cheap insurance on a shoulder that has pressed twice in fourteen weeks."
+        }
+      ]
+    },
+    "seoul_lower": {
+      "label": "Seoul — Lower (provisional)",
+      "focus": "Squat and hinge, continuing from the Sep 4 number",
+      "estimated_duration_minutes": 45,
+      "location": "Any 24h gym",
+      "rep_range": "6-15",
+      "rest_between_sets_seconds": "120",
+      "notes": "SEOUL ROTATION — PROVISIONAL. Written from the block's rotation shape (Upper A → easy run → Lower → walk → Upper B → long easy run → rest) and its rule that loads continue from the Sep 4 number, adding conservatively. Rewrite it once the Seoul dates and gym are actually known. 45 min cap holds. RPE ceiling is back to 7 and the Recovery Gauge is back in force.",
+      "post_workout_cardio": null,
+      "exercises": [
+        {
+          "name": "Barbell Back Squat",
+          "type": "weight",
+          "sets": 3,
+          "reps": "6 @ 58.5 kg",
+          "rpe": "7",
+          "rest_seconds": 120,
+          "notes": "Sep 4's 56 kg plus one step. Hold the weight and repeat if it wasn't clean.",
+          "form_cues": [
+            "Bar position: high bar (on traps) for more quad emphasis.",
+            "Stance: shoulder-width, toes out ~30 degrees.",
+            "Knees track over toes throughout the movement.",
+            "Hit parallel or below — depth is non-negotiable, especially light.",
+            "Slow eccentric. You are re-teaching the pattern, not moving the bar."
+          ]
+        },
+        {
+          "name": "Romanian Deadlift (RDL)",
+          "type": "weight",
+          "sets": 3,
+          "reps": "8 @ 42.5 kg",
+          "rpe": "7",
+          "rest_seconds": 120,
+          "notes": "Sep 2's 40 kg plus one step.",
+          "form_cues": [
+            "Start standing with bar at hip crease.",
+            "Hinge at hips, pushing them back — not a squat.",
+            "Bar stays in contact with legs the whole way down.",
+            "Stop when you feel a strong hamstring stretch (typically just below the knee).",
+            "Drive hips forward to return to standing."
+          ]
+        },
+        {
+          "name": "Leg Press",
+          "type": "weight",
+          "sets": 3,
+          "reps": "12",
+          "rpe": "7",
+          "rest_seconds": 90,
+          "notes": "Volume without spinal load. First accessory back in the plan — one is enough."
+        },
+        {
+          "name": "Standing Calf Raise",
+          "type": "weight",
+          "sets": 3,
+          "reps": "15",
+          "rpe": "7",
+          "rest_seconds": 60,
+          "notes": "Calves are not optional — and now they're also the thing standing between you and Namsan.",
+          "form_cues": [
+            "Full dorsiflexion at the bottom — heel drops below the platform.",
+            "Pause 1 second at the bottom stretch.",
+            "Rise to full plantarflexion, pause 1 second at the top.",
+            "Slow and controlled — do not bounce."
+          ]
+        },
+        {
+          "name": "Hanging Knee Raise (or Plank)",
+          "type": "timed",
+          "sets": 3,
+          "duration_seconds": 40,
+          "rpe": "6",
+          "rest_seconds": 60,
+          "notes": "30-45 s."
+        }
+      ]
+    },
+    "seoul_upper_b": {
+      "label": "Seoul — Upper B (provisional)",
+      "focus": "Pull-led upper, dumbbell and cable — lighter, higher rep",
+      "estimated_duration_minutes": 45,
+      "location": "Any 24h gym",
+      "rep_range": "8-15",
+      "rest_between_sets_seconds": "60-90",
+      "notes": "SEOUL ROTATION — PROVISIONAL. Written from the block's rotation shape (Upper A → easy run → Lower → walk → Upper B → long easy run → rest) and its rule that loads continue from the Sep 4 number, adding conservatively. Rewrite it once the Seoul dates and gym are actually known. 45 min cap holds. RPE ceiling is back to 7 and the Recovery Gauge is back in force.",
+      "post_workout_cardio": null,
+      "exercises": [
+        {
+          "name": "Assisted Pull-up",
+          "type": "weight",
+          "sets": 3,
+          "reps": "8",
+          "rpe": "7",
+          "rest_seconds": 90,
+          "notes": "The week 8 target was 1-3 unassisted. That target is not dead, it's just further out than it was in May. Reduce assistance, don't chase reps."
+        },
+        {
+          "name": "Incline Dumbbell Press",
+          "type": "weight",
+          "sets": 3,
+          "reps": "10",
+          "rpe": "7",
+          "rest_seconds": 90,
+          "form_cues": [
+            "Elbows at ~45 degrees to torso, not flared out.",
+            "Full stretch at the bottom, squeeze at the top.",
+            "Control the eccentric (3 seconds down)."
+          ]
+        },
+        {
+          "name": "Cable or Machine Row",
+          "type": "weight",
+          "sets": 3,
+          "reps": "12",
+          "rpe": "7",
+          "rest_seconds": 90
+        },
+        {
+          "name": "Lateral Raise",
+          "type": "weight",
+          "sets": 3,
+          "reps": "15",
+          "rpe": "7",
+          "rest_seconds": 60,
+          "notes": "Shoulder width. Light, slow, no swinging."
+        },
+        {
+          "name": "Standing Calf Raise",
+          "type": "weight",
+          "sets": 3,
+          "reps": "15",
+          "rpe": "7",
+          "rest_seconds": 60,
+          "form_cues": [
+            "Full dorsiflexion at the bottom — heel drops below the platform.",
+            "Pause 1 second at the bottom stretch.",
+            "Rise to full plantarflexion, pause 1 second at the top.",
+            "Slow and controlled — do not bounce."
+          ]
+        }
+      ]
+    },
+    "seoul_run_long": {
+      "label": "Seoul — Long Easy Run (provisional)",
+      "focus": "Where the Sweden aerobic base gets picked back up",
+      "estimated_duration_minutes": 55,
+      "location": "Han River paths — flat, lit, endless",
+      "rep_range": "time-based",
+      "rest_between_sets_seconds": "none",
+      "notes": "PROVISIONAL, same as the rest of the Seoul rotation. Low-to-mid 20s and dry: running here is pleasant rather than survival, which is exactly why the aerobic work waited for this city. Namsan stairs and hills — not yet. Same unlock condition as the Hong Kong climbs: two weeks of consistent easy running with no calf or shin complaints.",
+      "post_workout_cardio": null,
+      "exercises": [
+        {
+          "name": "Pogo Hops (Pre-Run)",
+          "type": "bodyweight",
+          "sets": 1,
+          "reps": "20",
+          "rpe": "5",
+          "rest_seconds": 30,
+          "notes": "Shin insurance. Still not optional."
+        },
+        {
+          "name": "Long Easy Run",
+          "type": "timed",
+          "sets": 1,
+          "duration_seconds": 2700,
+          "rpe": "5",
+          "rest_seconds": 0,
+          "notes": "40-50 min, conversational throughout. Distance is not the point and neither is pace — frequency is the thing you're missing, not effort."
+        },
+        {
+          "name": "Walk + Calf Stretch (Cool-Down)",
+          "type": "timed",
+          "sets": 1,
+          "duration_seconds": 300,
+          "rpe": "3",
+          "rest_seconds": 0
+        }
+      ]
     }
   },
   "progression_scheme": {
@@ -1731,41 +2381,59 @@
     "notes": "Vague check-ins are rejected. A missed session requires a same-day reason and a same-day fix."
   },
   "temporary_plan": {
-    "name": "Road Block — Field Games",
-    "active_from": "2026-08-24",
-    "active_until": "2026-09-06",
-    "reason": "No gym access — travelling. Outdoor, bodyweight / basic-equipment, large-area training.",
-    "overrides": "Replaces the strength half of the Sweden Reset Block. Its running, food and sleep rules still stand.",
+    "name": "Re-Entry Block — Hong Kong → Seoul",
+    "active_from": "2026-08-31",
+    "active_until": "2026-09-13",
+    "reason": "Day 3 of a six-hour eastward shift, fourteen weeks since the last barbell session, and a flight to Seoul on ~Sep 5.",
+    "built_around": "Jet lag is precisely the thing that breaks self-assessment, and the Recovery Gauge, RPE ceilings and 'add load only if it felt like RPE 7 or below' all run on it. So this block takes the decisions off you: loads in kilograms, session times by the clock, gauge suspended until Sep 5.",
+    "overrides": "Replaces the Road Block and the Sweden Reset Block. Both closed. The Road Block's field sessions (Crossings, The Grid) are retired — no pitch, no treadmill, and you have a barbell now, which is strictly better for this.",
     "rotation": [
-      "road_crossings",
-      "road_ladder",
-      "road_bar_hunt",
-      "road_fartlek",
-      "road_carry",
-      "road_hiit",
-      "walk",
-      "rest"
+      "reentry_a1",
+      "reentry_walk",
+      "reentry_b2",
+      "reentry_run",
+      "reentry_a3",
+      "reentry_travel",
+      "seoul_upper_a",
+      "seoul_lower",
+      "seoul_upper_b",
+      "seoul_run_long"
     ],
     "ceilings": {
-      "rpe_max": 7,
       "session_minutes_max": 45,
-      "prs": "none attempted, none expected",
-      "rpe_exception": "road_hiit work bouts run at RPE 8-9. Only exception in the block, and it costs a rest day rather than adding a session."
+      "recovery_gauge": "SUSPENDED until 2026-09-05. A gauge score taken mid-eastward-shift measures your circadian phase, not your recovery.",
+      "rpe": "Not applicable in Hong Kong — the written kg is the instruction. RPE 7 ceiling returns Sep 5.",
+      "prs": "none attempted, none expected. No top sets, no AMRAPs."
     },
-    "unit": "One 'crossing' = a landmark ~25-30 m away. Field distances are measured in crossings, not reps.",
-    "kit": {
-      "required": "nothing",
-      "optional": [
-        "long resistance band",
-        "backpack you can load 8-15 kg",
-        "jump rope"
-      ]
+    "load_ladder": {
+      "basis": "May 2026 working-weight estimates, unconfirmed since 2026-05-20",
+      "sess_1_2026-08-31": "50% — Squat 40 kg, Bench 40 kg",
+      "sess_2_2026-09-02": "60% — RDL 40 kg, OHP 24 kg",
+      "sess_3_2026-09-04": "70% — Squat 56 kg, Bench 56 kg",
+      "after": "Seoul continues from the Sep 4 number, adding conservatively."
     },
-    "nutrition": "No cut, no counting. Protein floor 150 g/day. That is the whole plan.",
-    "floor": "Walk daily, hit protein, sleep 8 h. Missing a session does not break the block.",
-    "reverts_to": "Recalibration week — test squat, bench, deadlift fresh. All working weights in the programme are stale May estimates.",
-    "source_file": "workouts/2026-08-24-road-block.md",
-    "namban_note": "Namban Rengo Wednesdays do not run while off the road. road_ladder replaces the thing Namban actually provided — a fixed appointment with a workout somebody else decided — without replacing its intensity, which the block deliberately spends elsewhere.",
-    "rest_days": "Tue + Sun. Monday rest moved to Tuesday for this block — no barbell load on the road to recover from. Two rest days a week stays fixed; which days they land on does not. A Grid (HIIT) day takes a rest day's slot and pushes that rest to the next day it fits."
+    "light_window": {
+      "rule": "Light AFTER your temperature minimum pulls the clock earlier; light BEFORE it pushes the wrong way. 'Get morning light' is actively wrong for the first days of an eastward shift.",
+      "2026-08-31": "from 10:00, dim before 09:00, lights out 00:30",
+      "2026-09-01": "from 09:00, dim before 08:00, lights out 00:00",
+      "2026-09-02": "from 08:00, dim before 07:00, lights out 23:30",
+      "2026-09-03": "from 07:00, lights out 23:00",
+      "2026-09-04_onward": "on waking, lights out 23:00",
+      "over_advanced": "Falling asleep fine but waking at 04:00 = over-advanced. Hold the window where it is for a day."
+    },
+    "train_time": "16:00-19:00 in Hong Kong — force output tracks core temperature and yours is still on Swedish time. If it's before 19:30 the session happens; if the window's gone it's Wind-Down, and that's a completed day.",
+    "running": "One easy run this week. 30 °C and humid — walking is the aerobic lever here. Bowen Road, before 07:30 or after 19:30. Hills parked until two weeks of consistent easy running with no calf or shin complaints. Running comes back properly in Seoul.",
+    "nutrition": "Protein floor 150 g/day. No counting, no cut. Eat breakfast on Hong Kong time even when you don't want it — meal timing is a circadian cue and your appetite is jet-lagged too.",
+    "score": "A day counts if you went outside and moved for 20 minutes. Ticks out of seven — four is a good week, six is great. A walk clears it, half a session clears it fully.",
+    "floor": "Go outside daily, hit protein, sleep. Everything above that is a bonus and missing a session breaks nothing.",
+    "rest_days": "Two a week, non-negotiable. This block they're Tue and Sat; which days they land on is not fixed.",
+    "baseline": "Deferred on a condition, not a date: three consecutive nights of normal sleep in one timezone AND two gym sessions already logged in that timezone. Realistically ~Sep 9-11 in Seoul. Baseline, not test — one top set per lift at RPE 7.",
+    "reverts_to": "The real block, once there's a fixed timetable again — SFC autumn semester start unknown.",
+    "source_file": "workouts/2026-08-31-hk-seoul-reentry-block.md",
+    "open_questions": [
+      "Seoul dates — outbound ~Sep 5 unconfirmed, no return leg found.",
+      "After Seoul: Tokyo? And when does the SFC autumn semester start?",
+      "Which Hong Kong gym, and where are you staying?"
+    ]
   }
 }

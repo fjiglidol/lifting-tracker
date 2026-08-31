@@ -12,34 +12,57 @@ export function saturdaySession(cycleWeek: number): string {
   return cycleWeek % 2 === 1 ? 'swim_intervals' : 'pull_b';
 }
 
-// ── Temporary plan override: Road Block — Field Games ────────────────────
+// ── Temporary plan override: Re-Entry Block — Hong Kong → Seoul ────────────
 //
-// No gym access while travelling. From ROAD_BLOCK_FROM to ROAD_BLOCK_UNTIL the
-// week is served from the outdoor rotation instead of the gym split; after that
-// the map reverts on its own with nothing to undo. Details live in
-// workouts/2026-08-24-road-block.md and programme.temporary_plan.
+// Day 3 of a six-hour eastward shift, fourteen weeks since the last barbell
+// session, and a flight to Seoul on ~Sep 5. Jet lag breaks self-assessment, and
+// self-assessment is what the Recovery Gauge and every RPE ceiling run on — so
+// this block is written date by date, in kilograms, in advance, and the app
+// serves it that way rather than resolving a rotation on the day.
+//
+// Details live in workouts/2026-08-31-hk-seoul-reentry-block.md and
+// programme.temporary_plan. Falls back to the gym split on its own after
+// REENTRY_BLOCK_UNTIL, with nothing to undo.
+//
+// The Road Block and its field sessions (Crossings, The Grid) are closed —
+// no pitch and no treadmill in Hong Kong, and there is a barbell instead.
 
-export const ROAD_BLOCK_FROM = '2026-08-24';
-export const ROAD_BLOCK_UNTIL = '2026-09-06';
+export const REENTRY_BLOCK_FROM = '2026-08-31';
+export const REENTRY_BLOCK_UNTIL = '2026-09-13';
 
-const ROAD_DAY_TO_SESSION: Record<number, string> = {
-  0: 'day_7',           // Sun — Rest
-  1: 'road_crossings',  // Mon — A: Crossings (most active non-gym day)
-  2: 'day_7',           // Tue — Rest (swapped off Monday for the road block)
-  3: 'road_ladder',     // Wed — C2: The Ladder (Namban replacement)
-  4: 'road_bar_hunt',   // Thu — B: The Bar Hunt
-  5: 'road_fartlek',    // Fri — C: Fartlek
-  6: 'road_carry',      // Sat — D: Carry & Cross
+/** Dated schedule. Both block weeks are covered in full, so there are no gaps. */
+export const REENTRY_SCHEDULE: Record<string, string> = {
+  // Hong Kong — the written week
+  '2026-08-31': 'reentry_a1',     // Mon — walk 40 min from 10:00 + Re-Entry A @ 50%
+  '2026-09-01': 'reentry_walk',   // Tue — rest day: walk 60 min, dead hangs on any bar
+  '2026-09-02': 'reentry_b2',     // Wed — walk 30 min from 08:00 + Re-Entry B @ 60%
+  '2026-09-03': 'reentry_run',    // Thu — the one easy run, before 07:30 or after 19:30
+  '2026-09-04': 'reentry_a3',     // Fri — Re-Entry A @ 70%, pack after
+  '2026-09-05': 'reentry_travel', // Sat — rest day: fly to Seoul
+  '2026-09-06': 'reentry_walk',   // Sun — walk + orient. Find the gym, find the river.
+
+  // Seoul — provisional, rewrite once the dates and the gym are known
+  '2026-09-07': 'seoul_upper_a',
+  '2026-09-08': 'reentry_run',
+  '2026-09-09': 'seoul_lower',
+  '2026-09-10': 'reentry_walk',
+  '2026-09-11': 'seoul_upper_b',
+  '2026-09-12': 'seoul_run_long',
+  '2026-09-13': 'day_7',
 };
 
-// One-off days that override the rotation for a single date. A Grid (HIIT) day
-// takes a rest day's slot rather than being added on top, so each entry here
-// that adds work is paired with one that gives the rest back. Entries fall out
-// of the schedule on their own once their week has passed.
-
-export const ROAD_ONE_OFFS: Record<string, string> = {
-  '2026-08-25': 'road_hiit', // Tue — HIIT in place of the rest day
-  '2026-08-26': 'day_7',     // Wed — rest moves here; the Ladder slides a week
+const REENTRY_LABELS: Record<string, string> = {
+  reentry_a1: 'A @ 50%',
+  reentry_b2: 'B @ 60%',
+  reentry_a3: 'A @ 70%',
+  reentry_walk: 'Walk',
+  reentry_run: 'Run',
+  reentry_travel: 'Travel',
+  seoul_upper_a: 'Upper A',
+  seoul_lower: 'Lower',
+  seoul_upper_b: 'Upper B',
+  seoul_run_long: 'Long Run',
+  day_7: 'Rest',
 };
 
 /** Local YYYY-MM-DD — avoids the UTC shift toISOString() would introduce. */
@@ -48,35 +71,41 @@ function localISODate(d: Date): string {
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 }
 
-export function isRoadBlockActive(now = new Date()): boolean {
+export function isReentryBlockActive(now = new Date()): boolean {
   const today = localISODate(now);
-  return today >= ROAD_BLOCK_FROM && today <= ROAD_BLOCK_UNTIL;
+  return today >= REENTRY_BLOCK_FROM && today <= REENTRY_BLOCK_UNTIL;
 }
 
-/** Monday-start week bounds containing `now`, as local YYYY-MM-DD. */
-function weekBounds(now: Date): [string, string] {
+/** The seven dates of the Monday-start week containing `now`, as local YYYY-MM-DD. */
+function weekDates(now: Date): string[] {
   const monday = new Date(now);
   monday.setDate(monday.getDate() - ((monday.getDay() + 6) % 7));
-  const sunday = new Date(monday);
-  sunday.setDate(sunday.getDate() + 6);
-  return [localISODate(monday), localISODate(sunday)];
+  return Array.from({ length: 7 }, (_, i) => {
+    const d = new Date(monday);
+    d.setDate(d.getDate() + i);
+    return localISODate(d);
+  });
 }
 
-/** One-off overrides for the week containing `now`, keyed by day of week. */
-export function activeOneOffs(now = new Date()): Record<number, string> {
-  const [from, to] = weekBounds(now);
+/**
+ * dow → session key for the block week containing `now`, or null when that week
+ * falls outside the block. Dates the block does not cover keep the normal split,
+ * so a half-covered week degrades rather than breaking.
+ */
+export function reentryWeekMap(now = new Date()): Record<number, string> | null {
+  if (!isReentryBlockActive(now)) return null;
   const out: Record<number, string> = {};
-  for (const [date, sessionKey] of Object.entries(ROAD_ONE_OFFS)) {
-    if (date < from || date > to) continue;
+  for (const date of weekDates(now)) {
+    const key = REENTRY_SCHEDULE[date];
+    if (!key) continue;
     const [y, m, d] = date.split('-').map(Number);
-    out[new Date(y, m - 1, d).getDay()] = sessionKey;
+    out[new Date(y, m - 1, d).getDay()] = key;
   }
-  return out;
+  return Object.keys(out).length > 0 ? out : null;
 }
 
 export function getDayToSession(cycleWeek = getCycleState().week, now = new Date()): Record<number, string> {
-  if (isRoadBlockActive(now)) return { ...ROAD_DAY_TO_SESSION, ...activeOneOffs(now) };
-  return {
+  const base: Record<number, string> = {
     0: 'day_7',                       // Sun — Full rest
     1: 'push_a',                      // Mon — Push A (Heavy)
     2: 'pull_a',                      // Tue — Pull A (Heavy)
@@ -85,6 +114,8 @@ export function getDayToSession(cycleWeek = getCycleState().week, now = new Date
     5: 'push_b',                      // Fri — Push B (Pump / Supersets)
     6: saturdaySession(cycleWeek),    // Sat — Swim intervals OR Pull B
   };
+  const reentry = reentryWeekMap(now);
+  return reentry ? { ...base, ...reentry } : base;
 }
 
 /** Static view of the week — Saturday resolved against the live cycle week. */
@@ -104,6 +135,10 @@ export const MUSCLE_GROUPS: Record<string, string> = {
   road_fartlek: 'cardio',
   road_ladder: 'cardio',
   road_hiit: 'cardio',
+  reentry_a1: 'full_body', reentry_b2: 'full_body', reentry_a3: 'full_body',
+  reentry_walk: 'cardio', reentry_run: 'cardio', reentry_travel: 'rest',
+  seoul_upper_a: 'push', seoul_upper_b: 'pull', seoul_lower: 'legs',
+  seoul_run_long: 'cardio',
 };
 
 const SWAP_ORDER: Record<string, string> = {
@@ -111,33 +146,18 @@ const SWAP_ORDER: Record<string, string> = {
   pull_b: 'push_b', pull_a: 'push_a',
 };
 
-const ROAD_LABELS: Record<string, string> = {
-  road_crossings: 'Crossings',
-  road_ladder: 'Ladder',
-  road_bar_hunt: 'Bar Hunt',
-  road_fartlek: 'Fartlek',
-  road_carry: 'Carry',
-  road_hiit: 'The Grid',
-  day_7: 'Rest',
-};
-
-const ROAD_WEEK_SCHEDULE: { day: string; dow: number; sessionKey: string; label: string }[] = [
-  { day: 'Mon', dow: 1, sessionKey: 'road_crossings', label: 'Crossings' },
-  { day: 'Tue', dow: 2, sessionKey: 'day_7',          label: 'Rest' },
-  { day: 'Wed', dow: 3, sessionKey: 'road_ladder',    label: 'Ladder' },
-  { day: 'Thu', dow: 4, sessionKey: 'road_bar_hunt',  label: 'Bar Hunt' },
-  { day: 'Fri', dow: 5, sessionKey: 'road_fartlek',   label: 'Fartlek' },
-  { day: 'Sat', dow: 6, sessionKey: 'road_carry',     label: 'Carry' },
-  { day: 'Sun', dow: 0, sessionKey: 'day_7',          label: 'Rest' },
+const DAY_NAMES: { day: string; dow: number }[] = [
+  { day: 'Mon', dow: 1 }, { day: 'Tue', dow: 2 }, { day: 'Wed', dow: 3 },
+  { day: 'Thu', dow: 4 }, { day: 'Fri', dow: 5 }, { day: 'Sat', dow: 6 },
+  { day: 'Sun', dow: 0 },
 ];
 
 export function getWeekSchedule(cycleWeek = getCycleState().week, now = new Date()): { day: string; dow: number; sessionKey: string; label: string }[] {
-  if (isRoadBlockActive(now)) {
-    const oneOffs = activeOneOffs(now);
-    return ROAD_WEEK_SCHEDULE.map(d => {
-      const override = oneOffs[d.dow];
-      if (!override) return { ...d };
-      return { ...d, sessionKey: override, label: ROAD_LABELS[override] ?? d.label };
+  const reentry = reentryWeekMap(now);
+  if (reentry) {
+    return DAY_NAMES.map(d => {
+      const sessionKey = reentry[d.dow] ?? 'day_7';
+      return { ...d, sessionKey, label: REENTRY_LABELS[sessionKey] ?? sessionKey };
     });
   }
   const sat = saturdaySession(cycleWeek);
@@ -284,13 +304,15 @@ export function getWeeklyProgress(
     }
   }
 
-  completedDows.add(REST_DOW);
+  // Rest days are never "scheduled" work. Normally that is Sunday, and Sunday is
+  // free by default. The re-entry block scores differently — ticks out of seven,
+  // where a walk clears the day — so during it only an explicit rest session is
+  // exempt and nothing is free.
+  const blockActive = isReentryBlockActive(now);
+  if (!blockActive) completedDows.add(REST_DOW);
 
-  // Rest days are never "scheduled" work. Normally that is just Sunday; during
-  // the road block Monday is a rest day too, so key off the session rather than
-  // the day number.
   const isRest = (d: { dow: number; sessionKey: string }) =>
-    d.sessionKey === 'day_7' || d.dow === REST_DOW;
+    d.sessionKey === 'day_7' || (!blockActive && d.dow === REST_DOW);
 
   const totalScheduled = schedule.filter(d => !isRest(d)).length;
   const completedCount = schedule.filter(
