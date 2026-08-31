@@ -12,6 +12,7 @@ This file always reflects the latest schedule from coach. Dated session files in
 
 **Full plan: [`2026-08-31-hk-seoul-reentry-block.md`](./2026-08-31-hk-seoul-reentry-block.md)**
 **What do I do right now: [`decision-tree.md`](./decision-tree.md)**
+**On your phone: [fjiglidol.github.io/lifting-tracker](https://fjiglidol.github.io/lifting-tracker/)** — serves this schedule date by date, with the kilograms already written into each set. Nothing to look up in the gym.
 
 ### The base
 
