@@ -87,6 +87,45 @@ When it runs: **baseline, not test.** One top set per lift at **RPE 7 — a rep 
 
 ---
 
+## 🧭 THE UMBRELLA: Twelve-Week Base Rebuild (2026-08-31 → 2026-11-22)
+
+The Re-Entry Block above is **weeks 1–2 of a twelve-week arc**, not a standalone. The arc's goal is general daily durability — being able to do a long day, a full week, and an unpredictable schedule — with lifting as one input rather than the target.
+
+### Three tiers, every day. All three count.
+
+| Tier | What it is | Roughly |
+| --- | --- | --- |
+| 🟩 **Green** | The programmed session, as written | 45 min |
+| 🟨 **Amber** | MVS — first three exercises, same loads. Or 25 min easy walk/run. | 20–30 min |
+| 🟥 **Red** | Twenty minutes outside. Or the Wind-Down. | 20 min |
+
+**The tier is chosen on the day, and a Red day is a completed day — not a failed Green.** The week is scored on its mix, not on how many Greens it contained.
+
+### The phases
+
+| Phase | Weeks | Dates | Weekly mix | Green cap |
+| --- | --- | --- | --- | --- |
+| **1 · Stabilise** | 1–4 | Aug 31 → Sep 27 | 2 Green · 2 Amber · 3 Red | **2 max, never back to back** |
+| **2 · Absorb** | 5–8 | Sep 28 → Oct 25 | 3 Green · 2 Amber · 2 Red | 3 max, one back-to-back pair |
+| **3 · Extend** | 9–12 | Oct 26 → Nov 22 | 3–4 Green · 2 Amber · 1–2 Red | — |
+
+**Entry conditions, not dates.** Phase 2 opens when three of the four Phase 1 weeks hit their mix. Phase 3 opens when three of four Phase 2 weeks hit theirs with no more than one tier-drop for pain. Repeating a phase is a normal move — there's no schedule to fall behind, only a sequence.
+
+### The two rules that carry the arc
+
+1. **One fixed wake time, seven days a week** — not bedtime — with 10 minutes of outdoor light attached to it. The only genuinely non-negotiable thing in twelve weeks.
+2. **Cap the good days.** Phase 1 allows two Greens a week and never two in a row. Work at a level you could repeat tomorrow, not the level you can reach today. Spending a good day in full is how you buy three bad ones.
+
+### What gets tracked
+
+Not the scale and not the bar. **The gap between your best and worst day each week** — that gap closing is the goal, more than the average rising. Plus recovery cost after a good day, tier mix drifting upward on its own, and resting HR trend.
+
+**Also scheduled: one non-training activity per week in Phase 1, two from Phase 2** — something with a result, or something enjoyable, in the diary in advance. Downgrading one still counts.
+
+**Full plan, with the reasoning: `SYSTEM.md`'s sibling `stamina-rebuild-12week.md` at the Fitness folder root — deliberately outside this repo.**
+
+---
+
 ## 📕 CLOSED: Road Block — Field Games (2026-08-24 → 2026-08-30)
 
 Ran through the end of the Sweden trip and the journey home. Superseded by the block above the moment gym access returned. Session E (The Grid) remains **parked** under its own condition: three consecutive weeks of five-or-more ticks.
