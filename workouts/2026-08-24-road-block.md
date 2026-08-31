@@ -1,6 +1,6 @@
 # Road Block — Field Games
 
-**Active 2026-08-24 → 2026-09-06 (rolling — runs until you're back at a bar and plates).**
+**📕 CLOSED 2026-08-30.** Ran 2026-08-24 → 2026-08-30. Superseded by [`2026-08-31-hk-seoul-reentry-block.md`](./2026-08-31-hk-seoul-reentry-block.md) — see the debrief at the foot of this file.
 **Overrides the strength half of the Sweden Reset Block. The running rules, food rules, and sleep rules from that block still stand.**
 
 No gym. Large open space. Nothing in your hands you can't buy at a petrol station or carry on your back.
@@ -254,3 +254,28 @@ It isn't a strength block and it isn't a substitute for one. It's fourteen days 
 **On 2026-08-30 or whenever the road ends** — run the recalibration week. Establish squat, bench, deadlift fresh. Every working weight in `current-programme.md` is still a May estimate and still untrustworthy.
 
 **Reframed 2026-08-25: recalibration is a baseline, not a test.** One top set per lift at **RPE 7 — a rep left in the tank, no grinding** — and the number gets estimated from that, not proven. You are coming off months of inconsistency; a max attempt in that state measures your last three months, not your ceiling, and produces a number you'll take personally. Take the RPE 7 number, build on it, and let the ceiling show up on its own in six weeks.
+
+---
+
+## Block debrief — logged 2026-08-31
+
+**Ran:** 2026-08-24 → 2026-08-30. Seven days, ending with the journey home.
+
+**What the block got right.** The two mid-block corrections were both correct and both stand:
+- **Session E parked** (2026-08-25) after being scheduled on day 2 off a thin aerobic base. The parking condition — *three consecutive weeks of five-or-more ticks* — carries forward unchanged into the next block.
+- **The tick count** replacing performance as the score. That reframe is now the permanent scoreboard for any travel block. It was right on Aug 25 and it is right harder now.
+
+**What the block got wrong — and it wasn't a training error.**
+
+The closing instruction was: *"On 2026-08-30 or whenever the road ends — run the recalibration week."* That was written on the assumption of a Sweden → Tokyo return.
+
+The actual journey home was **Gothenburg → Helsinki (AY 862) → Bangkok (AY 141, overnight) → Hong Kong (CX 700), landing 2026-08-29 at 11:35 HKT.** Four flights, a red-eye, a dawn connection, a six-hour eastward shift, and Hong Kong rather than Tokyo — followed by another flight to Seoul around Sep 5.
+
+So on Aug 30, the day the recalibration week was supposed to begin, the body it was meant to measure was twenty-four hours off a red-eye and six hours out of phase. **The plan was pointed at the wrong city, the wrong date and the wrong physiological state.**
+
+**Two structural lessons, carried into the next block:**
+
+1. **Fixed dates written weeks in advance don't survive travel.** Everything consequential from here is written as a *condition* instead — the way Session E's return already was. The recalibration is now gated on "three consecutive nights of normal sleep in one timezone plus two logged gym sessions in it," not on a date in a calendar.
+2. **Jet lag breaks the instruments, not just the athlete.** The Recovery Gauge and every RPE ceiling in this system depend on accurate self-assessment, and an eastward shift is precisely what degrades it. Blocks that span a timezone change need loads and session times fixed *in advance*, in kilograms and clock hours. That's the spine of the block that replaces this one.
+
+**Verdict:** the block did its job. It kept frequency alive across a trip with no gym, it corrected itself twice mid-flight, and it handed over cleanly. Its only failure was predicting a homecoming that didn't happen.

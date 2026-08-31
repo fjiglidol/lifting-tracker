@@ -6,3 +6,6 @@ coverage/
 *.log
 .env*
 !.env.example
+
+# Agent memory — contains personal profile data, never publish
+.claude/
