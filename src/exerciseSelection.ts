@@ -1,6 +1,7 @@
 import { Programme, Session, Exercise } from './types';
 import type { HistorySession } from './data/seedHistory';
 import { getCycleState } from './cycle';
+import * as B100 from './bench100';
 
 // ── Schedule mapping (5-Week Steady Growth Cycle) ──────────────────────────
 //
@@ -12,7 +13,33 @@ export function saturdaySession(cycleWeek: number): string {
   return cycleWeek % 2 === 1 ? 'swim_intervals' : 'pull_b';
 }
 
-// ── Temporary plan override: Re-Entry Block — Hong Kong → Seoul ────────────
+// ── Temporary plan override: Bench 100 Block ───────────────────────────────
+//
+// Thirteen weeks, 2026-09-14 → 2026-12-13. Bench 80 → 100 kg, a glute build
+// led by hip thrust, and two running sessions a week. Loads are written in
+// advance week by week — see bench100.ts and the plan file in workouts/.
+//
+// Five training days is the CEILING, not the expectation. The priority order
+// (A > B > T2 > C > T1) is what the week sheds from when it shrinks, and the
+// floor is A + B. That is deliberate: the file records four programme
+// collapses, and a block you cannot miss a day inside of is how a fifth
+// gets written.
+//
+// Expires on its own after BLOCK_UNTIL, falling back to the standard split.
+
+export const BENCH100_FROM = B100.BLOCK_FROM;
+export const BENCH100_UNTIL = B100.BLOCK_UNTIL;
+
+export function isBench100Active(now = new Date()): boolean {
+  return B100.isBlockActive(now);
+}
+
+/** dow → session key for the block week, or null outside the block. */
+export function bench100WeekMap(now = new Date()): Record<number, string> | null {
+  return B100.isBlockActive(now) ? { ...B100.DOW_TO_SESSION } : null;
+}
+
+// ── CLOSED: Re-Entry Block — Hong Kong → Seoul (2026-08-31 → 2026-09-13) ──
 //
 // Day 3 of a six-hour eastward shift, fourteen weeks since the last barbell
 // session, and a flight to Seoul on ~Sep 5. Jet lag breaks self-assessment, and
@@ -114,6 +141,8 @@ export function getDayToSession(cycleWeek = getCycleState().week, now = new Date
     5: 'push_b',                      // Fri — Push B (Pump / Supersets)
     6: saturdaySession(cycleWeek),    // Sat — Swim intervals OR Pull B
   };
+  const bench100 = bench100WeekMap(now);
+  if (bench100) return { ...base, ...bench100 };
   const reentry = reentryWeekMap(now);
   return reentry ? { ...base, ...reentry } : base;
 }
@@ -139,6 +168,11 @@ export const MUSCLE_GROUPS: Record<string, string> = {
   reentry_walk: 'cardio', reentry_run: 'cardio', reentry_travel: 'rest',
   seoul_upper_a: 'push', seoul_upper_b: 'pull', seoul_lower: 'legs',
   seoul_run_long: 'cardio',
+  b100_bench_heavy: 'push',
+  b100_bench_volume: 'push',
+  b100_legs_glutes: 'legs',
+  b100_easy_run: 'cardio',
+  b100_track: 'cardio',
 };
 
 const SWAP_ORDER: Record<string, string> = {
@@ -153,6 +187,13 @@ const DAY_NAMES: { day: string; dow: number }[] = [
 ];
 
 export function getWeekSchedule(cycleWeek = getCycleState().week, now = new Date()): { day: string; dow: number; sessionKey: string; label: string }[] {
+  const bench100 = bench100WeekMap(now);
+  if (bench100) {
+    return DAY_NAMES.map(d => {
+      const sessionKey = bench100[d.dow] ?? 'day_7';
+      return { ...d, sessionKey, label: B100.DAY_LABELS[sessionKey] ?? sessionKey };
+    });
+  }
   const reentry = reentryWeekMap(now);
   if (reentry) {
     return DAY_NAMES.map(d => {
@@ -246,10 +287,23 @@ export function getTodaySession(
 
   return {
     sessionKey,
-    session: programme.sessions[sessionKey],
+    session: resolveSession(programme, sessionKey, now),
     wasSwapped,
     swapReason,
   };
+}
+
+/**
+ * A session with this week's prescriptions written into it. During the Bench
+ * 100 block the loads come from the plan rather than from the coaching engine:
+ * a strength block's numbers are decided in advance, and weeks 5+ get rewritten
+ * wholesale by the week-4 and week-8 top singles anyway.
+ */
+export function resolveSession(programme: Programme, sessionKey: string, now = new Date()): Session {
+  const session = programme.sessions[sessionKey];
+  const week = B100.blockWeek(now);
+  if (!session || week === null) return session;
+  return B100.applyWeek(sessionKey, session, week);
 }
 
 // ── Priority-ordered other sessions ────────────────────────────────────────
@@ -269,8 +323,13 @@ export function getSessionPriorityOrder(
     const key = dayMap[dow];
     if (key !== todaySessionKey && !seen.has(key) && programme.sessions[key]) {
       seen.add(key);
-      result.push([key, programme.sessions[key]]);
+      result.push([key, resolveSession(programme, key, now)]);
     }
+  }
+  // In the block, rank by what survives a shrinking week rather than by what
+  // happens to come next on the calendar.
+  if (B100.isBlockActive(now)) {
+    result.sort(([a], [b]) => (B100.PRIORITY[a] ?? 99) - (B100.PRIORITY[b] ?? 99));
   }
   return result;
 }

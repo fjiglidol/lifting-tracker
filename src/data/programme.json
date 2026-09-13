@@ -2258,6 +2258,268 @@
           "rest_seconds": 0
         }
       ]
+    },
+    "b100_bench_heavy": {
+      "label": "Tue — A · Heavy Bench",
+      "focus": "The block. Bench, and the upper back you press off.",
+      "estimated_duration_minutes": 45,
+      "rep_range": "1-15",
+      "rest_between_sets_seconds": "150-240",
+      "notes": "PRIORITY 1 — this session is never cut. On a bad day it becomes the top bench sets only, no accessories, fifteen minutes, in and out: the adaptation this whole block depends on is a heavy bar in your hands twice a week and everything else is decoration.\n\nLoads are written in advance and the written weight IS the weight. If it flies, log \"felt light\" and take the next number next time — do not improvise upward, the week 4 and week 8 test days exist for exactly that.\n\nNever two bench days back to back. If you missed a session, drop it — do not make it up.",
+      "post_workout_cardio": null,
+      "exercises": [
+        {
+          "name": "Barbell Bench Press",
+          "type": "weight",
+          "sets": 4,
+          "reps": "6",
+          "rest_seconds": 180,
+          "form_cues": [
+            "Shoulder blades pinned back and down, and keep them there",
+            "Feet hard into the floor — leg drive is part of the lift",
+            "Bar to the same spot on the chest every rep",
+            "Elbows ~45°, not flared to 90"
+          ]
+        },
+        {
+          "name": "Paused Bench Press",
+          "type": "weight",
+          "sets": 2,
+          "reps": "5",
+          "rest_seconds": 150,
+          "form_cues": [
+            "Three full seconds, dead still, no bounce",
+            "Stay tight through the pause — this is where the position rebuilds"
+          ]
+        },
+        {
+          "name": "Barbell Row",
+          "type": "weight",
+          "sets": 4,
+          "reps": "8",
+          "rest_seconds": 120,
+          "form_cues": [
+            "Torso ~45°, no yanking with the lower back",
+            "Pull to the belly button, not the chest"
+          ]
+        },
+        {
+          "name": "Assisted Pull-Up",
+          "type": "bodyweight",
+          "sets": 4,
+          "reps": "5",
+          "rest_seconds": 120,
+          "form_cues": [
+            "Full dead hang at the bottom",
+            "Chest to the bar, not chin over it"
+          ]
+        },
+        {
+          "name": "Face Pull",
+          "type": "weight",
+          "sets": 3,
+          "reps": "15",
+          "rest_seconds": 60,
+          "form_cues": [
+            "High elbows, pull to the forehead",
+            "Light. This is not a strength exercise."
+          ]
+        }
+      ]
+    },
+    "b100_legs_glutes": {
+      "label": "Thu — B · Legs & Glutes",
+      "focus": "Glute build, led by hip thrust. Squat depth is non-negotiable.",
+      "estimated_duration_minutes": 50,
+      "rep_range": "5-20",
+      "rest_between_sets_seconds": "90-180",
+      "notes": "PRIORITY 2. Hip thrust goes FIRST and gets the freshest effort — it is the only exercise here that loads the glute at full hip extension, which is where it is strongest and where squats give it nothing.\n\nOn shape vs definition: shape is muscle and that is this block. Definition is leanness and that is the January cut. You are NOT in a deficit until 14 December — glutes are the last thing that grows in one.\n\nIf time runs out, hip thrust and squat are the session. Everything below them is optional.",
+      "post_workout_cardio": null,
+      "exercises": [
+        {
+          "name": "Barbell Hip Thrust",
+          "type": "weight",
+          "sets": 4,
+          "reps": "8",
+          "rest_seconds": 150,
+          "form_cues": [
+            "Bench at the bottom of the shoulder blades",
+            "Ribs DOWN, chin tucked — do not arch the lower back to finish the rep",
+            "One second pause at the top, squeeze",
+            "Shins vertical at lockout"
+          ]
+        },
+        {
+          "name": "Barbell Back Squat",
+          "type": "weight",
+          "sets": 4,
+          "reps": "6",
+          "rest_seconds": 180,
+          "form_cues": [
+            "High bar",
+            "BELOW PARALLEL — hip crease under the knee",
+            "Knees track out over the toes",
+            "Brace before you unrack, not after"
+          ]
+        },
+        {
+          "name": "Romanian Deadlift",
+          "type": "weight",
+          "sets": 3,
+          "reps": "8",
+          "rest_seconds": 120,
+          "form_cues": [
+            "Hips back, not down",
+            "Bar stays in contact with the legs",
+            "Stop where the hamstrings stop — not the floor"
+          ]
+        },
+        {
+          "name": "Bulgarian Split Squat",
+          "type": "weight",
+          "sets": 3,
+          "reps": "10 per leg",
+          "rest_seconds": 90,
+          "form_cues": [
+            "LONG stride — the further forward the front foot, the more glute",
+            "Lean the torso forward over the front leg",
+            "Upright = quads. Forward = glutes."
+          ]
+        },
+        {
+          "name": "Cable Hip Abduction",
+          "type": "weight",
+          "sets": 3,
+          "reps": "20",
+          "rest_seconds": 60,
+          "form_cues": [
+            "Slight forward lean",
+            "Slow, and actually feel it — go lighter than your ego wants"
+          ]
+        },
+        {
+          "name": "Standing Calf Raise",
+          "type": "weight",
+          "sets": 4,
+          "reps": "15",
+          "rest_seconds": 60,
+          "form_cues": [
+            "Full stretch at the bottom",
+            "Two-second pause at the top"
+          ]
+        }
+      ]
+    },
+    "b100_bench_volume": {
+      "label": "Sat — C · Volume Bench + Overhead",
+      "focus": "Bar speed, overhead press, triceps lockout.",
+      "estimated_duration_minutes": 30,
+      "rep_range": "3-10",
+      "rest_between_sets_seconds": "60-120",
+      "notes": "PRIORITY 4 — skippable, but it is thirty minutes, which is rather the point.\n\nThe bench here is SPEED work, not a second heavy day. Ninety seconds rest, explosive off the chest, and if it feels hard you are going too heavy.\n\nOverhead press is the highest-leverage accessory in the block: machine OHP at 8-12 kg against a 90 kg bench is the widest gap in your file, and a weak press is a poor platform to bench near-max off.",
+      "post_workout_cardio": null,
+      "exercises": [
+        {
+          "name": "Barbell Bench Press",
+          "type": "weight",
+          "sets": 5,
+          "reps": "5",
+          "rest_seconds": 90,
+          "form_cues": [
+            "Explosive concentric — move the bar fast",
+            "Controlled down, fast up",
+            "Ninety seconds. Do not let this drift into a heavy day."
+          ]
+        },
+        {
+          "name": "Paused Bench Press",
+          "type": "weight",
+          "sets": 3,
+          "reps": "3",
+          "rest_seconds": 120
+        },
+        {
+          "name": "Barbell Overhead Press",
+          "type": "weight",
+          "sets": 4,
+          "reps": "6",
+          "rest_seconds": 120,
+          "form_cues": [
+            "Squeeze the glutes — no lower-back arch",
+            "Head through at lockout",
+            "Bar path straight, chin out of the way"
+          ]
+        },
+        {
+          "name": "Close-Grip Bench Press",
+          "type": "weight",
+          "sets": 3,
+          "reps": "8",
+          "rest_seconds": 90,
+          "form_cues": [
+            "Hands just inside shoulder width — not narrow, that is a wrist injury",
+            "Elbows tucked"
+          ]
+        },
+        {
+          "name": "Incline Dumbbell Press",
+          "type": "weight",
+          "sets": 3,
+          "reps": "10",
+          "rest_seconds": 90,
+          "form_cues": [
+            "30-45° bench, no higher"
+          ]
+        },
+        {
+          "name": "Dips",
+          "type": "bodyweight",
+          "sets": 3,
+          "reps": "AMRAP",
+          "rest_seconds": 90
+        },
+        {
+          "name": "Assisted Pull-Up",
+          "type": "bodyweight",
+          "sets": 3,
+          "reps": "5",
+          "rest_seconds": 90
+        }
+      ]
+    },
+    "b100_easy_run": {
+      "label": "Wed — T1 · Easy Run",
+      "focus": "The engine. Conversational, and it stays that way until week 5.",
+      "estimated_duration_minutes": 30,
+      "notes": "PRIORITY 5 — a 25-minute walk replaces this entirely and still counts as a completed day.\n\nCONVERSATIONAL means you could hold a sentence. If you cannot, you are running the wrong session.\n\nSHIN SPLINT RULES ARE BINDING: never two run days back to back; if there is ache the day after a run, the next run becomes a walk — no negotiation. Weak calves plus months off running is exactly the setup that produces them.",
+      "post_workout_cardio": null,
+      "exercises": [
+        {
+          "name": "Easy Run",
+          "type": "cardio",
+          "sets": 1,
+          "reps": "—",
+          "rest_seconds": 0,
+          "notes": "Flat ground. Watch optional, pace irrelevant."
+        }
+      ]
+    },
+    "b100_track": {
+      "label": "Sun — T2 · The Track",
+      "focus": "The ego session. Short reps, full recovery, fast.",
+      "estimated_duration_minutes": 35,
+      "notes": "PRIORITY 3 — the cheapest session in the block and the one that will feel best.\n\nWHY THIS IS NOT THE GRID. On 25 August you did 40 s / 20 s repeats, got through half, and rated yourself unfit. Your diagnosis was right and your verdict was wrong: 40/20 repeats are lactate-tolerance work and depend on aerobic clearance between bouts, and your base was three months thin. The degradation across laps was expected physiology.\n\n200 m with a walk-back is the opposite lever. It runs on phosphocreatine, which refills in two to three minutes regardless of aerobic base. So every rep is fast, every rep feels like the runner you were, and it costs almost nothing in recovery — which matters, because it is sharing a body with a max-strength block.\n\nTAKE THE FULL REST. Cutting the rest does not make this harder in a useful way, it just turns it back into The Grid.\n\nWarm up 10-15 min including 4 × 100 m strides before the first rep.",
+      "post_workout_cardio": null,
+      "exercises": [
+        {
+          "name": "Track Reps",
+          "type": "cardio",
+          "sets": 1,
+          "reps": "—",
+          "rest_seconds": 0,
+          "notes": "See the session note for this week's reps and rest."
+        }
+      ]
     }
   },
   "progression_scheme": {
