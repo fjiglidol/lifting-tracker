@@ -1,6 +1,6 @@
 # Current Programme
 
-**Updated:** 2026-09-14
+**Updated:** 2026-09-16
 **Phase:** 🏋️ **BENCH 100 BLOCK — 2026-09-14 → 2026-12-13 (13 weeks)**
 **Goal:** bench 100 kg, build glutes, get back on a track. Three numbers, one date.
 
@@ -37,6 +37,21 @@ This file always reflects the latest schedule from coach. Dated session files in
 | **Sun** | 🏃 **T2 — The Track** | 35 min | **3 · the ego one, cheapest** |
 
 **When the week shrinks it sheds from the bottom of that priority column.** A week with only A + B + T2 in it is a good week and moves all three targets. Floor is A + B.
+
+### This week (wk 1) — A and B swapped
+
+B ran on **Tue 15 Sep** (good session, legs tight after). A moves to **Wed 16 Sep** — see [`2026-09-16-wed-bench-A-doms-flush.md`](./2026-09-16-wed-bench-A-doms-flush.md), which also carries the post-leg-day mobility work.
+
+| Day | Session |
+| --- | --- |
+| Tue 15 | 🍑 B — Legs & Glutes ✅ |
+| **Wed 16** | 🏋️ **A — Heavy Bench** |
+| Thu 17 | 🏃 T1 easy 25 min — **walk instead if calves/shins ache** |
+| Fri 18 | rest / walk |
+| Sat 19 | 🏋️ C — Volume bench |
+| Sun 20 | 🏃 T2 — 6 × 200 m |
+
+Wednesday's run is dropped this week: no running the day after the first heavy leg session in four months.
 
 ### The five things that matter
 
