@@ -30,28 +30,28 @@ This file always reflects the latest schedule from coach. Dated session files in
 | --- | --- | --- | --- |
 | **Mon** | REST | — | — |
 | **Tue** | 🏋️ **A — Heavy Bench** + upper back | 45 min | **1 · never cut** |
-| **Wed** | 🏃 **T1 — Easy run** | 30 min | 5 · a walk replaces it |
+| **Wed** | **REST · school focus** — protected, no training | — | — |
 | **Thu** | 🍑 **B — Legs & Glutes** | 50 min | **2** |
-| **Fri** | REST / walk | — | — |
+| **Fri** | 🏃 **T1 — Easy run** | 30 min | 5 · a walk replaces it |
 | **Sat** | 🏋️ **C — Volume Bench** + OHP + arms | 30 min | 4 |
 | **Sun** | 🏃 **T2 — The Track** | 35 min | **3 · the ego one, cheapest** |
 
+**Wednesday is a rest and school day and does not get trained.** The easy run moved to Friday — it was the lowest-priority slot in the week, so it's the one that absorbs the change. All fixed constraints still hold: 48 h between bench days, no run the day before Session A, never two run days back to back.
+
 **When the week shrinks it sheds from the bottom of that priority column.** A week with only A + B + T2 in it is a good week and moves all three targets. Floor is A + B.
 
-### This week (wk 1) — A and B swapped
+### This week (wk 1) — B ran early
 
-B ran on **Tue 15 Sep** (good session, legs tight after). A moves to **Wed 16 Sep** — see [`2026-09-16-wed-bench-A-doms-flush.md`](./2026-09-16-wed-bench-A-doms-flush.md), which also carries the post-leg-day mobility work.
+B ran on **Tue 15 Sep** (good session, legs tight after). A moves to **Thu 17 Sep**. Rest-day mobility work for the leg-day soreness: [`2026-09-16-wed-rest-doms-flush.md`](./2026-09-16-wed-rest-doms-flush.md).
 
 | Day | Session |
 | --- | --- |
 | Tue 15 | 🍑 B — Legs & Glutes ✅ |
-| **Wed 16** | 🏋️ **A — Heavy Bench** |
-| Thu 17 | 🏃 T1 easy 25 min — **walk instead if calves/shins ache** |
-| Fri 18 | rest / walk |
+| **Wed 16** | **REST · school** |
+| Thu 17 | 🏋️ A — Heavy Bench |
+| Fri 18 | 🏃 T1 easy 25 min — **walk instead if calves/shins ache** |
 | Sat 19 | 🏋️ C — Volume bench |
 | Sun 20 | 🏃 T2 — 6 × 200 m |
-
-Wednesday's run is dropped this week: no running the day after the first heavy leg session in four months.
 
 ### The five things that matter
 
